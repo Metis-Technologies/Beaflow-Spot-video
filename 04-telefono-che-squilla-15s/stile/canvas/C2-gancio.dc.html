@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>Grafico corretto — gancio</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Serif:ital,wght@0,400;1,400&display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 540px; height: 960px; box-sizing: border-box; padding: 125px 60px 190px 40px; display: flex; flex-direction: column; background: #111111; color: #FFFFFF; font-family: Inter, sans-serif; ">
+<div style="font-family: 'Noto Serif', serif; font-style: italic; font-size: 30px; line-height: 1.2; letter-spacing: -0.02em; color: #FFFFFF">Beaflow</div>
+<div style="margin-top: 40px; font-size: 16px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #B5B5B5">Il tuo salone · chiamata in arrivo</div>
+<h1 style="margin: 16px 0 0 0; font-size: 88px; font-weight: 800; line-height: 1; letter-spacing: -0.04em">Squilla.</h1>
+<div style="margin-top: 12px; font-size: 32px; font-weight: 600; line-height: 1.2; letter-spacing: -0.02em">E hai le mani occupate.</div>
+<div style="margin-top: 30px; display: flex; align-items: center; gap: 18px; padding: 20px; border: 1.5px solid #FFFFFF; border-radius: 6px"><div style="width: 56px; height: 56px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex: none"><svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg></div><div style="display: flex; flex-direction: column; gap: 4px; flex: 1"><span style="font-size: 24px; font-weight: 600">Cliente</span><span style="font-size: 20px; color: #B5B5B5">Sta chiamando…</span></div><span style="font-size: 20px; font-weight: 600; color: #B5B5B5">0:07</span></div>
+<div style="margin-top: 30px; display: flex; align-items: center; justify-content: space-between; padding-bottom: 10px"><div style="margin-top: 0px; font-size: 16px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #B5B5B5">Chiamate perse oggi</div><span style="font-size: 20px; font-weight: 700; color: #FF5A4F">3 perse</span></div>
+<div style="display: flex; flex-direction: column">
+<div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 0; border-top: 1px solid #3A3A3A"><span style="font-size: 24px; font-weight: 500">Giulia R.</span><span style="font-size: 20px; font-weight: 600; color: #FF5A4F">Persa · 9:12</span></div>
+<div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 0; border-top: 1px solid #3A3A3A"><span style="font-size: 24px; font-weight: 500">Numero sconosciuto</span><span style="font-size: 20px; font-weight: 600; color: #FF5A4F">Persa · 9:40</span></div>
+<div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 0; border-top: 1px solid #3A3A3A"><span style="font-size: 24px; font-weight: 500">Marco B.</span><span style="font-size: 20px; font-weight: 600; color: #FF5A4F">Persa · 10:05</span></div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":540,"height":960}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

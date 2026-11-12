@@ -1,0 +1,15 @@
+# dipendenze e file di lavoro del render
+node_modules/
+frames/
+out/
+check*/
+__pycache__/
+*.tmp.mp4
+*.wav
+*.bak
+# video intermedi dentro le cartelle sorgente (i finali stanno in export/)
+**/sorgente/*.mp4
+# sistema
+.DS_Store
+Thumbs.db
+desktop.ini

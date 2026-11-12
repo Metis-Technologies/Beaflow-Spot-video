@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>Beaflow · SaaS animation 9:16</title>
+<style>
+@font-face{font-family:"Noto Serif";font-weight:400;font-style:normal;src:url(node_modules/@fontsource/noto-serif/files/noto-serif-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Noto Serif";font-weight:400;font-style:italic;src:url(node_modules/@fontsource/noto-serif/files/noto-serif-latin-400-italic.woff2) format("woff2")}
+@font-face{font-family:"Noto Serif";font-weight:600;font-style:normal;src:url(node_modules/@fontsource/noto-serif/files/noto-serif-latin-600-normal.woff2) format("woff2")}
+@font-face{font-family:"Manrope";font-weight:700;src:url(node_modules/@fontsource/manrope/files/manrope-latin-700-normal.woff2) format("woff2")}
+@font-face{font-family:"Manrope";font-weight:800;src:url(node_modules/@fontsource/manrope/files/manrope-latin-800-normal.woff2) format("woff2")}
+@font-face{font-family:"Inter";font-weight:400;src:url(node_modules/@fontsource/inter/files/inter-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Inter";font-weight:500;src:url(node_modules/@fontsource/inter/files/inter-latin-500-normal.woff2) format("woff2")}
+@font-face{font-family:"Inter";font-weight:600;src:url(node_modules/@fontsource/inter/files/inter-latin-600-normal.woff2) format("woff2")}
+
+/* ---------- Brand tokens (da beaflow.it) ---------- */
+:root{
+  --cream:#faf5ee; --ink:#1a1a1a; --black:#000; --muted:#474747; --outline:#c6c6c6; --field:#767676;
+  --surface-low:#f3f3f3; --surface:#eee;
+  --gold:#775a19; --gold-container:#fed488; --gold-soft:#ffdea5; --gold-dim:#e9c176; --on-gold:#261900;
+  --ok:#1e7729; --ok-container:#c8e6c9; --on-ok:#1b5e20;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--cream)}
+body{font-family:Inter,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+#stage{position:absolute;inset:0;width:1080px;height:1920px;overflow:hidden;background:var(--cream)}
+.blob{position:absolute;border-radius:50%;will-change:transform}
+.b1{width:1300px;height:1300px;left:-500px;top:-380px;background:radial-gradient(closest-side,rgba(254,212,136,.42),rgba(254,212,136,0))}
+.b2{width:1500px;height:1500px;left:260px;top:900px;background:radial-gradient(closest-side,rgba(247,214,190,.75),rgba(247,214,190,0))}
+.b3{width:900px;height:900px;left:-300px;top:1100px;background:radial-gradient(closest-side,rgba(255,255,255,.9),rgba(255,255,255,0))}
+
+.scene{position:absolute;inset:0;visibility:hidden}
+.brand{position:absolute;top:142px;left:0;width:100%;text-align:center;font:italic 400 56px "Noto Serif",serif;color:#fff;mix-blend-mode:difference;z-index:50;letter-spacing:-.01em}
+
+.eyebrow{position:absolute;left:90px;top:300px;font:800 26px Manrope,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.hl{position:absolute;left:90px;top:352px;width:920px;font:400 80px/1.1 "Noto Serif",serif;letter-spacing:-.015em}
+.ln{display:block;overflow:hidden;padding-bottom:.12em;margin-bottom:-.12em}
+.lni{display:block}
+.gold{color:var(--gold)} .it{font-style:italic}
+
+.card{position:absolute;left:70px;width:940px;top:730px;background:#fff;border-radius:48px;padding:48px;
+  border:1px solid rgba(0,0,0,.06);box-shadow:0 60px 90px -50px rgba(70,45,10,.38),0 8px 24px -12px rgba(70,45,10,.12)}
+.card h3{font:400 44px "Noto Serif",serif;letter-spacing:-.01em}
+.meta{font:500 28px Inter,sans-serif;color:var(--field)}
+.lbl{font:800 22px Manrope,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--field)}
+.row{display:flex;align-items:center;justify-content:space-between}
+
+/* ---------- S1 hook ---------- */
+#s1 .eyebrow{left:0;width:100%;text-align:center;top:470px;font-size:25px}
+#s1 .big{position:absolute;left:0;width:100%;top:540px;text-align:center;font:400 150px/1.04 "Noto Serif",serif;letter-spacing:-.025em}
+#s1 .sub{position:absolute;left:0;width:100%;top:1040px;text-align:center;font:italic 400 92px/1.1 "Noto Serif",serif;color:var(--gold);letter-spacing:-.015em}
+#s1 .pills{position:absolute;left:110px;width:860px;top:1250px;display:flex;flex-wrap:wrap;gap:18px;justify-content:center}
+.pill{font:600 32px Inter,sans-serif;padding:20px 34px;border-radius:999px;background:#fff;border:1.5px solid rgba(0,0,0,.1);color:var(--ink)}
+.pill.on{background:#000;color:#fff;border-color:#000}
+
+/* ---------- S2 agenda ---------- */
+.days{display:flex;gap:14px;margin-top:34px}
+.day{flex:1;height:136px;border-radius:26px;background:var(--surface-low);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.day small{font:800 20px Manrope,sans-serif;letter-spacing:.14em;color:var(--field)}
+.day b{font:400 46px "Noto Serif",serif}
+.day.on{background:#000;color:#fff}.day.on small{color:#cfcfcf}
+.tl{position:relative;height:460px;margin-top:34px}
+.hr{position:absolute;left:0;right:0;height:1px;border-top:1.5px dashed #e2e2e2}
+.hr span{position:absolute;left:0;top:-17px;font:700 24px Manrope,sans-serif;color:var(--field);background:#fff;padding-right:14px}
+.appt{position:absolute;left:112px;right:0;border-radius:22px;padding:0 28px;display:flex;align-items:center;justify-content:space-between;transform-origin:0 50%}
+.appt b{font:600 32px Inter,sans-serif}.appt span{font:500 26px Inter,sans-serif;opacity:.75}
+.a1{top:6px;height:72px;background:var(--gold-soft);color:var(--on-gold)}
+.a2{top:110px;height:98px;background:var(--surface);color:var(--ink)}
+.a3{top:240px;height:72px;background:#1a1a1a;color:#fff}
+.a4{top:344px;height:72px;background:var(--ok-container);color:var(--on-ok)}
+.a4 i{font:800 18px Manrope,sans-serif;letter-spacing:.14em;font-style:normal;background:var(--on-ok);color:#fff;padding:6px 12px;border-radius:999px;margin-left:16px;vertical-align:middle}
+.ring{position:absolute;left:104px;right:-8px;top:336px;height:88px;border-radius:28px;border:4px solid #4caf50}
+.toast{position:absolute;left:60px;width:820px;top:-112px;background:#000;color:#fff;border-radius:32px;padding:26px 32px;display:flex;align-items:center;gap:26px;box-shadow:0 30px 60px -20px rgba(0,0,0,.5);z-index:5}
+.toast .ic{width:76px;height:76px;border-radius:50%;background:var(--gold-container);display:grid;place-items:center;flex:none}
+.toast b{display:block;font:600 34px Inter,sans-serif}.toast span{font:400 28px Inter,sans-serif;color:#c6c6c6}
+
+/* ---------- S3 booking ---------- */
+.salon{display:flex;align-items:center;gap:26px}
+.av{width:96px;height:96px;border-radius:50%;background:#000;color:#fff;display:grid;place-items:center;font:400 46px "Noto Serif",serif;flex:none}
+.svc{margin-top:34px;background:var(--surface-low);border-radius:28px;padding:30px 34px}
+.svc b{font:600 36px Inter,sans-serif;display:block}.svc .price{font:400 46px "Noto Serif",serif}
+.dates{display:flex;gap:14px;margin-top:18px}
+.date{font:600 28px Inter,sans-serif;padding:16px 28px;border-radius:999px;border:1.5px solid var(--outline)}
+.date.on{background:#000;color:#fff;border-color:#000}
+.slots{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px}
+.slot{height:92px;border-radius:22px;border:1.5px solid var(--outline);display:grid;place-items:center;font:600 34px Inter,sans-serif;background:#fff}
+.slot.sel{background:#000;color:#fff;border-color:#000}
+.btn{margin-top:30px;height:116px;border-radius:28px;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;gap:18px;font:700 36px Manrope,sans-serif;position:relative}
+.btn.ok{background:var(--ok)}
+.btn svg{display:none}.btn.ok svg{display:block}
+.pulse{position:absolute;inset:0;border-radius:28px;border:4px solid var(--ok)}
+.cursor{position:absolute;left:0;top:0;width:96px;height:96px;margin:-48px 0 0 -48px;border-radius:50%;background:rgba(255,255,255,.38);border:4px solid #fff;box-shadow:0 0 0 2px rgba(0,0,0,.4),0 14px 30px rgba(0,0,0,.28);z-index:20}
+
+/* ---------- S4 cassa ---------- */
+.li{display:flex;justify-content:space-between;align-items:center;padding:19px 0;border-bottom:1.5px solid #eee;font:500 34px Inter,sans-serif}
+.li span{color:var(--field);font-size:26px;display:block;margin-top:4px}
+.li b{font:400 40px "Noto Serif",serif}
+.tot{display:flex;justify-content:space-between;align-items:flex-end;margin-top:72px;position:relative}
+.tot .n{font:400 100px/1 "Noto Serif",serif;letter-spacing:-.02em}
+.pays{display:flex;gap:14px;margin-top:30px}
+.pay{flex:1;text-align:center;font:600 30px Inter,sans-serif;padding:22px 0;border-radius:22px;border:1.5px solid var(--outline)}
+.pay.on{background:#000;color:#fff;border-color:#000}
+.paid{position:absolute;left:-4px;top:-58px;background:var(--ok-container);color:var(--on-ok);font:800 30px Manrope,sans-serif;letter-spacing:.12em;text-transform:uppercase;padding:16px 28px;border-radius:999px;display:flex;gap:12px;align-items:center;border:3px solid var(--on-ok)}
+.loyal{position:absolute;left:150px;width:780px;top:1524px;background:var(--gold-container);color:var(--on-gold);border-radius:999px;padding:24px 34px;font:600 32px Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:16px;box-shadow:0 24px 40px -22px rgba(119,90,25,.6)}
+
+/* ---------- S5 stats (dark) ---------- */
+#s5{background:#000;color:#fff}
+#s5 .glow{position:absolute;width:1400px;height:1400px;left:-160px;top:900px;border-radius:50%;background:radial-gradient(closest-side,rgba(233,193,118,.2),rgba(233,193,118,0))}
+#s5 .eyebrow{color:var(--gold-dim)} #s5 .gold{color:var(--gold-dim)}
+#s5 .card{background:#161616;border-color:#2a2a2a;box-shadow:none;color:#fafafa}
+.kpis{display:flex;gap:20px}
+.kpi{flex:1;background:#1f1f1f;border-radius:28px;padding:30px 32px}
+.kpi .lbl{color:#a1a1a1}.kpi .v{font:400 84px/1.1 "Noto Serif",serif;margin-top:12px;letter-spacing:-.02em}
+.chart{position:relative;height:400px;margin-top:40px;display:flex;align-items:flex-end;gap:22px;padding-bottom:56px;border-bottom:0}
+.chart .g{position:absolute;left:0;right:0;border-top:1.5px dashed #2c2c2c}
+.bar{flex:1;position:relative;height:100%}
+.bar i{position:absolute;left:0;right:0;bottom:0;border-radius:16px 16px 6px 6px;background:#3a3a3a;transform-origin:50% 100%}
+.bar.on i{background:var(--gold-dim)}
+.bar small{position:absolute;left:0;right:0;bottom:-48px;text-align:center;font:800 22px Manrope,sans-serif;letter-spacing:.12em;color:#a1a1a1}
+.bar.on small{color:var(--gold-dim)}
+
+/* ---------- S6 outro ---------- */
+#s6{background:var(--cream);overflow:hidden}
+#s6 .logo{position:absolute;left:0;width:100%;top:600px;text-align:center;font:italic 400 236px/1.25 "Noto Serif",serif;letter-spacing:-.03em;white-space:nowrap}
+#s6 .logo .m{display:inline-block;overflow:hidden;padding:0 26px 30px 26px;margin:0 -26px}
+#s6 .logo .c{display:inline-block}
+#s6 .ul{position:absolute;left:330px;width:420px;top:920px;height:8px;border-radius:8px;background:var(--gold-dim);transform-origin:0 50%}
+#s6 .tag{position:absolute;left:0;width:100%;top:990px;text-align:center;font:400 42px/1.35 Inter,sans-serif;color:var(--muted)}
+#s6 .free{position:absolute;left:0;width:100%;top:1170px;display:flex;justify-content:center}
+#s6 .free span{background:var(--gold-container);color:var(--on-gold);font:800 28px Manrope,sans-serif;letter-spacing:.14em;text-transform:uppercase;padding:20px 36px;border-radius:999px}
+#s6 .cta{position:absolute;left:160px;width:760px;top:1288px;height:132px;border-radius:999px;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;gap:20px;font:700 42px Manrope,sans-serif;box-shadow:0 40px 60px -30px rgba(0,0,0,.55)}
+#s6 .bio{position:absolute;left:0;width:100%;top:1470px;display:flex;justify-content:center;align-items:center;gap:18px;font:800 36px Manrope,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:var(--ink)}
+#s6 .url{position:absolute;left:0;width:100%;top:1548px;text-align:center;font:700 26px Manrope,sans-serif;letter-spacing:.2em;color:var(--field)}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+
+  <!-- S1 · HOOK -->
+  <section class="scene" id="s1">
+    <div class="eyebrow">Per saloni, barbieri e centri estetici</div>
+    <div class="big">
+      <span class="ln"><span class="lni">Agenda,</span></span>
+      <span class="ln"><span class="lni">incassi</span></span>
+      <span class="ln"><span class="lni">e clienti</span></span>
+    </div>
+    <div class="sub"><span class="ln"><span class="lni">in un solo posto.</span></span></div>
+    <div class="pills">
+      <span class="pill">Salone</span><span class="pill">Barbiere</span><span class="pill">Beauty Center</span>
+      <span class="pill">Spa</span><span class="pill">Nails</span><span class="pill">Massage</span><span class="pill">Tattoo</span>
+    </div>
+  </section>
+
+  <!-- S2 · AGENDA -->
+  <section class="scene" id="s2">
+    <div class="eyebrow">Agenda</div>
+    <div class="hl">
+      <span class="ln"><span class="lni">Prima di aprire,</span></span>
+      <span class="ln"><span class="lni">l’agenda è già</span></span>
+      <span class="ln"><span class="lni"><span class="gold it">aggiornata.</span></span></span>
+    </div>
+    <div class="card" style="top:770px">
+      <div class="toast">
+        <div class="ic"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#261900" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></div>
+        <div><b>Nuova prenotazione online</b><span>Manicure · oggi alle 12:15</span></div>
+      </div>
+      <div class="row"><h3>Novembre 2026</h3><span class="meta">Oggi</span></div>
+      <div class="days">
+        <div class="day on"><small>LUN</small><b>9</b></div><div class="day"><small>MAR</small><b>10</b></div>
+        <div class="day"><small>MER</small><b>11</b></div><div class="day"><small>GIO</small><b>12</b></div>
+        <div class="day"><small>VEN</small><b>13</b></div><div class="day"><small>SAB</small><b>14</b></div>
+      </div>
+      <div class="tl">
+        <div class="hr" style="top:0"><span>9:00</span></div><div class="hr" style="top:104px"><span>10:00</span></div>
+        <div class="hr" style="top:208px"><span>11:00</span></div><div class="hr" style="top:312px"><span>12:00</span></div>
+        <div class="hr" style="top:416px"><span>13:00</span></div>
+        <div class="appt a1"><b>Taglio e piega</b><span>Giulia · 45 min</span></div>
+        <div class="appt a2"><b>Colore</b><span>Sara · 60 min</span></div>
+        <div class="appt a3"><b>Barba</b><span>Marco · 45 min</span></div>
+        <div class="ring"></div>
+        <div class="appt a4"><b>Manicure<i>ONLINE</i></b><span>Elena · 45 min</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S3 · PRENOTAZIONI ONLINE -->
+  <section class="scene" id="s3">
+    <div class="eyebrow">Prenotazioni online</div>
+    <div class="hl">
+      <span class="ln"><span class="lni">I clienti prenotano</span></span>
+      <span class="ln"><span class="lni"><span class="gold it">giorno e notte.</span></span></span>
+    </div>
+    <div class="card" style="top:660px">
+      <div class="salon"><div class="av">S</div><div><h3>Il tuo salone</h3><span class="meta">Catania, Sicilia</span></div></div>
+      <div class="svc row"><div><b>Taglio e piega</b><span class="meta">45 min</span></div><span class="price">25,00 €</span></div>
+      <div class="lbl" style="margin-top:38px">Scegli l’orario</div>
+      <div class="dates"><span class="date on">Mar 10 nov</span><span class="date">Mer 11</span><span class="date">Gio 12</span><span class="date">Ven 13</span></div>
+      <div class="slots">
+        <div class="slot">9:00</div><div class="slot">9:45</div><div class="slot" id="pick">10:30</div>
+        <div class="slot">11:15</div><div class="slot">12:00</div><div class="slot">15:30</div>
+      </div>
+      <div class="btn" id="book"><div class="pulse"></div>
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        <span id="bookLabel">Prenota</span></div>
+    </div>
+    <div class="cursor"></div>
+  </section>
+
+  <!-- S4 · CASSA -->
+  <section class="scene" id="s4">
+    <div class="eyebrow">Cassa e pagamenti</div>
+    <div class="hl">
+      <span class="ln"><span class="lni">Al banco incassi</span></span>
+      <span class="ln"><span class="lni">con pagamenti</span></span>
+      <span class="ln"><span class="lni"><span class="gold it">e depositi.</span></span></span>
+    </div>
+    <div class="card" style="top:700px">
+      <div class="row"><h3>Cassa</h3><span class="meta">Giulia · oggi 9:45</span></div>
+      <div style="margin-top:14px">
+        <div class="li"><div>Taglio e piega<span>Servizio</span></div><b>25,00 €</b></div>
+        <div class="li"><div>Trattamento ristrutturante<span>Servizio</span></div><b>18,00 €</b></div>
+        <div class="li"><div>Shampoo professionale<span>Prodotto · magazzino aggiornato</span></div><b>12,00 €</b></div>
+      </div>
+      <div class="tot"><div class="lbl" style="padding-bottom:18px">Totale</div><div class="n" id="total">0,00 €</div>
+        <div class="paid"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#1b5e20" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Pagato</div>
+      </div>
+      <div class="pays"><div class="pay" id="card">Carta</div><div class="pay">Contanti</div><div class="pay">Online</div></div>
+    </div>
+    <div class="loyal"><svg width="34" height="34" viewBox="0 0 24 24" fill="#261900"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8-6.2-3.2L5.8 21 7 14.2 2 9.3l6.9-1z"/></svg>Punti fedeltà aggiunti al cliente</div>
+  </section>
+
+  <!-- S5 · STATISTICHE -->
+  <section class="scene" id="s5">
+    <div class="glow"></div>
+    <div class="eyebrow">Analisi e statistiche</div>
+    <div class="hl">
+      <span class="ln"><span class="lni">A fine giornata,</span></span>
+      <span class="ln"><span class="lni"><span class="gold">statistiche</span></span></span>
+      <span class="ln"><span class="lni">e <span class="gold">report</span>.</span></span>
+    </div>
+    <div class="card">
+      <div class="kpis">
+        <div class="kpi"><div class="lbl">Incasso di oggi</div><div class="v" id="kpi1">0 €</div></div>
+        <div class="kpi"><div class="lbl">Appuntamenti</div><div class="v" id="kpi2">0</div></div>
+      </div>
+      <div class="chart">
+        <div class="g" style="bottom:56px"></div><div class="g" style="bottom:171px"></div><div class="g" style="bottom:286px"></div><div class="g" style="bottom:400px"></div>
+        <div class="bar on"><i style="height:78%"></i><small>LUN</small></div><div class="bar"><i style="height:52%"></i><small>MAR</small></div>
+        <div class="bar"><i style="height:61%"></i><small>MER</small></div><div class="bar"><i style="height:47%"></i><small>GIO</small></div>
+        <div class="bar"><i style="height:70%"></i><small>VEN</small></div><div class="bar"><i style="height:84%"></i><small>SAB</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S6 · LOGO REVEAL -->
+  <section class="scene" id="s6">
+    <div class="blob b1"></div><div class="blob b2" style="top:1000px"></div>
+    <div class="logo"><span class="m"><span class="c">B</span></span><span class="m"><span class="c">e</span></span><span class="m"><span class="c">a</span></span><span class="m"><span class="c">f</span></span><span class="m"><span class="c">l</span></span><span class="m"><span class="c">o</span></span><span class="m"><span class="c">w</span></span></div>
+    <div class="ul"></div>
+    <div class="tag">Il gestionale per saloni,<br>barbieri e centri estetici.</div>
+    <div class="free"><span>Free · 0 € per sempre</span></div>
+    <div class="cta">Registra la tua attività
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+    <div class="bio"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#775a19" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Link in bio</div>
+    <div class="url">BEAFLOW.IT</div>
+  </section>
+
+  <div class="brand">Beaflow</div>
+</div>
+
+<script>
+/* ============================================================
+   Mini timeline engine — deterministico: seek(t) disegna il frame al secondo t.
+   tw(target, start, durata, {prop:[da, a]}, ease)  ← equivalente a una coppia di keyframe
+   fx(target, start, durata, (el, p, t) => {...})    ← proprietà custom (contatori, classi)
+   ============================================================ */
+const DURATION = 30, FPS = 30;
+const E = {
+  lin:p=>p, out:p=>1-Math.pow(1-p,3), out5:p=>1-Math.pow(1-p,5), in:p=>p*p*p,
+  inout:p=>p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2,
+  back:p=>{const c1=1.70158,c3=c1+1;return 1+c3*Math.pow(p-1,3)+c1*Math.pow(p-1,2)}
+};
+const reg = new Map();
+const $ = (s,r=document)=>[...r.querySelectorAll(s)];
+const els = t => typeof t==='string' ? $(t) : (t instanceof Element ? [t] : [...t]);
+const ent = el => { if(!reg.has(el)) reg.set(el,{p:{},fx:[]}); return reg.get(el); };
+function tw(target,s,d,props,e='out'){ els(target).forEach(el=>{ const r=ent(el);
+  for(const k in props){ (r.p[k]??=[]).push({s,d,a:props[k][0],b:props[k][1],e}); r.p[k].sort((x,y)=>x.s-y.s);} }); }
+function stagger(target,s,gap,d,props,e){ els(target).forEach((el,i)=>tw(el,s+i*gap,d,props,e)); }
+function fx(target,s,d,fn,e='lin'){ els(target).forEach(el=>{ const r=ent(el); r.fx.push({s,d,fn,e}); r.fx.sort((x,y)=>x.s-y.s); }); }
+function floaty(target,amp,speed,phase=0){ els(target).forEach(el=>{ ent(el); el._f={amp,speed,phase}; }); }
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+function val(list,t){ let cur=null; for(const k of list){ if(t>=k.s) cur=k; else break; }
+  if(!cur) return list[0].a; const p=cur.d<=0?1:clamp((t-cur.s)/cur.d); return cur.a+(cur.b-cur.a)*E[cur.e](p); }
+function seek(t){
+  window.T=t;
+  reg.forEach((r,el)=>{
+    const v={}; for(const k in r.p) v[k]=val(r.p[k],t);
+    let y=(v.y??0); if(el._f) y+=Math.sin(t*el._f.speed+el._f.phase)*el._f.amp;
+    const has = k => v[k]!==undefined;
+    if(has('x')||has('y')||has('yp')||has('xp')||has('scale')||has('sx')||has('sy')||has('rot')||el._f){
+      el.style.transform=`translate(${v.x??0}px,${y}px) translate(${v.xp??0}%,${v.yp??0}%) rotate(${v.rot??0}deg) scale(${(v.scale??1)*(v.sx??1)},${(v.scale??1)*(v.sy??1)})`;
+    }
+    if(has('opacity')){ el.style.opacity=v.opacity; el.style.visibility=v.opacity<=0.001?'hidden':'visible'; }
+    for(const f of r.fx){ const p=f.d<=0?(t>=f.s?1:0):clamp((t-f.s)/f.d); f.fn(el,E[f.e](p),t); }
+  });
+}
+const eur = n => n.toLocaleString('it-IT',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
+
+/* ---------- helper di scena ---------- */
+function sceneIn(id,s){ tw(id,s,0.01,{opacity:[0,1]}); }
+function sceneOut(id,s,d=0.45){ tw(id,s,d,{opacity:[1,0],y:[0,-70]},'in'); }
+function headline(id,s){
+  tw(`${id} .eyebrow`,s,0.6,{opacity:[0,1],x:[-30,0]});
+  stagger(`${id} .hl .lni`,s+0.1,0.12,0.8,{yp:[115,0]},'out5');
+}
+function cardIn(id,s){ tw(`${id} .card`,s,0.9,{opacity:[0,1],y:[140,0],scale:[.94,1]},'out5'); }
+
+/* ============================================================
+   TIMELINE (secondi)
+   ============================================================ */
+// sfondo
+fx('#stage > .b1',0,DURATION,(el,p,t)=>{el.style.transform=`translate(${Math.sin(t*.35)*60}px,${Math.cos(t*.28)*50}px)`});
+fx('#stage > .b2',0,DURATION,(el,p,t)=>{el.style.transform=`translate(${Math.cos(t*.3)*-70}px,${Math.sin(t*.33)*60}px)`});
+// logo piccolo
+tw('.brand',0.15,0.7,{opacity:[0,1],y:[-20,0]});
+tw('.brand',25.0,0.4,{opacity:[1,0]});
+
+// S1 · hook 0 → 4
+sceneIn('#s1',0);
+tw('#s1 .eyebrow',0.25,0.6,{opacity:[0,1],y:[20,0]});
+stagger('#s1 .big .lni',0.4,0.16,0.9,{yp:[115,0]},'out5');
+tw('#s1 .sub .lni',1.35,0.9,{yp:[120,0]},'out5');
+stagger('#s1 .pill',1.9,0.07,0.6,{opacity:[0,1],y:[40,0],scale:[.85,1]},'back');
+fx('#s1 .pills',0,0,(el,p,t)=>{ const i=t<2.5?-1:t<2.95?0:t<3.4?1:2; [...el.children].forEach((c,k)=>c.classList.toggle('on',k===i)); });
+sceneOut('#s1',3.55);
+
+// S2 · agenda 4 → 10
+sceneIn('#s2',4.0);
+headline('#s2',4.0);
+cardIn('#s2',4.3);
+stagger('#s2 .day',4.75,0.05,0.55,{opacity:[0,1],y:[30,0]});
+stagger('#s2 .hr',4.9,0.05,0.5,{opacity:[0,1]});
+stagger('#s2 .a1, #s2 .a2, #s2 .a3',5.25,0.22,0.6,{opacity:[0,1],sx:[.6,1]},'back');
+tw('#s2 .toast',0,0.01,{opacity:[0,0]});
+tw('#s2 .toast',6.7,0.7,{opacity:[0,1],y:[-90,0],scale:[.92,1]},'back');
+tw('#s2 .a4',7.6,0.6,{opacity:[0,1],sx:[.6,1]},'back');
+tw('#s2 .ring',0,0.01,{opacity:[0,0]});
+tw('#s2 .ring',7.7,0.25,{opacity:[0,1]});
+tw('#s2 .ring',7.7,1.0,{scale:[1,1.07]},'out');
+tw('#s2 .ring',8.2,0.6,{opacity:[1,0]});
+tw('#s2 .toast',8.9,0.4,{opacity:[1,0],y:[0,-60]},'in');
+floaty('#s2 .card',7,1.1);
+sceneOut('#s2',9.5);
+
+// S3 · prenotazioni online 10 → 15.5
+sceneIn('#s3',10.0);
+headline('#s3',10.0);
+cardIn('#s3',10.3);
+tw('#s3 .svc',10.7,0.6,{opacity:[0,1],y:[30,0]});
+stagger('#s3 .date',10.85,0.05,0.5,{opacity:[0,1],y:[20,0]});
+stagger('#s3 .slot',11.0,0.06,0.5,{opacity:[0,1],scale:[.85,1]},'back');
+tw('#s3 .btn',11.3,0.6,{opacity:[0,1],y:[30,0]});
+tw('#s3 .pulse',0,0.01,{opacity:[0,0]});
+sceneOut('#s3',15.0);
+
+// S4 · cassa 15.5 → 21
+sceneIn('#s4',15.5);
+headline('#s4',15.5);
+cardIn('#s4',15.8);
+stagger('#s4 .li',16.3,0.25,0.6,{opacity:[0,1],x:[-40,0]});
+tw('#s4 .tot .lbl, #s4 .tot .n',16.95,0.5,{opacity:[0,1]});
+fx('#total',17.05,1.1,(el,p)=>{ el.textContent=eur(Math.round(55*p*100)/100); },'out');
+stagger('#s4 .pay',17.2,0.08,0.5,{opacity:[0,1],y:[24,0]});
+fx('#card',18.35,0,(el,p)=>el.classList.toggle('on',p>=1));
+tw('#card',18.3,0.35,{scale:[.94,1]},'back');
+tw('#s4 .paid',0,0.01,{opacity:[0,0]});
+tw('#s4 .paid',18.75,0.55,{opacity:[0,1],scale:[1.7,1],rot:[-16,-5]},'back');
+tw('#s4 .loyal',0,0.01,{opacity:[0,0]});
+tw('#s4 .loyal',19.3,0.7,{opacity:[0,1],y:[60,0],scale:[.9,1]},'back');
+floaty('#s4 .card',6,1.0,1);
+tw('#s4',21.3,0.01,{opacity:[1,0]});
+
+// S5 · statistiche 20.6 → 25.5 (wipe circolare nero)
+tw('#s5',20.6,0.01,{opacity:[0,1]});
+fx('#s5',20.6,0.75,(el,p)=>{ el.style.clipPath=`circle(${p*135}% at 50% 100%)`; },'inout');
+headline('#s5',21.0);
+cardIn('#s5',21.3);
+stagger('#s5 .kpi',21.6,0.12,0.6,{opacity:[0,1],y:[30,0]});
+fx('#kpi1',21.8,1.1,(el,p)=>{ el.textContent=Math.round(640*p).toLocaleString('it-IT')+' €'; },'out');
+fx('#kpi2',21.9,1.0,(el,p)=>{ el.textContent=Math.round(14*p); },'out');
+stagger('#s5 .g',21.9,0.05,0.5,{opacity:[0,1]});
+stagger('#s5 .bar i',22.1,0.09,0.9,{sy:[0,1]},'out5');
+stagger('#s5 .bar small',22.1,0.09,0.5,{opacity:[0,1]});
+floaty('#s5 .card',6,1.0,2);
+tw('#s5',25.75,0.01,{opacity:[1,0]});
+
+// S6 · logo reveal 25 → 30
+tw('#s6',25.0,0.01,{opacity:[0,1]});
+tw('#s6',25.0,0.75,{yp:[100,0]},'inout');
+stagger('#s6 .logo .c',25.6,0.06,0.9,{yp:[125,0]},'out5');
+tw('#s6 .ul',26.35,0.8,{sx:[0,1]},'inout');
+tw('#s6 .tag',26.6,0.7,{opacity:[0,1],y:[30,0]});
+tw('#s6 .free',27.0,0.6,{opacity:[0,1],y:[30,0],scale:[.9,1]},'back');
+tw('#s6 .cta',27.3,0.7,{opacity:[0,1],y:[50,0],scale:[.88,1]},'back');
+tw('#s6 .cta svg',27.9,2.1,{x:[0,10]},'inout');
+tw('#s6 .bio',27.7,0.6,{opacity:[0,1],y:[30,0],scale:[.9,1]},'back');
+tw('#s6 .bio svg',28.3,0.35,{rot:[0,-14]},'inout');
+tw('#s6 .bio svg',28.65,0.45,{rot:[-14,0]},'back');
+tw('#s6 .url',28.0,0.7,{opacity:[0,1]});
+
+/* ---------- S3: cursore — le coordinate si misurano sul layout finale ---------- */
+function initCursor(){
+  seek(12.0);
+  const sc=document.querySelector('#s3').getBoundingClientRect();
+  const c=id=>{ const r=document.querySelector(id).getBoundingClientRect(); return [r.left+r.width/2-sc.left, r.top+r.height/2-sc.top]; };
+  let [px,py]=c('#pick'), [bx,by]=c('#book'); px+=62; py+=30;
+  const cur='#s3 .cursor';
+  tw(cur,0,0.01,{opacity:[0,0]});
+  tw(cur,11.55,0.3,{opacity:[0,1]});
+  tw(cur,11.55,0.7,{x:[px+260,px],y:[py+420,py]},'inout');
+  tw(cur,12.3,0.12,{scale:[1,.72]},'out'); tw(cur,12.42,0.25,{scale:[.72,1]},'out');
+  fx('#pick',12.36,0,(el,p)=>el.classList.toggle('sel',p>=1));
+  tw('#pick',12.36,0.3,{scale:[.92,1]},'back');
+  tw(cur,12.75,0.6,{x:[px,bx+170],y:[py,by+6]},'inout');
+  tw(cur,13.42,0.12,{scale:[1,.72]},'out'); tw(cur,13.54,0.25,{scale:[.72,1]},'out');
+  fx('#book',13.5,0,(el,p)=>{ el.classList.toggle('ok',p>=1); document.querySelector('#bookLabel').textContent=p>=1?'Prenotazione confermata':'Prenota'; });
+  tw('#book',13.5,0.45,{scale:[.95,1]},'back');
+  tw('#s3 .pulse',13.5,0.2,{opacity:[0,.9]});
+  tw('#s3 .pulse',13.5,0.9,{sx:[1,1.06],sy:[1,1.35]},'out');
+  tw('#s3 .pulse',13.75,0.65,{opacity:[.9,0]});
+  tw(cur,13.75,0.4,{opacity:[1,0]});
+}
+window.ready = document.fonts.ready.then(()=>{ initCursor(); seek(0); return true; });
+
+/* anteprima in tempo reale se aperto nel browser: ?play */
+if(location.search.includes('play')){ window.ready.then(()=>{ const t0=performance.now();
+  (function loop(){ seek(((performance.now()-t0)/1000)%DURATION); requestAnimationFrame(loop); })(); }); }
+</script>
+</body>
+</html>

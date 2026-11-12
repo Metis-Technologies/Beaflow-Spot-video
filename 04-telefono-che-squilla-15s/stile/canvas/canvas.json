@@ -1,0 +1,132 @@
+{
+ "v": 3,
+ "attachments": {},
+ "boards": {
+  "A-agenda.dc.html": {
+   "h": 960,
+   "title": "A · Notte — svolta",
+   "w": 540,
+   "x": 0,
+   "y": 1080
+  },
+  "Artboard-4eif.dc.html": {
+   "h": 600,
+   "handmade": true,
+   "title": "Artboard 1",
+   "w": 800,
+   "x": 123,
+   "y": -887
+  },
+  "B-agenda.dc.html": {
+   "h": 960,
+   "title": "B · Editoriale — svolta",
+   "w": 540,
+   "x": 620,
+   "y": 1080
+  },
+  "B-gancio.dc.html": {
+   "h": 960,
+   "title": "B · Editoriale — gancio",
+   "w": 540,
+   "x": 620,
+   "y": 0
+  },
+  "C-agenda.dc.html": {
+   "h": 960,
+   "title": "C · Grafico — svolta",
+   "w": 540,
+   "x": 1240,
+   "y": 1080
+  },
+  "C-gancio.dc.html": {
+   "h": 960,
+   "title": "C · Grafico — gancio",
+   "w": 540,
+   "x": 1240,
+   "y": 0
+  },
+  "Main.dc.html": {
+   "h": 960,
+   "title": "A · Notte — gancio",
+   "w": 540,
+   "x": 0,
+   "y": 0
+  },
+  "C2-gancio.dc.html": {
+   "x": 0,
+   "y": 2460,
+   "w": 540,
+   "h": 960,
+   "title": "Grafico corretto — gancio"
+  },
+  "C2-svolta.dc.html": {
+   "x": 620,
+   "y": 2460,
+   "w": 540,
+   "h": 960,
+   "title": "Grafico corretto — svolta"
+  },
+  "C2-chiusura.dc.html": {
+   "x": 1240,
+   "y": 2460,
+   "w": 540,
+   "h": 960,
+   "title": "Grafico corretto — chiusura"
+  }
+ },
+ "createdOnFiles": {
+  "at": "2026-11-12T16:50:00Z",
+  "v": 1
+ },
+ "designSystems": [],
+ "launch": {
+  "view": "canvas"
+ },
+ "notes": {
+  "colA": {
+   "kind": "title1",
+   "maxW": 540,
+   "text": "A · Notte",
+   "w": 240,
+   "x": 0,
+   "y": -300
+  },
+  "colB": {
+   "kind": "title1",
+   "maxW": 540,
+   "text": "B · Editoriale",
+   "w": 240,
+   "x": 620,
+   "y": -300
+  },
+  "colC": {
+   "kind": "title1",
+   "maxW": 540,
+   "text": "C · Grafico",
+   "w": 240,
+   "x": 1240,
+   "y": -300
+  },
+  "rowC2": {
+   "x": 0,
+   "y": 2160,
+   "text": "C · Grafico corretto (dopo le tre revisioni)",
+   "kind": "title1",
+   "maxW": 1780
+  }
+ },
+ "order": [
+  "Main.dc.html",
+  "B-gancio.dc.html",
+  "C-gancio.dc.html",
+  "A-agenda.dc.html",
+  "B-agenda.dc.html",
+  "C-agenda.dc.html",
+  "Artboard-4eif.dc.html",
+  "C2-gancio.dc.html",
+  "C2-svolta.dc.html",
+  "C2-chiusura.dc.html"
+ ],
+ "pages": [],
+ "title": "Beaflow · tre stili per lo spot «Il telefono che squilla»"
+}

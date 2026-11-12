@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>Spot Beaflow · Esplora · 9:16 · 20 s</title>
+<style>
+@font-face{font-family:"Noto Serif";font-weight:400;font-style:normal;src:url(node_modules/@fontsource/noto-serif/files/noto-serif-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Noto Serif";font-weight:400;font-style:italic;src:url(node_modules/@fontsource/noto-serif/files/noto-serif-latin-400-italic.woff2) format("woff2")}
+@font-face{font-family:"Inter";font-weight:500;src:url(node_modules/@fontsource/inter/files/inter-latin-500-normal.woff2) format("woff2")}
+@font-face{font-family:"Inter";font-weight:600;src:url(node_modules/@fontsource/inter/files/inter-latin-600-normal.woff2) format("woff2")}
+@font-face{font-family:"Inter";font-weight:700;src:url(node_modules/@fontsource/inter/files/inter-latin-700-normal.woff2) format("woff2")}
+
+/* ---------- Colori del brief ---------- */
+:root{ --cream1:#FBF8F4; --cream2:#F3E8DC; --ink:#1A1A1A; --black:#000; --brass:#775A18; --white:#fff; --map:#ECEBE8; --river:#C8CDD2; --muted:#6b665f; }
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--cream1)}
+body{font-family:Inter,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+#stage{position:absolute;inset:0;overflow:hidden;background:linear-gradient(180deg,var(--cream1) 0%,var(--cream2) 100%)}
+.abs{position:absolute}
+.title{position:absolute;left:80px;width:880px;font:400 96px/1.05 "Noto Serif",serif;letter-spacing:-.02em}
+.title .w{display:inline-block;white-space:pre}
+.sub{position:absolute;left:80px;width:880px;font:500 44px/1.2 Inter,sans-serif;color:var(--muted)}
+.shadow{box-shadow:0 30px 60px -28px rgba(70,45,10,.38),0 6px 18px -8px rgba(70,45,10,.14)}
+
+/* barra di ricerca (elemento condiviso scena 1 → 2) */
+#search{left:95px;top:0;width:840px;height:124px;border-radius:62px;background:#fff;border:1px solid rgba(0,0,0,.06);display:flex;align-items:center;padding:0 44px;gap:24px;z-index:30}
+#search .txt{font:500 40px Inter,sans-serif;white-space:pre}
+#cursor{display:inline-block;width:3px;height:46px;background:var(--ink);margin-left:3px;vertical-align:-8px}
+
+/* scena 2 · mappa */
+#map{inset:0;z-index:5;overflow:hidden;background:var(--map)}
+#mapInner{inset:0;transform-origin:50% 45%}
+#mapFade{left:0;top:0;width:1080px;height:860px;background:linear-gradient(180deg,rgba(251,248,244,.97) 0,rgba(251,248,244,.9) 600px,rgba(251,248,244,0) 860px);z-index:6}
+.pin{position:absolute;width:60px;height:78px;margin:-78px 0 0 -30px;z-index:8}
+.pin.me{width:108px;height:140px;margin:-140px 0 0 -54px;z-index:9}
+.ring{position:absolute;width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;border:5px solid var(--brass);z-index:7}
+#s2{inset:0;z-index:10}
+#t2{top:440px}
+#t2 .ul{position:absolute;left:0;right:0;bottom:-2px;height:6px;border-radius:6px;background:var(--brass);transform-origin:0 50%}
+#card2{left:70px;top:1150px;width:890px;background:#fff;border-radius:44px;padding:44px 48px;border:1px solid rgba(0,0,0,.06);transform-origin:50% 0}
+#card2 h3{font:400 54px "Noto Serif",serif;letter-spacing:-.01em}
+#card2 .city{font:500 32px Inter,sans-serif;color:var(--muted);margin-top:6px}
+#card2 .svc{display:flex;justify-content:space-between;align-items:center;margin-top:32px;padding-top:30px;border-top:1.5px solid #eee;font:500 34px Inter,sans-serif}
+#card2 .svc b{font-weight:700}
+
+/* scena 3 · orologio */
+#s3,#s4,#s5,#s6{inset:0;z-index:12}
+#t3{top:290px}
+#day{left:0;width:1030px;top:610px;height:60px;text-align:center}
+#day span{position:absolute;left:0;width:100%;font:600 46px Inter,sans-serif;color:var(--brass);letter-spacing:.02em}
+#clock{left:0;width:1030px;top:660px;display:flex;justify-content:center;font:400 220px/1.2 "Noto Serif",serif;height:264px}
+.dcol{width:.62em;height:1.2em;overflow:hidden;text-align:center}
+.dcol .in{display:block}
+.dcol .in span{display:block;height:1.2em}
+.colon{width:.3em;text-align:center}
+.pill{position:absolute;left:135px;width:760px;height:92px;border-radius:46px;background:#fff;border:1px solid rgba(0,0,0,.06);display:flex;align-items:center;gap:22px;padding:0 30px;font:600 34px Inter,sans-serif}
+.pill i{width:44px;height:44px;border-radius:50%;background:var(--ink);display:grid;place-items:center;flex:none}
+#sub3{top:1372px;text-align:center;left:0;width:1030px;color:var(--ink)}
+
+/* scena 4 · telefono */
+#t4{top:290px}
+#sub4{top:412px}
+#phoneWrap{left:115px;top:540px;width:800px;height:1600px;transform-origin:50% 60%}
+#phone{left:0;top:0;width:800px;height:1600px;border-radius:96px;background:#111;padding:16px;transform-origin:50% 42%;box-shadow:0 60px 120px -40px rgba(40,25,5,.55)}
+#screen{position:relative;width:100%;height:100%;border-radius:82px;overflow:hidden;background:linear-gradient(180deg,var(--cream1),var(--cream2))}
+#island{position:absolute;left:50%;top:26px;width:200px;height:52px;margin-left:-100px;border-radius:30px;background:#111}
+#lockTime{position:absolute;left:0;width:100%;top:106px;text-align:center;font:400 150px/1 "Noto Serif",serif;letter-spacing:-.02em}
+.notif{position:absolute;left:24px;width:720px;top:304px;height:150px;border-radius:38px;background:#fff;border:1px solid rgba(0,0,0,.05);display:flex;align-items:center;gap:26px;padding:0 30px}
+.notif .ic{width:88px;height:88px;border-radius:24px;background:#000;color:#fff;display:grid;place-items:center;font:italic 400 56px "Noto Serif",serif;flex:none}
+.notif b{display:block;font:700 31px Inter,sans-serif}
+.notif span{display:block;font:500 27px Inter,sans-serif;color:var(--muted);margin-top:6px;white-space:nowrap}
+
+/* scena 5 · agenda */
+#t5{top:290px}
+#agenda{left:70px;top:600px;width:890px;height:850px;background:#fff;border-radius:44px;border:1px solid rgba(0,0,0,.06);padding:40px;transform-origin:50% 40%}
+#days{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;height:64px}
+#days div{text-align:center;font:600 30px Inter,sans-serif;color:var(--muted)}
+#grid{position:relative;height:680px;margin-top:14px}
+#grid .gl{position:absolute;left:0;right:0;border-top:1.5px dashed #ecebe8}
+.blk{position:absolute;border-radius:16px;background:var(--ink);transform-origin:50% 0}
+.blk.me{background:var(--brass);color:#fff;font:700 26px Inter,sans-serif;display:grid;place-items:center}
+
+/* scena 6 · chiusura */
+#logo{left:0;width:1080px;top:610px;text-align:center;font:italic 400 220px/1.2 "Noto Serif",serif;letter-spacing:-.03em;white-space:nowrap}
+#logo span{display:inline-block}
+#cta{left:260px;width:560px;top:1010px;height:144px;border-radius:72px;background:#000;color:#fff;display:grid;place-items:center;font:600 52px Inter,sans-serif;box-shadow:0 40px 60px -30px rgba(0,0,0,.55)}
+#url{left:0;width:1080px;top:1214px;text-align:center;font:500 44px Inter,sans-serif}
+#plan{left:0;width:1080px;top:1292px;text-align:center;font:500 34px Inter,sans-serif;color:var(--muted)}
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <!-- barra di ricerca: nasce al centro (scena 1) e diventa la barra di Esplora (scena 2) -->
+  <div id="search" class="abs shadow">
+    <svg id="lens" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg>
+    <div class="txt"><span id="typed"></span><span id="cursor"></span></div>
+  </div>
+
+  <!-- SCENA 1 · Aggancio -->
+  <h1 class="title" id="t1" style="top:600px"><span class="w">Ti </span><span class="w">cercano</span><br><span class="w">adesso.</span></h1>
+
+  <!-- SCENA 2 · Mappa Esplora -->
+  <div id="map" class="abs">
+    <div id="mapInner" class="abs">
+      <svg width="1080" height="1920" viewBox="0 0 1080 1920" style="position:absolute;inset:0">
+        <rect width="1080" height="1920" fill="#ECEBE8"/>
+        <path d="M-80 1330 C 220 1210, 430 1560, 720 1480 S 1010 1190 1180 1270" fill="none" stroke="#C8CDD2" stroke-width="120" stroke-linecap="round"/>
+        <g transform="rotate(-13 540 960)" stroke="#fff" stroke-linecap="round">
+          <g stroke-width="14">
+            <path d="M-400 240H1500M-400 400H1500M-400 720H1500M-400 880H1500M-400 1200H1500M-400 1360H1500M-400 1680H1500M-400 1840H1500M-400 80H1500"/>
+            <path d="M-60 -400V2400M100 -400V2400M420 -400V2400M580 -400V2400M900 -400V2400M1060 -400V2400"/>
+          </g>
+          <g stroke-width="34">
+            <path d="M-400 560H1500M-400 1040H1500M-400 1520H1500"/>
+            <path d="M260 -400V2400M740 -400V2400"/>
+          </g>
+        </g>
+        <path d="M-50 700 C 300 760, 700 520, 1150 640" fill="none" stroke="#fff" stroke-width="44" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div id="mapFade" class="abs"></div>
+    <div id="pinLayer" class="abs" style="inset:0;transform-origin:50% 45%;z-index:7">
+      <div class="ring" id="ring1" style="left:520px;top:900px"></div>
+      <div class="ring" id="ring2" style="left:520px;top:900px"></div>
+      <svg class="pin" style="left:840px;top:560px" viewBox="0 0 60 78"><path d="M30 0C13.4 0 0 13.2 0 29.6 0 51 30 78 30 78s30-27 30-48.4C60 13.2 46.600 0 30 0z" fill="#000"/><circle cx="30" cy="29" r="10" fill="#fff"/></svg>
+      <svg class="pin" style="left:890px;top:770px" viewBox="0 0 60 78"><path d="M30 0C13.4 0 0 13.2 0 29.6 0 51 30 78 30 78s30-27 30-48.4C60 13.2 46.600 0 30 0z" fill="#000"/><circle cx="30" cy="29" r="10" fill="#fff"/></svg>
+      <svg class="pin" style="left:170px;top:810px" viewBox="0 0 60 78"><path d="M30 0C13.4 0 0 13.2 0 29.6 0 51 30 78 30 78s30-27 30-48.4C60 13.2 46.600 0 30 0z" fill="#000"/><circle cx="30" cy="29" r="10" fill="#fff"/></svg>
+      <svg class="pin" style="left:350px;top:760px" viewBox="0 0 60 78"><path d="M30 0C13.4 0 0 13.2 0 29.6 0 51 30 78 30 78s30-27 30-48.4C60 13.2 46.600 0 30 0z" fill="#000"/><circle cx="30" cy="29" r="10" fill="#fff"/></svg>
+      <svg class="pin" style="left:730px;top:960px" viewBox="0 0 60 78"><path d="M30 0C13.4 0 0 13.2 0 29.6 0 51 30 78 30 78s30-27 30-48.4C60 13.2 46.600 0 30 0z" fill="#000"/><circle cx="30" cy="29" r="10" fill="#fff"/></svg>
+      <svg class="pin" style="left:250px;top:1050px" viewBox="0 0 60 78"><path d="M30 0C13.4 0 0 13.2 0 29.6 0 51 30 78 30 78s30-27 30-48.4C60 13.2 46.600 0 30 0z" fill="#000"/><circle cx="30" cy="29" r="10" fill="#fff"/></svg>
+      <svg class="pin me" id="mypin" style="left:520px;top:900px" viewBox="0 0 60 78"><path d="M30 0C13.4 0 0 13.2 0 29.6 0 51 30 78 30 78s30-27 30-48.4C60 13.2 46.600 0 30 0z" fill="#775A18"/><circle cx="30" cy="29" r="10" fill="#fff"/></svg>
+    </div>
+  </div>
+  <div id="s2" class="abs">
+    <h1 class="title" id="t2"><span class="w">Ti </span><span class="w">trovano</span><br><span class="w">su </span><span class="w" style="position:relative">Esplora.<span class="ul"></span></span></h1>
+    <div id="card2" class="abs shadow">
+      <h3>Il tuo salone</h3><div class="city">Roma, Lazio</div>
+      <div class="svc"><span>Taglio e piega · 1 h</span><b>Da 35,00 €</b></div>
+    </div>
+  </div>
+
+  <!-- SCENA 3 · A ogni ora -->
+  <div id="s3" class="abs">
+    <h1 class="title" id="t3"><span class="w">Prenotano</span><br><span class="w">quando </span><span class="w">vogliono.</span></h1>
+    <div id="clockBox" class="abs" style="inset:0">
+      <div id="day" class="abs"><span id="d1">Martedì</span><span id="d2">Mercoledì</span><span id="d3">Domenica</span></div>
+      <div id="clock" class="abs">
+        <div class="dcol"><span class="in"><span>2</span><span>0</span><span>0</span></span></div>
+        <div class="dcol"><span class="in"><span>3</span><span>7</span><span>9</span></span></div>
+        <div class="colon">:</div>
+        <div class="dcol"><span class="in"><span>4</span><span>1</span><span>3</span></span></div>
+        <div class="dcol"><span class="in"><span>0</span><span>5</span><span>0</span></span></div>
+      </div>
+    </div>
+    <div id="pile" class="abs" style="inset:0">
+      <div class="pill shadow" id="p1" style="top:1010px"><i><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></i>Taglio e piega · 23:40</div>
+      <div class="pill shadow" id="p2" style="top:1118px"><i><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></i>Barba · 07:15</div>
+      <div class="pill shadow" id="p3" style="top:1226px"><i><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></i>Manicure · Dom 09:30</div>
+    </div>
+    <div class="sub" id="sub3">Anche quando sei chiuso.</div>
+  </div>
+
+  <!-- SCENA 4 · Notifiche -->
+  <div id="s4" class="abs">
+    <h1 class="title" id="t4"><span class="w">Lo </span><span class="w">sai </span><span class="w">subito.</span></h1>
+    <div class="sub" id="sub4">Notifiche in tempo reale.</div>
+    <div id="phoneWrap" class="abs"><div id="phone" class="abs"><div id="screen">
+      <div id="island"></div>
+      <div id="lockTime">10:42</div>
+      <div class="notif shadow" id="n1"><div class="ic">B</div><div><b>Nuova prenotazione</b><span>Giulia R. · Taglio e piega · Sab 10:30</span></div></div>
+      <div class="notif shadow" id="n2"><div class="ic">B</div><div><b>Nuova prenotazione</b><span>Marco B. · Barba · Lun 18:00</span></div></div>
+      <div class="notif shadow" id="n3"><div class="ic">B</div><div><b>Nuova prenotazione</b><span>Sara T. · Manicure · Mar 15:00</span></div></div>
+    </div></div></div>
+  </div>
+
+  <!-- SCENA 5 · Agenda -->
+  <div id="s5" class="abs">
+    <h1 class="title" id="t5"><span class="w">Agenda </span><span class="w">piena.</span><br><span class="w">In </span><span class="w">automatico.</span></h1>
+    <div id="agenda" class="abs shadow">
+      <div id="days"><div>Lun</div><div>Mar</div><div>Mer</div><div>Gio</div><div>Ven</div><div>Sab</div></div>
+      <div id="grid"></div>
+    </div>
+  </div>
+
+  <!-- SCENA 6 · Chiusura -->
+  <div id="s6" class="abs">
+    <div id="logo" class="abs"><span>B</span><span>e</span><span>a</span><span>f</span><span>l</span><span>o</span><span>w</span></div>
+    <div id="cta" class="abs">Inizia gratis</div>
+    <div id="url" class="abs">beaflow.it</div>
+    <div id="plan" class="abs">Piano Free · 0 € per sempre</div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   Timeline deterministica: seek(t) disegna il fotogramma al secondo t.
+   tw(target, inizio, durata, {prop:[da, a]}, curva)  ← coppia di keyframe
+   Curve come nel brief (Framer Motion):
+     enter  = cubic-bezier(0.22, 1, 0.36, 1) · 0,5 s
+     exit   = cubic-bezier(0.4, 0, 1, 1)     · 0,3 s
+     spring = stiffness 420, damping 26   (rimbalzo)
+     soft   = stiffness 260, damping 30   (molla morbida)
+   ============================================================ */
+const DURATION = 20, FPS = 30, SP = 0.8, SO = 0.9;
+function bez(x1,y1,x2,y2){ const cx=3*x1,bx=3*(x2-x1)-cx,ax=1-cx-bx,cy=3*y1,by=3*(y2-y1)-cy,ay=1-cy-by;
+  const fx=t=>((ax*t+bx)*t+cx)*t, fy=t=>((ay*t+by)*t+cy)*t, dx=t=>(3*ax*t+2*bx)*t+cx;
+  return p=>{ if(p<=0)return 0; if(p>=1)return 1; let t=p; for(let i=0;i<10;i++){ const e=fx(t)-p; if(Math.abs(e)<1e-6)break; const d=dx(t); if(Math.abs(d)<1e-6)break; t-=e/d; } return fy(Math.min(1,Math.max(0,t))); }; }
+function spr(k,c,dur){ const w0=Math.sqrt(k), z=c/(2*Math.sqrt(k)), wd=w0*Math.sqrt(1-z*z);
+  return p=>{ if(p>=1)return 1; const t=p*dur; return 1-Math.exp(-z*w0*t)*(Math.cos(wd*t)+(z*w0/wd)*Math.sin(wd*t)); }; }
+const E = { lin:p=>p, enter:bez(.22,1,.36,1), exit:bez(.4,0,1,1), inout:bez(.65,0,.35,1), spring:spr(420,26,SP), soft:spr(260,30,SO) };
+const reg = new Map();
+const $ = s=>[...document.querySelectorAll(s)];
+const els = t => typeof t==='string' ? $(t) : (t instanceof Element ? [t] : [...t]);
+const ent = el => { if(!reg.has(el)) reg.set(el,{p:{},fx:[]}); return reg.get(el); };
+function tw(target,s,d,props,e='enter'){ els(target).forEach(el=>{ const r=ent(el);
+  for(const k in props){ (r.p[k]??=[]).push({s,d,a:props[k][0],b:props[k][1],e}); r.p[k].sort((x,y)=>x.s-y.s);} }); }
+function stagger(target,s,gap,d,props,e){ els(target).forEach((el,i)=>tw(el,s+i*gap,d,props,e)); }
+function fx(target,fn){ els(target).forEach(el=>ent(el).fx.push(fn)); }
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+function val(list,t){ let cur=null; for(const k of list){ if(t>=k.s) cur=k; else break; }
+  if(!cur) return list[0].a; const p=cur.d<=0?1:clamp((t-cur.s)/cur.d); return cur.a+(cur.b-cur.a)*E[cur.e](p); }
+function seek(t){
+  reg.forEach((r,el)=>{
+    const v={}; for(const k in r.p) v[k]=val(r.p[k],t);
+    const has=k=>v[k]!==undefined;
+    if(has('x')||has('y')||has('yp')||has('scale')||has('sx')||has('rot'))
+      el.style.transform=`translate(${v.x??0}px,${v.y??0}px) translateY(${v.yp??0}%) rotate(${v.rot??0}deg) scale(${(v.scale??1)*(v.sx??1)},${v.scale??1})`;
+    if(has('opacity')){ el.style.opacity=v.opacity; el.style.visibility=v.opacity<=0.001?'hidden':'visible'; }
+    if(has('blur')) el.style.filter=v.blur>0.05?`blur(${v.blur}px)`:'none';
+    for(const f of r.fx) f(el,t);
+  });
+}
+const titleIn  = (sel,s) => stagger(`${sel} .w`, s, 0.06, 0.5, {opacity:[0,1], y:[24,0]}, 'enter');
+const fadeOut  = (sel,s) => tw(sel, s, 0.3, {opacity:[1,0]}, 'exit');
+const hidden   = sel => tw(sel, 0, 0.01, {opacity:[0,0]});
+
+/* ---------- agenda: 15 blocchi (colonna, top, altezza) ---------- */
+const BLOCKS=[[0,0,150],[0,170,110],[0,430,180],[1,60,170],[1,340,130],[2,0,110],[2,200,160],[2,480,130],[3,110,180],[3,410,140],[4,0,140],[4,230,120],[4,460,170],[5,80,130,'me'],[5,310,200]];
+(function(){ const g=document.querySelector('#grid'); const cw=(810-5*14)/6;
+  for(let i=0;i<=4;i++){ const l=document.createElement('div'); l.className='gl'; l.style.top=(i*165)+'px'; g.appendChild(l); }
+  BLOCKS.forEach(([c,top,h,me],i)=>{ const b=document.createElement('div'); b.className='blk'+(me?' me':''); b.dataset.i=i;
+    b.style.cssText=`left:${c*(cw+14)}px;top:${top}px;width:${cw}px;height:${h}px`; if(me) b.textContent='10:30'; g.appendChild(b); }); })();
+
+/* ============================================================
+   TIMELINE (secondi) — i cambi di scena cadono sui battiti a 120 BPM
+   ============================================================ */
+// ---- SCENA 1 · 0,0 → 2,5 ----
+tw('#search',0,0.4,{opacity:[0,1],scale:[.96,1]},'enter');
+tw('#search',0,0.01,{y:[890,890]});
+const QUERY='parrucchiere vicino a me';
+fx('#typed',(el,t)=>{ el.textContent=QUERY.slice(0,clamp(Math.floor((t-0.15)/0.05)+1,0,QUERY.length)); });
+fx('#cursor',(el,t)=>{ const typing=t>0.15&&t<1.4; el.style.opacity=(t>=2.1)?0:(typing||(t%0.5)<0.25?1:0); });
+titleIn('#t1',0.4);
+tw('#lens',1.6,0.1,{scale:[1,.82]},'exit'); tw('#lens',1.7,0.3,{scale:[.82,1]},'enter');
+fadeOut('#t1',2.0);
+tw('#search',2.1,0.5,{y:[890,270]},'enter');
+// ---- SCENA 2 · 2,5 → 7,0 ----
+tw('#map',2.5,0.6,{y:[1920,0]},'enter');
+tw('#mapInner, #pinLayer',2.5,4.5,{scale:[1,1.07]},'lin');
+stagger('.pin:not(.me)',3.0,0.08,SP,{y:[-420,0]},'spring');
+stagger('.pin:not(.me)',3.0,0.08,0.12,{opacity:[0,1]},'lin');
+tw('#mypin',3.7,SP,{y:[-520,0]},'spring'); tw('#mypin',3.7,0.12,{opacity:[0,1]},'lin');
+hidden('.ring');
+tw('#ring1',3.95,0.9,{scale:[.4,2.8]},'enter'); tw('#ring1',3.95,0.9,{opacity:[.75,0]},'lin');
+tw('#ring2',4.55,0.9,{scale:[.4,2.8]},'enter'); tw('#ring2',4.55,0.9,{opacity:[.75,0]},'lin');
+tw('#card2',4.4,SO,{y:[820,0]},'soft');
+titleIn('#t2',4.6);
+tw('#t2 .ul',0,0.01,{sx:[0,0]}); tw('#t2 .ul',5.0,0.4,{sx:[0,1]},'enter');
+tw('.pin:not(.me)',6.6,0.3,{opacity:[1,0]},'exit');
+fadeOut('#t2',6.6);
+tw('#search',6.6,0.3,{opacity:[1,0]},'exit');
+tw('#card2',6.6,0.4,{y:[0,-170],scale:[1,.74]},'inout'); tw('#card2',6.72,0.26,{opacity:[1,0]},'exit');
+tw('#map',6.7,0.4,{opacity:[1,0]},'exit');
+// ---- SCENA 3 · 7,0 → 11,0 ----
+hidden('#p1'); tw('#p1',6.82,0.18,{opacity:[0,1]},'lin'); tw('#p1',6.86,SP,{y:[150,0],scale:[1.14,1]},'spring');
+titleIn('#t3',7.0);
+tw('#clockBox',7.0,0.5,{opacity:[0,1],scale:[.96,1]},'enter');
+hidden('#d2'); hidden('#d3');
+tw('#d1',8.6,0.3,{opacity:[1,0],y:[0,-26]},'exit');  tw('#d2',8.7,0.4,{opacity:[0,1],y:[26,0]},'enter');
+tw('#d2',9.8,0.3,{opacity:[1,0],y:[0,-26]},'exit');  tw('#d3',9.9,0.4,{opacity:[0,1],y:[26,0]},'enter');
+stagger('.dcol .in',8.6,0.05,0.4,{yp:[0,-33.3333]},'inout');
+stagger('.dcol .in',9.8,0.05,0.4,{yp:[-33.3333,-66.6667]},'inout');
+hidden('#p2'); tw('#p2',8.95,0.12,{opacity:[0,1]},'lin'); tw('#p2',8.95,SP,{y:[-330,0],scale:[.7,1]},'spring');
+hidden('#p3'); tw('#p3',10.15,0.12,{opacity:[0,1]},'lin'); tw('#p3',10.15,SP,{y:[-438,0],scale:[.7,1]},'spring');
+tw('#sub3',10.0,0.5,{opacity:[0,1],y:[24,0]},'enter');
+fadeOut('#t3',10.6); fadeOut('#clockBox',10.6); tw('#sub3',10.6,0.3,{opacity:[1,0]},'exit');
+tw('#p1',10.6,0.4,{y:[0,640],scale:[1,.62]},'exit'); tw('#p2',10.6,0.4,{y:[0,532],scale:[1,.62]},'exit'); tw('#p3',10.6,0.4,{y:[0,424],scale:[1,.62]},'exit');
+tw('.pill',10.78,0.22,{opacity:[1,0]},'lin');
+// ---- SCENA 4 · 11,0 → 15,0 ----
+tw('#phone',11.0,0.6,{y:[1500,0],scale:[.9,1]},'enter');
+titleIn('#t4',11.1);
+tw('#sub4',11.3,0.5,{opacity:[0,1],y:[24,0]},'enter');
+const SLOT=170;                                   // passo fra le notifiche
+hidden('.notif');
+tw('#n1',11.4,0.12,{opacity:[0,1]},'lin'); tw('#n1',11.4,SP,{y:[-360,0]},'spring'); tw('#n1',12.0,SO,{y:[0,SLOT]},'soft'); tw('#n1',12.6,SO,{y:[SLOT,2*SLOT]},'soft');
+tw('#n2',12.0,0.12,{opacity:[0,1]},'lin'); tw('#n2',12.0,SP,{y:[-360,0]},'spring'); tw('#n2',12.6,SO,{y:[0,SLOT]},'soft');
+tw('#n3',12.6,0.12,{opacity:[0,1]},'lin'); tw('#n3',12.6,SP,{y:[-360,0]},'spring');
+fx('#phoneWrap',(el,t)=>{ let r=0; for(const t0 of [11.48,12.08,12.68]){ const u=t-t0; if(u>=0&&u<0.25) r=1.4*Math.sin(2*Math.PI*u/0.125)*(1-u/0.25); } el.style.transform=`rotate(${r}deg)`; });
+fadeOut('#t4',14.3); tw('#sub4',14.3,0.3,{opacity:[1,0]},'exit');
+tw('#phone',14.4,0.6,{scale:[1,3.4]},'inout');
+tw('.notif',14.4,0.22,{opacity:[1,0]},'exit'); tw('#lockTime',14.4,0.22,{opacity:[1,0]},'exit'); tw('#island',14.4,0.22,{opacity:[1,0]},'exit');
+tw('#phone',14.85,0.15,{opacity:[1,0]},'lin');
+// ---- SCENA 5 · 15,0 → 17,5 ----
+tw('#agenda',14.5,0.55,{opacity:[0,1],scale:[.84,1]},'enter');
+const ORDER=[5,0,10,3,13,8,1,6,11,4,14,9,2,7,12];   // dall'alto verso il basso, in ordine sparso
+ORDER.forEach((bi,k)=>{ const el=document.querySelector(`.blk[data-i="${bi}"]`); const s=15.2+k*0.05;
+  tw(el,s,0.1,{opacity:[0,1]},'lin'); tw(el,s,SP,{scale:[.5,1]},'spring'); });
+titleIn('#t5',15.4);
+tw('#s5',17.2,0.3,{opacity:[1,0],scale:[1,.96]},'exit');
+// ---- SCENA 6 · 17,5 → 20,0 ----
+stagger('#logo span',17.5,0.03,0.5,{opacity:[0,1],blur:[18,0],y:[14,0]},'enter');
+tw('#cta',18.2,0.12,{opacity:[0,1]},'lin'); tw('#cta',18.2,SO,{scale:[.8,1]},'soft');
+tw('#url',18.4,0.5,{opacity:[0,1],y:[20,0]},'enter'); tw('#plan',18.5,0.5,{opacity:[0,1],y:[20,0]},'enter');
+tw('#cta',18.9,0.1,{scale:[1,.93]},'exit'); tw('#cta',19.0,SO,{scale:[.93,1]},'soft');
+
+window.ready = document.fonts.ready.then(()=>{ seek(0); return true; });
+/* anteprima in tempo reale: apri index.html?play */
+if(location.search.includes('play')){ window.ready.then(()=>{ const t0=performance.now();
+  (function loop(){ seek(((performance.now()-t0)/1000)%DURATION); requestAnimationFrame(loop); })(); }); }
+</script>
+</body>
+</html>

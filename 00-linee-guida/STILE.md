@@ -19,14 +19,15 @@ Tutte le misure in px sono riferite al video a 1080×1920.
 
 | Nome | Valore | Uso |
 |---|---|---|
-| Nero | `#111111` | Fondo del gancio; testo, bordi e bottoni sulle scene chiare |
-| Bianco | `#FFFFFF` | Testo e bordi sul fondo nero; fondo delle schede sulle scene chiare |
+| Nero | `#111111` | Fondo del gancio; testo e bottoni sulle scene chiare |
+| Bianco | `#FFFFFF` | Testo sul fondo nero; fondo delle schede sulle scene chiare |
 | Crema | `#FBF8F4` | Fondo di svolta e chiusura |
 | Ottone | `#775A18` | Solo dalla svolta in poi: etichette e conferme |
 | Rosso | `#FF5A4F` | Solo nel gancio: il problema (es. chiamate perse) |
 | Grigio chiaro | `#B5B5B5` | Testo secondario sul fondo nero |
 | Grigio scuro | `#5F5F5F` | Testo secondario sul fondo crema |
 | Divisori | `#3A3A3A` su nero | Linee fra le righe di un elenco |
+| Scheda su nero | `#1E1E1E` | Fondo delle schede sul fondo nero (nessun bordo) |
 
 Logica dei colori: il **problema** è nero con rosso, la **soluzione** è crema con ottone.
 Rosso e ottone non compaiono mai nella stessa scena.
@@ -51,7 +52,7 @@ Nessun testo sotto i 32 px. Numeri con cifre tabellari.
 
 ## 4. Bordi, angoli, ombre
 
-- Bordo delle schede: 3 px pieni (nero sulle scene chiare, bianco sul fondo nero).
+- Schede senza bordo (aggiornato il 12 novembre 2026): fondo Scheda su nero `#1E1E1E` sul fondo nero, fondo bianco sulle scene chiare.
 - Raggio degli angoli: 12 px per schede, bottoni ed etichette piene.
 - Nessuna ombra e nessuna sfumatura di fondo.
 - Stato positivo («Confermata»): etichetta piena ottone con testo bianco e spunta.

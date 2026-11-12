@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>Beaflow · Lista d'attesa · 15 s · v1</title>
+<style>
+@font-face{font-family:'Inter';font-weight:400;src:url('node_modules/@fontsource/inter/files/inter-latin-400-normal.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-weight:500;src:url('node_modules/@fontsource/inter/files/inter-latin-500-normal.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-weight:600;src:url('node_modules/@fontsource/inter/files/inter-latin-600-normal.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-weight:700;src:url('node_modules/@fontsource/inter/files/inter-latin-700-normal.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-weight:800;src:url('node_modules/@fontsource/inter/files/inter-latin-800-normal.woff2') format('woff2')}
+@font-face{font-family:'Noto Serif';font-style:italic;font-weight:400;src:url('node_modules/@fontsource/noto-serif/files/noto-serif-latin-400-italic.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-weight:600;src:url('node_modules/@fontsource/inter/files/inter-latin-ext-600-normal.woff2') format('woff2');unicode-range:U+20AC}
+:root{
+  --nero:#111111; --bianco:#FFFFFF; --crema:#FBF8F4; --ottone:#775A18; --rosso:#FF5A4F;
+  --grigio-chiaro:#B5B5B5; --grigio-scuro:#5F5F5F; --divisore:#3A3A3A; --scheda-nero:#1E1E1E;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--nero)}
+body{position:relative;font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+.abs{position:absolute}
+.w{display:inline-block;white-space:pre}
+.bg{left:0;top:0;width:1080px;height:1920px}
+#bgDark{background:var(--nero)}
+#bgLight{background:var(--crema)}
+
+/* logo */
+.logo{left:80px;top:250px;width:240px;height:64px;transform-origin:0 0}
+#logoW{color:var(--bianco)}
+#logoK{color:var(--nero)}
+
+/* etichette maiuscole */
+.label{font-weight:700;font-size:32px;line-height:40px;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
+
+/* ===== GANCIO (nero) ===== */
+#g-label{left:80px;top:404px;color:var(--grigio-chiaro)}
+#g-title{left:76px;top:472px;font-weight:800;font-size:176px;line-height:1;letter-spacing:-.04em;color:var(--bianco);white-space:nowrap}
+#g-sub{left:80px;top:672px;font-weight:600;font-size:64px;line-height:80px;letter-spacing:-.02em;color:var(--bianco);white-space:nowrap}
+
+#call{left:80px;top:810px;width:880px;height:196px;background:var(--scheda-nero);border-radius:12px;transform-origin:50% 50%}
+#call .ico{position:absolute;left:39px;top:39px;width:112px;height:112px;border-radius:50%;background:var(--bianco);display:flex;align-items:center;justify-content:center}
+#halo{left:119px;top:849px;width:112px;height:112px;border-radius:50%;border:3px solid var(--bianco);transform-origin:50% 50%}
+#call .who{position:absolute;left:189px;top:38px;font-weight:600;font-size:48px;line-height:58px;color:var(--bianco)}
+#call .st{position:absolute;left:189px;top:100px;font-weight:400;font-size:40px;line-height:50px;color:var(--grigio-chiaro)}
+#call .tm{position:absolute;right:40px;top:70px;font-weight:500;font-size:40px;line-height:50px;color:var(--grigio-chiaro)}
+
+#g-head{left:80px;top:1072px;color:var(--grigio-chiaro)}
+#g-cnt{left:80px;top:1066px;width:880px;text-align:right;font-weight:700;font-size:44px;line-height:52px;color:var(--rosso);transform-origin:100% 50%}
+.div{left:80px;width:880px;height:2px;background:var(--divisore)}
+.row{left:80px;width:880px;height:122px}
+.row .n{position:absolute;left:0;top:34px;font-weight:500;font-size:48px;line-height:56px;color:var(--bianco)}
+.row .p{position:absolute;right:0;top:37px;font-weight:600;font-size:40px;line-height:50px;color:var(--rosso)}
+
+/* ===== SVOLTA E SCENE CHIARE (crema) ===== */
+#v-label{left:80px;top:404px;color:var(--ottone)}
+.title{left:78px;top:484px;font-weight:800;font-size:112px;line-height:1.04;letter-spacing:-.04em;color:var(--nero);white-space:nowrap}
+.card{left:80px;width:880px;height:190px;background:var(--bianco);border-radius:12px;transform-origin:50% 50%}
+.card .n{position:absolute;left:40px;top:36px;font-weight:600;font-size:48px;line-height:58px;color:var(--nero)}
+.card .s{position:absolute;left:40px;top:100px;font-weight:400;font-size:40px;line-height:50px;color:var(--grigio-scuro)}
+.badge{width:278px;height:72px;border-radius:12px;background:var(--ottone);color:var(--bianco);display:flex;align-items:center;justify-content:center;gap:14px;font-weight:700;font-size:34px;transform-origin:50% 50%}
+
+@font-face{font-family:'Inter';font-weight:700;src:url('node_modules/@fontsource/inter/files/inter-latin-ext-700-normal.woff2') format('woff2');unicode-range:U+20AC}
+@font-face{font-family:'Inter';font-weight:800;src:url('node_modules/@fontsource/inter/files/inter-latin-ext-800-normal.woff2') format('woff2');unicode-range:U+20AC}
+
+/* ===== SPOT J · gancio: disdetta ===== */
+#msg{left:80px;top:966px;width:880px;height:144px;background:var(--scheda-nero);border-radius:12px;transform-origin:50% 50%}
+#msg .lb{position:absolute;left:40px;top:30px;color:var(--grigio-chiaro)}
+#msg .t{position:absolute;left:40px;top:76px;font-weight:500;font-size:40px;line-height:50px;color:var(--bianco)}
+#g-head{left:80px;top:1136px;color:var(--grigio-chiaro)}
+#g-cnt{left:80px;top:1126px;width:880px;text-align:right;font-weight:800;font-size:52px;line-height:60px;color:var(--rosso);transform-origin:100% 50%}
+.prow{left:80px;width:880px;height:120px}
+.prow .h{position:absolute;left:0;top:36px;font-weight:500;font-size:40px;line-height:50px;color:var(--grigio-chiaro)}
+.prow .n{position:absolute;left:150px;top:33px;font-weight:500;font-size:48px;line-height:56px;color:var(--bianco)}
+.prow .p{position:absolute;right:0;top:36px;font-weight:600;font-size:40px;line-height:50px;color:var(--rosso)}
+#strike{left:226px;top:1358px;width:212px;height:6px;border-radius:3px;background:var(--rosso);transform-origin:0 50%}
+
+/* scena 2–3: lista d'attesa */
+#wl{left:80px;top:766px;width:880px;height:520px;background:var(--bianco);border-radius:12px;transform-origin:50% 0%}
+#wl .lb{position:absolute;left:40px;top:40px;color:var(--grigio-scuro)}
+.wr{left:120px;width:800px;height:120px}
+.avt{position:absolute;border-radius:50%;background:var(--nero);color:var(--bianco);display:flex;align-items:center;justify-content:center;font-weight:700}
+.wr .avt{left:0;top:20px;width:80px;height:80px;font-size:30px}
+.wr .n{position:absolute;left:110px;top:14px;font-weight:600;font-size:44px;line-height:54px;color:var(--nero)}
+.wr .s{position:absolute;left:110px;top:68px;font-weight:400;font-size:36px;line-height:44px;color:var(--grigio-scuro)}
+.chk{width:64px;height:64px;border-radius:12px;background:var(--ottone);display:flex;align-items:center;justify-content:center;transform-origin:50% 50%}
+#al{left:80px;top:766px;width:880px;height:150px;background:var(--nero);border-radius:12px;transform-origin:50% 50%}
+#al svg{position:absolute;left:40px;top:49px}
+#al .t{position:absolute;left:110px;top:47px;font-weight:600;font-size:44px;line-height:56px;color:var(--bianco)}
+#sent{left:656px;top:805px;width:264px}
+
+/* scena 4: conferma */
+#cf{left:80px;top:896px;width:880px;height:190px;background:var(--bianco);border-radius:12px;transform-origin:50% 50%}
+#cf .avt{left:40px;top:55px;width:80px;height:80px;font-size:30px}
+#cf .n{position:absolute;left:150px;top:36px;font-weight:600;font-size:44px;line-height:54px;color:var(--nero)}
+#cf .s{position:absolute;left:150px;top:96px;font-weight:400;font-size:36px;line-height:44px;color:var(--grigio-scuro)}
+#bub{left:660px;top:957px;padding:20px 30px;border-radius:12px;background:var(--nero);color:var(--bianco);font-weight:600;font-size:40px;line-height:50px;white-space:nowrap;transform-origin:50% 50%}
+#sl{left:80px;top:1116px;width:880px;height:240px;background:var(--bianco);border-radius:12px;transform-origin:50% 50%}
+#sl .lb{position:absolute;left:40px;top:40px;color:var(--grigio-scuro)}
+.blk{position:absolute;border-radius:12px;background:var(--crema);overflow:hidden}
+.blk::before{content:'';position:absolute;left:0;top:0;width:10px;height:100%;background:var(--ottone)}
+.blk .n{position:absolute;left:40px;top:27px;font-weight:600;font-size:44px;line-height:56px;color:var(--nero)}
+#slb{left:40px;top:100px;width:800px;height:112px}
+#slfree{position:absolute;left:40px;top:100px;width:800px;height:112px;border-radius:12px;background:#F2EEE8}
+#slfree .n{position:absolute;left:40px;top:29px;font-weight:500;font-size:40px;line-height:54px;color:var(--grigio-scuro)}
+#okb{left:80px;top:1386px;width:300px}
+
+/* scena 5: giornata piena */
+#day{left:80px;top:766px;width:880px;height:640px;background:var(--bianco);border-radius:12px;transform-origin:50% 50%}
+#day .lb{position:absolute;left:40px;top:40px;color:var(--grigio-scuro)}
+.slot{left:120px;width:800px;height:112px}
+.slot .h{position:absolute;left:0;top:31px;font-weight:500;font-size:40px;line-height:50px;color:var(--grigio-scuro)}
+.slot .blk{left:150px;top:0;width:650px;height:112px}
+#rec{left:80px;top:1436px;width:880px;font-weight:800;font-size:56px;line-height:64px;color:var(--ottone);transform-origin:0 50%}
+
+/* ===== CHIUSURA ===== */
+#c-btn{left:80px;top:910px;width:880px;height:144px;border-radius:12px;background:var(--nero);color:var(--bianco);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:48px;transform-origin:50% 50%}
+#c-offer{left:80px;top:1098px;width:880px;text-align:center;font-weight:600;font-size:44px;line-height:56px;color:var(--nero)}
+#c-url{left:80px;top:1170px;width:880px;text-align:center;font-weight:400;font-size:40px;line-height:50px;color:var(--grigio-scuro)}
+</style>
+</head>
+<body>
+<div id="bgDark" class="abs bg"></div>
+
+<!-- 1 · GANCIO -->
+<img id="logoW" class="abs logo" src="logo-negativo.svg" alt="Beaflow">
+<div id="g-label" class="abs label">Il tuo salone · Agenda</div>
+<div id="g-sub" class="abs" style="top:472px"><span class="w">Disdetta </span><span class="w">all'ultimo:</span></div>
+<div id="g-title" class="abs" style="top:566px"><span class="w">Buco</span><br><span class="w">alle </span><span class="w">11?</span></div>
+<div id="msg" class="abs"><div class="lb label">Messaggio · Giulia R.</div><div class="t">Non riesco a venire, scusa.</div></div>
+<div id="g-head" class="abs label">Martedì</div>
+<div id="g-cnt" class="abs">−45 €</div>
+<div id="pr1" class="abs prow" style="top:1180px"><div class="h">10:00</div><div class="n">Marco B.</div></div>
+<div id="pd1" class="abs div" style="top:1300px"></div>
+<div id="pr2" class="abs prow" style="top:1300px"><div class="h">11:00</div><div class="n">Giulia R.</div><div class="p" id="lib">Libero</div></div>
+<div id="pd2" class="abs div" style="top:1420px"></div>
+<div id="pr3" class="abs prow" style="top:1420px"><div class="h">12:00</div><div class="n">Anna S.</div></div>
+<div id="strike" class="abs"></div>
+
+<!-- 2 · SVOLTA -->
+<div id="bgLight" class="abs bg"></div>
+<div id="v-label" class="abs label">Lista d'attesa</div>
+<div id="t2" class="abs title"><span class="w">Con </span><span class="w">Beaflow,</span><br><span class="w">c'è </span><span class="w">chi </span><span class="w">aspetta.</span></div>
+<div id="wl" class="abs"><div class="lb label">In attesa · martedì</div></div>
+<div id="w1" class="abs wr" style="top:860px"><div class="avt">MB</div><div class="n">Marco B.</div><div class="s">Qualsiasi orario</div></div>
+<div id="w2" class="abs wr" style="top:1000px"><div class="avt">ST</div><div class="n">Sara T.</div><div class="s">Mattina</div></div>
+<div id="w3" class="abs wr" style="top:1140px"><div class="avt">LP</div><div class="n">Luca P.</div><div class="s">Martedì</div></div>
+<div id="k1" class="abs chk" style="left:856px;top:1068px"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+<div id="k2" class="abs chk" style="left:856px;top:1208px"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+<div id="k3" class="abs chk" style="left:856px;top:1348px"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+
+<!-- 3 · AVVISO -->
+<div id="t3" class="abs title"><span class="w">Si </span><span class="w">libera </span><span class="w">un</span><br><span class="w">posto? </span><span class="w">Avvisati.</span></div>
+<div id="al" class="abs"><svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><div class="t">Posto libero · 11:00</div></div>
+<div id="sent" class="abs badge"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>3 avvisati</div>
+
+<!-- 4 · CONFERMA -->
+<div id="t4" class="abs title"><span class="w">Il </span><span class="w">primo </span><span class="w">che</span><br><span class="w">conferma,</span><br><span class="w">prenota.</span></div>
+<div id="cf" class="abs"><div class="avt">ST</div><div class="n">Sara T.</div><div class="s">Dalla lista d'attesa</div></div>
+<div id="bub" class="abs">Confermo</div>
+<div id="sl" class="abs"><div class="lb label">Martedì · 11:00</div><div id="slfree"><div class="n">Libero</div></div><div id="slb" class="blk abs"><div class="n">Sara T.</div></div></div>
+<div id="okb" class="abs badge"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Prenotata</div>
+
+<!-- 5 · AGENDA PIENA -->
+<div id="t5" class="abs title"><span class="w">Nessun </span><span class="w">buco.</span><br><span class="w">Agenda </span><span class="w">piena.</span></div>
+<div id="day" class="abs"><div class="lb label">Martedì</div></div>
+<div id="s1" class="abs slot" style="top:870px"><div class="h">9:00</div><div class="blk"><div class="n">Elena V.</div></div></div>
+<div id="s2" class="abs slot" style="top:1006px"><div class="h">10:00</div><div class="blk"><div class="n">Marco B.</div></div></div>
+<div id="s3" class="abs slot" style="top:1142px"><div class="h">11:00</div><div class="blk"><div class="n">Sara T.</div></div></div>
+<div id="s4" class="abs slot" style="top:1278px"><div class="h">12:00</div><div class="blk"><div class="n">Anna S.</div></div></div>
+<div id="rec" class="abs">+45 € recuperati</div>
+
+<!-- 6 · CHIUSURA -->
+<div id="c-btn" class="abs">Inizia gratis</div>
+<div id="c-offer" class="abs">Piano Free · 0 € per sempre</div>
+<div id="c-url" class="abs">beaflow.it</div>
+<img id="logoK" class="abs logo" src="logo-positivo.svg" alt="Beaflow">
+
+<script>
+
+/* Motore a timeline (vedi 00-linee-guida/HANDOFF.md §7). seek(t) disegna lo stato esatto al secondo t. */
+const DURATION = 15, FPS = 30, SP = 0.8, SO = 0.9;
+function bez(x1,y1,x2,y2){ const cx=3*x1,bx=3*(x2-x1)-cx,ax=1-cx-bx,cy=3*y1,by=3*(y2-y1)-cy,ay=1-cy-by;
+  const fx=t=>((ax*t+bx)*t+cx)*t, fy=t=>((ay*t+by)*t+cy)*t, dx=t=>(3*ax*t+2*bx)*t+cx;
+  return p=>{ if(p<=0)return 0; if(p>=1)return 1; let t=p; for(let i=0;i<10;i++){ const e=fx(t)-p; if(Math.abs(e)<1e-6)break; const d=dx(t); if(Math.abs(d)<1e-6)break; t-=e/d; } return fy(Math.min(1,Math.max(0,t))); }; }
+function spr(k,c,dur){ const w0=Math.sqrt(k), z=c/(2*Math.sqrt(k)), wd=w0*Math.sqrt(1-z*z);
+  return p=>{ if(p>=1)return 1; const t=p*dur; return 1-Math.exp(-z*w0*t)*(Math.cos(wd*t)+(z*w0/wd)*Math.sin(wd*t)); }; }
+const E = { lin:p=>p, enter:bez(.22,1,.36,1), exit:bez(.4,0,1,1), inout:bez(.65,0,.35,1), spring:spr(420,26,SP), soft:spr(260,30,SO) };
+const reg = new Map();
+const $ = s=>[...document.querySelectorAll(s)];
+const els = t => typeof t==='string' ? $(t) : (t instanceof Element ? [t] : [...t].flatMap(els));
+const ent = el => { if(!reg.has(el)) reg.set(el,{p:{},fx:[]}); return reg.get(el); };
+function tw(target,s,d,props,e='enter'){ els(target).forEach(el=>{ const r=ent(el);
+  for(const k in props){ (r.p[k]??=[]).push({s,d,a:props[k][0],b:props[k][1],e}); r.p[k].sort((x,y)=>x.s-y.s);} }); }
+function stagger(target,s,gap,d,props,e){ els(target).forEach((el,i)=>tw(el,s+i*gap,d,props,e)); }
+function fx(target,fn){ els(target).forEach(el=>ent(el).fx.push(fn)); }
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+function val(list,t){ let cur=null; for(const k of list){ if(t>=k.s) cur=k; else break; }
+  if(!cur) return list[0].a; const p=cur.d<=0?1:clamp((t-cur.s)/cur.d); return cur.a+(cur.b-cur.a)*E[cur.e](p); }
+function seek(t){
+  reg.forEach((r,el)=>{
+    const v={}; for(const k in r.p) v[k]=val(r.p[k],t);
+    const has=k=>v[k]!==undefined;
+    if(has('x')||has('y')||has('scale')||has('sx')||has('sy')||has('rot'))
+      el.style.transform=`translate(${v.x??0}px,${v.y??0}px) rotate(${v.rot??0}deg) scale(${(v.scale??1)*(v.sx??1)},${(v.scale??1)*(v.sy??1)})`;
+    if(has('opacity')){ el.style.opacity=v.opacity; el.style.visibility=v.opacity<=0.001?'hidden':'visible'; }
+    if(has('blur')) el.style.filter=v.blur>0.05?`blur(${v.blur}px)`:'none';
+    for(const f of r.fx) f(el,t);
+  });
+}
+const titleIn = (sel,s) => stagger(`${sel} .w`, s, 0.05, 0.4, {opacity:[0,1], y:[24,0]}, 'enter');
+const fadeOut = (sel,s) => tw(sel, s, 0.3, {opacity:[1,0]}, 'exit');
+const hidden  = sel => tw(sel, 0, 0.01, {opacity:[0,0]});
+const fadeIn  = (sel,s,y=24) => tw(sel, s, 0.4, {opacity:[0,1], y:[y,0]}, 'enter');
+const pop = (sel,s,from=.8,y=0) => { hidden(sel); tw(sel,s,0.12,{opacity:[0,1]},'lin'); tw(sel,s,SP,{scale:[from,1],y:[y,0]},'spring'); };
+const out = (sel,s,dy=0) => tw(sel,s,0.3,dy?{opacity:[1,0],y:[0,dy]}:{opacity:[1,0]},'exit');
+
+/* Cambi scena: 0 · 2,5 · 5 · 8 · 10,5 · 13 · 15 (battito a 120 BPM = 0,5 s) */
+const CUT = 2.5;                       // nero -> crema, stacco netto sul battito
+
+/* ---------- 1 · 0–2,5 · Disdetta all'ultimo: buco alle 11? ---------- */
+tw('#logoW',0,0.01,{opacity:[1,1]}); tw('#logoW',CUT,0,{opacity:[1,0]});
+fadeIn('#g-label',0.05,12);
+titleIn('#g-sub',0.1);
+titleIn('#g-title',0.3);
+['#pr1','#pr2','#pr3','#pd1','#pd2'].forEach((r,i)=>{ hidden(r); tw(r,0.55+(i%3)*0.08,0.3,{opacity:[0,1]},'lin'); });
+fadeIn('#g-head',0.55,12);
+hidden('#lib');
+pop('#msg',0.9,.94,30);
+hidden('#strike'); tw('#strike',1.35,0.01,{opacity:[0,1]}); tw('#strike',1.35,0.25,{sx:[0,1]},'enter');
+tw('#lib',1.55,0.12,{opacity:[0,1]},'lin'); tw('#lib',1.55,SP,{scale:[1.2,1]},'spring');
+hidden('#g-cnt'); tw('#g-cnt',1.75,0.12,{opacity:[0,1]},'lin'); tw('#g-cnt',1.75,SP,{scale:[1.25,1]},'spring');
+
+/* ---------- 2 · 2,5–5 · Con Beaflow, c'è chi aspetta. ---------- */
+hidden('#bgLight'); tw('#bgLight',CUT,0,{opacity:[0,1]});
+tw('#logoK',0,0.01,{opacity:[0,0]}); tw('#logoK',CUT,0,{opacity:[0,1]});
+hidden('#v-label'); tw('#v-label',CUT+0.05,0.4,{opacity:[0,1],y:[12,0]});
+hidden('#t2 .w'); titleIn('#t2',CUT+0.25);
+hidden('#wl'); tw('#wl',CUT,0.15,{opacity:[0,1]},'lin'); tw('#wl',CUT,SO,{sy:[.6,1]},'soft');
+['#w1','#w2','#w3'].forEach((w,i)=>{ const s=2.65+i*0.15; hidden(w); tw(w,s,0.15,{opacity:[0,1]},'lin'); tw(w,s,SO,{y:[40,0]},'soft'); });
+
+/* ---------- 3 · 5–8 · Si libera un posto? Avvisati. ---------- */
+out('#t2',4.55);
+const DY=180;
+tw(['#wl','#w1','#w2','#w3'],4.6,0.45,{y:[0,DY]},'inout');
+hidden('#al'); tw('#al',4.85,0.15,{opacity:[0,1]},'lin'); tw('#al',4.85,SP,{y:[-40,0],scale:[.96,1]},'spring');
+hidden('#t3 .w'); titleIn('#t3',5.05);
+const SENT=[5.8,6.0,6.2];
+['#k1','#k2','#k3'].forEach((k,i)=>pop(k,SENT[i],.6));
+pop('#sent',6.6,.8);
+
+/* ---------- 4 · 8–10,5 · Il primo che conferma, prenota. ---------- */
+out('#t3',7.55); out(['#al','#sent','#k1','#k3','#w1','#w3'],7.55);
+tw('#wl',7.55,0.3,{opacity:[1,0]},'lin'); out('#k2',7.55);
+tw('#w2',7.55,0.45,{y:[DY,(896+55-20)-1000]},'inout'); tw('#w2',7.85,0.15,{opacity:[1,0]},'lin');
+hidden('#cf'); tw('#cf',7.85,0.15,{opacity:[0,1]},'lin');
+hidden('#t4 .w'); titleIn('#t4',8.05);
+pop('#bub',8.35,.8);
+pop('#sl',8.6,.96,30);
+hidden('#slb'); tw('#slb',9.2,0.15,{opacity:[0,1]},'lin'); tw('#slb',9.2,SP,{scale:[.94,1]},'spring');
+pop('#okb',9.5,.8);
+
+/* ---------- 5 · 10,5–13 · Nessun buco. Agenda piena. ---------- */
+out('#t4',10.05); out(['#bub','#okb','#cf'],10.05);
+tw('#sl',10.05,0.4,{y:[0,1142-100-1116]},'inout'); tw('#sl',10.25,0.2,{opacity:[1,0]},'lin');
+hidden('#day'); tw('#day',10.25,0.15,{opacity:[0,1]},'lin'); tw('#day',10.25,SO,{scale:[.97,1]},'soft');
+hidden('#t5 .w'); titleIn('#t5',10.55);
+['#s1','#s2','#s3','#s4'].forEach((s,i)=>{ const t=10.4+i*0.12; hidden(s); tw(s,t,0.15,{opacity:[0,1]},'lin'); tw(s,t,SO,{y:[30,0]},'soft'); });
+hidden('#rec'); tw('#rec',11.4,0.12,{opacity:[0,1]},'lin'); tw('#rec',11.4,SP,{scale:[1.15,1]},'spring');
+fx('#rec',(el,t)=>{ el.textContent = '+'+Math.round(45*E.inout(clamp((t-11.4)/0.5)))+' € recuperati'; });
+
+/* ---------- 6 · 13–15 · chiusura ---------- */
+out('#v-label',12.55); out('#t5',12.55); out(['#s1','#s2','#s3','#s4','#rec'],12.55);
+tw('#day',12.55,0.4,{sy:[1,144/640],y:[0,(910+72)-(766+320)]},'inout'); tw('#day',12.75,0.2,{opacity:[1,0]},'lin');
+hidden('#c-btn'); tw('#c-btn',12.8,0.12,{opacity:[0,1]},'lin'); tw('#c-btn',12.8,SO,{sx:[.96,1],sy:[.9,1]},'soft');
+tw('#c-btn',14.15,0.1,{scale:[1,.93]},'exit'); tw('#c-btn',14.25,SO,{scale:[.93,1]},'soft');
+hidden('#c-offer'); fadeIn('#c-offer',13.45,16);
+hidden('#c-url');   fadeIn('#c-url',13.6,16);
+
+function initGeometry(){
+  const k=720/240, tx=(520-720/2)-80, ty=640-250;   // logo grande: 720 px di larghezza, centrato
+  tw('#logoK',13.0,0.6,{x:[0,tx],y:[0,ty],scale:[1,k]},'inout');
+}
+
+window.ready = Promise.all([document.fonts.ready, ...[...document.images].map(i=>i.decode().catch(()=>{}))]).then(()=>{ initGeometry(); seek(0); return true; });
+if(location.search.includes('play')){ window.ready.then(()=>{ const t0=performance.now();
+  (function loop(){ seek(((performance.now()-t0)/1000)%DURATION); requestAnimationFrame(loop); })(); }); }
+</script>
+</body>
+</html>

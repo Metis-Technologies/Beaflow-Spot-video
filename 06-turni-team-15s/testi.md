@@ -1,4 +1,4 @@
-# 06 · «Turni senza confusione» (15 s) — v3 approvata (chiusura con «Beaflow»)
+# 06 · «Turni senza confusione» (15 s) — v4 approvata (logo vero)
 
 Stile «Grafico» (`00-linee-guida/STILE.md`). Cambi scena a 0 · 2,5 · 5 · 8 · 10,5 · 13 s; stacco netto nero → crema a 2,5 s.
 Il nome «Beaflow» compare scritto in due scene (2 e 5); la voce non lo pronuncia.
@@ -22,3 +22,5 @@ Rifare il video: `npm install` in `sorgente/`, poi `node render.js segments && n
 v2: solo la frase 3 rigenerata (in v1 «ognuno» suonava inglese); video invariato. La v1 è in `export/archivio/` e la vecchia frase in `audio/archivio-v1/line3.mp3`.
 
 Chiusura con il nome detto dalla voce («Beaflow. Inizia gratis.», 12,90 → 14,75 s), deciso il 12/11: video invariato, solo audio rifatto.
+
+Logo vero (SVG in `sorgente/` e `comune/logo/`): negativo sul nero, positivo sul crema, 720 px in chiusura (12/11, sera). Solo video rifatto, audio identico alla versione precedente.

@@ -1,4 +1,4 @@
-# 08 · «Riprenditi il tuo tempo» (15 s) — v1 prodotta, da approvare
+# 08 · «Riprenditi il tuo tempo» (15 s) — v2 prodotta, da approvare
 
 Stile «Grafico» (`00-linee-guida/STILE.md`). Cambi scena a 0 · 2,5 · 5 · 8 · 10,5 · 13 s; stacco netto nero → crema a 2,5 s.
 «Beaflow» compare scritto in scena 5 e nella chiusura; la voce lo dice solo nella frase finale.
@@ -15,3 +15,5 @@ Stile «Grafico» (`00-linee-guida/STILE.md`). Cambi scena a 0 · 2,5 · 5 · 8 
 Nessun promemoria automatico mostrato (non risulta tra le funzioni). Orari, nomi e importi a schermo sono dati dimostrativi.
 
 Rifare il video: `npm install` in `sorgente/`, poi `node render.js segments && node render.js join && python3 audio.py` (vedi `00-linee-guida/HANDOFF.md`).
+
+Logo vero (SVG in `sorgente/` e `comune/logo/`): negativo sul nero, positivo sul crema, 720 px in chiusura (12/11, sera). Solo video rifatto, audio identico alla versione precedente.

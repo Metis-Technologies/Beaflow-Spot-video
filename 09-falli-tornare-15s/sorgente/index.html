@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>Beaflow · Falli tornare · 15 s · v1</title>
+<style>
+@font-face{font-family:'Inter';font-weight:400;src:url('node_modules/@fontsource/inter/files/inter-latin-400-normal.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-weight:500;src:url('node_modules/@fontsource/inter/files/inter-latin-500-normal.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-weight:600;src:url('node_modules/@fontsource/inter/files/inter-latin-600-normal.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-weight:700;src:url('node_modules/@fontsource/inter/files/inter-latin-700-normal.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-weight:800;src:url('node_modules/@fontsource/inter/files/inter-latin-800-normal.woff2') format('woff2')}
+@font-face{font-family:'Noto Serif';font-style:italic;font-weight:400;src:url('node_modules/@fontsource/noto-serif/files/noto-serif-latin-400-italic.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-weight:600;src:url('node_modules/@fontsource/inter/files/inter-latin-ext-600-normal.woff2') format('woff2');unicode-range:U+20AC}
+:root{
+  --nero:#111111; --bianco:#FFFFFF; --crema:#FBF8F4; --ottone:#775A18; --rosso:#FF5A4F;
+  --grigio-chiaro:#B5B5B5; --grigio-scuro:#5F5F5F; --divisore:#3A3A3A; --scheda-nero:#1E1E1E;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--nero)}
+body{position:relative;font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+.abs{position:absolute}
+.w{display:inline-block;white-space:pre}
+.bg{left:0;top:0;width:1080px;height:1920px}
+#bgDark{background:var(--nero)}
+#bgLight{background:var(--crema)}
+
+/* logo */
+.logo{left:80px;top:250px;width:240px;height:64px;transform-origin:0 0}
+#logoW{color:var(--bianco)}
+#logoK{color:var(--nero)}
+
+/* etichette maiuscole */
+.label{font-weight:700;font-size:32px;line-height:40px;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
+
+/* ===== GANCIO (nero) ===== */
+#g-label{left:80px;top:404px;color:var(--grigio-chiaro)}
+#g-title{left:76px;top:472px;font-weight:800;font-size:176px;line-height:1;letter-spacing:-.04em;color:var(--bianco);white-space:nowrap}
+#g-sub{left:80px;top:672px;font-weight:600;font-size:64px;line-height:80px;letter-spacing:-.02em;color:var(--bianco);white-space:nowrap}
+
+#call{left:80px;top:810px;width:880px;height:196px;background:var(--scheda-nero);border-radius:12px;transform-origin:50% 50%}
+#call .ico{position:absolute;left:39px;top:39px;width:112px;height:112px;border-radius:50%;background:var(--bianco);display:flex;align-items:center;justify-content:center}
+#halo{left:119px;top:849px;width:112px;height:112px;border-radius:50%;border:3px solid var(--bianco);transform-origin:50% 50%}
+#call .who{position:absolute;left:189px;top:38px;font-weight:600;font-size:48px;line-height:58px;color:var(--bianco)}
+#call .st{position:absolute;left:189px;top:100px;font-weight:400;font-size:40px;line-height:50px;color:var(--grigio-chiaro)}
+#call .tm{position:absolute;right:40px;top:70px;font-weight:500;font-size:40px;line-height:50px;color:var(--grigio-chiaro)}
+
+#g-head{left:80px;top:1072px;color:var(--grigio-chiaro)}
+#g-cnt{left:80px;top:1066px;width:880px;text-align:right;font-weight:700;font-size:44px;line-height:52px;color:var(--rosso);transform-origin:100% 50%}
+.div{left:80px;width:880px;height:2px;background:var(--divisore)}
+.row{left:80px;width:880px;height:122px}
+.row .n{position:absolute;left:0;top:34px;font-weight:500;font-size:48px;line-height:56px;color:var(--bianco)}
+.row .p{position:absolute;right:0;top:37px;font-weight:600;font-size:40px;line-height:50px;color:var(--rosso)}
+
+/* ===== SVOLTA E SCENE CHIARE (crema) ===== */
+#v-label{left:80px;top:404px;color:var(--ottone)}
+.title{left:78px;top:484px;font-weight:800;font-size:112px;line-height:1.04;letter-spacing:-.04em;color:var(--nero);white-space:nowrap}
+.card{left:80px;width:880px;height:190px;background:var(--bianco);border-radius:12px;transform-origin:50% 50%}
+.card .n{position:absolute;left:40px;top:36px;font-weight:600;font-size:48px;line-height:58px;color:var(--nero)}
+.card .s{position:absolute;left:40px;top:100px;font-weight:400;font-size:40px;line-height:50px;color:var(--grigio-scuro)}
+.badge{width:278px;height:72px;border-radius:12px;background:var(--ottone);color:var(--bianco);display:flex;align-items:center;justify-content:center;gap:14px;font-weight:700;font-size:34px;transform-origin:50% 50%}
+
+/* ===== SPOT F · gancio: clienti spariti ===== */
+.trow2{left:80px;width:880px;height:122px}
+.trow2 .n{position:absolute;left:0;top:34px;font-weight:500;font-size:48px;line-height:56px;color:var(--bianco)}
+.trow2 .p{position:absolute;right:0;top:37px;font-weight:600;font-size:40px;line-height:50px;color:var(--rosso)}
+
+/* svolta: tessere fedeltà */
+.kv{left:80px;width:880px;height:190px;background:var(--bianco);border-radius:12px;transform-origin:50% 50%}
+.kv .n{position:absolute;left:40px;top:36px;font-weight:600;font-size:48px;line-height:58px;color:var(--nero)}
+.kv .s{position:absolute;left:40px;top:100px;font-weight:400;font-size:40px;line-height:50px;color:var(--grigio-scuro)}
+.pts{left:712px;width:208px;height:72px;border-radius:12px;background:var(--ottone);color:var(--bianco);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:34px;transform-origin:50% 50%}
+
+/* scena 3: tessera di Giulia */
+#card{left:80px;top:766px;width:880px;height:540px;background:var(--bianco);border-radius:12px;transform-origin:50% 0%}
+#card .lb{position:absolute;left:40px;top:40px;color:var(--grigio-scuro)}
+#card .n{position:absolute;left:40px;top:94px;font-weight:600;font-size:48px;line-height:58px;color:var(--nero)}
+#card .q{position:absolute;left:32px;top:172px;font-weight:800;font-size:120px;line-height:1;letter-spacing:-.04em;color:var(--nero)}
+#card .u{position:absolute;left:200px;top:232px;font-weight:400;font-size:40px;line-height:50px;color:var(--grigio-scuro)}
+#bar{left:120px;top:1110px;width:800px;height:24px;border-radius:12px;background:#ECE7E0;overflow:hidden}
+#barf{position:absolute;left:0;top:0;width:800px;height:24px;border-radius:12px;background:var(--ottone);transform-origin:0 50%}
+#prize{left:120px;top:1170px;width:400px}
+#gift{left:552px;top:1182px;font-weight:600;font-size:40px;line-height:50px;color:var(--nero)}
+
+/* scena 4: promozione */
+#promo{left:80px;top:766px;width:880px;height:420px;background:var(--bianco);border-radius:12px;transform-origin:50% 50%}
+#promo .lb{position:absolute;left:40px;top:40px;color:var(--grigio-scuro)}
+#promo .h{position:absolute;left:36px;top:100px;font-weight:800;font-size:96px;line-height:1;letter-spacing:-.04em;color:var(--nero)}
+#promo .s{position:absolute;left:40px;top:220px;font-weight:400;font-size:40px;line-height:50px;color:var(--grigio-scuro)}
+#promo .st{position:absolute;left:40px;top:320px;font-weight:600;font-size:40px;line-height:50px;color:var(--grigio-scuro)}
+#tog{left:800px;top:1076px;width:120px;height:64px;border-radius:32px;background:#D9D3CA}
+#togon{position:absolute;left:0;top:0;width:120px;height:64px;border-radius:32px;background:var(--ottone)}
+#knob{position:absolute;left:6px;top:6px;width:52px;height:52px;border-radius:50%;background:var(--bianco)}
+#pstat{left:120px;top:1086px;font-weight:600;font-size:40px;line-height:50px;color:var(--ottone)}
+#pbook{left:80px;top:1214px;width:880px;height:150px;background:var(--bianco);border-radius:12px;transform-origin:50% 50%}
+#pbook .n{position:absolute;left:40px;top:46px;font-weight:600;font-size:48px;line-height:58px;color:var(--nero)}
+#pbook .v{position:absolute;right:40px;top:46px;font-weight:700;font-size:48px;line-height:58px;color:var(--ottone)}
+
+/* scena 5: passaparola */
+#ref{left:80px;top:766px;width:880px;height:300px;background:var(--bianco);border-radius:12px;transform-origin:50% 50%}
+#ref .lb{position:absolute;left:40px;top:40px;color:var(--grigio-scuro)}
+.av{position:absolute;width:96px;height:96px;border-radius:50%;background:var(--nero);color:var(--bianco);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:38px}
+#ref .a1{left:40px;top:100px}
+#ref .a2{left:200px;top:100px}
+#ref .ar{position:absolute;left:146px;top:126px}
+#ref .n{position:absolute;left:40px;top:220px;font-weight:600;font-size:44px;line-height:52px;color:var(--nero)}
+#rpts{left:712px;top:880px}
+#newc{left:80px;top:1110px;width:880px;height:190px;background:var(--bianco);border-radius:12px;transform-origin:50% 50%}
+#newc .n{position:absolute;left:40px;top:36px;font-weight:600;font-size:48px;line-height:58px;color:var(--nero)}
+#newc .s{position:absolute;left:40px;top:100px;font-weight:400;font-size:40px;line-height:50px;color:var(--grigio-scuro)}
+#welc{left:600px;top:1169px}
+
+/* ===== CHIUSURA ===== */
+#c-btn{left:80px;top:910px;width:880px;height:144px;border-radius:12px;background:var(--nero);color:var(--bianco);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:48px;transform-origin:50% 50%}
+#c-offer{left:80px;top:1098px;width:880px;text-align:center;font-weight:600;font-size:44px;line-height:56px;color:var(--nero)}
+#c-url{left:80px;top:1170px;width:880px;text-align:center;font-weight:400;font-size:40px;line-height:50px;color:var(--grigio-scuro)}
+</style>
+</head>
+<body>
+<div id="bgDark" class="abs bg"></div>
+
+<!-- 1 · GANCIO -->
+<img id="logoW" class="abs logo" src="logo-negativo.svg" alt="Beaflow">
+<div id="g-label" class="abs label">Il tuo salone · Clienti</div>
+<div id="g-sub" class="abs" style="top:472px"><span class="w">Clienti </span><span class="w">che</span></div>
+<div id="g-title" class="abs" style="top:566px"><span class="w">Non</span><br><span class="w">tornano?</span></div>
+
+<div id="g-head" class="abs label" style="top:956px">Ultima visita</div>
+<div id="g-cnt" class="abs" style="top:950px">0 clienti persi</div>
+<div id="d1" class="abs div" style="top:1008px"></div>
+<div id="r1" class="abs trow2" style="top:1010px"><div class="n">Giulia R.</div><div class="p">4 mesi fa</div></div>
+<div id="d2" class="abs div" style="top:1130px"></div>
+<div id="r2" class="abs trow2" style="top:1132px"><div class="n">Marco B.</div><div class="p">5 mesi fa</div></div>
+<div id="d3" class="abs div" style="top:1252px"></div>
+<div id="r3" class="abs trow2" style="top:1254px"><div class="n">Anna S.</div><div class="p">6 mesi fa</div></div>
+
+<!-- 2 · SVOLTA -->
+<div id="bgLight" class="abs bg"></div>
+<div id="v-label" class="abs label">Fedeltà e promozioni</div>
+<div id="t2" class="abs title"><span class="w">Falli </span><span class="w">tornare,</span><br><span class="w">con </span><span class="w">Beaflow.</span></div>
+<div id="k1" class="abs kv" style="top:766px"><div class="n">Giulia R.</div><div class="s">Tessera fedeltà</div></div>
+<div id="k2" class="abs kv" style="top:980px"><div class="n">Marco B.</div><div class="s">Tessera fedeltà</div></div>
+<div id="k3" class="abs kv" style="top:1194px"><div class="n">Anna S.</div><div class="s">Tessera fedeltà</div></div>
+<div id="b1" class="abs pts" style="top:825px">+10 punti</div>
+<div id="b2" class="abs pts" style="top:1039px">−20%</div>
+<div id="b3" class="abs pts" style="top:1253px">Premio</div>
+
+<!-- 3 · PUNTI -->
+<div id="t3" class="abs title"><span class="w">Ogni </span><span class="w">visita,</span><br><span class="w">punti </span><span class="w">fedeltà.</span></div>
+<div id="card" class="abs"><div class="lb label">Tessera fedeltà</div><div class="n">Giulia R.</div><div class="q" id="pq">8</div><div class="u">/ 10 punti</div></div>
+<div id="bar" class="abs"><div id="barf"></div></div>
+<div id="prize" class="abs badge"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Premio sbloccato</div>
+<div id="gift" class="abs">Piega in omaggio</div>
+
+<!-- 4 · PROMOZIONI -->
+<div id="t4" class="abs title"><span class="w">Promozioni</span><br><span class="w">in </span><span class="w">pochi </span><span class="w">tocchi.</span></div>
+<div id="promo" class="abs"><div class="lb label">Nuova promozione</div><div class="h">−20% il martedì</div><div class="s">Su tutti i servizi · fino al 30/11</div></div>
+<div id="pstat" class="abs">Attiva</div>
+<div id="tog" class="abs"><div id="togon"></div><div id="knob"></div></div>
+<div id="pbook" class="abs"><div class="n">Prenotazioni di martedì</div><div class="v" id="pbv">0</div></div>
+
+<!-- 5 · PASSAPAROLA -->
+<div id="t5" class="abs title"><span class="w">Il </span><span class="w">passaparola,</span><br><span class="w">premiato.</span></div>
+<div id="ref" class="abs"><div class="lb label">Invito</div><div class="av a1">GR</div><svg class="ar" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#775A18" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg><div class="av a2">ST</div><div class="n">Giulia ha invitato Sara</div></div>
+<div id="rpts" class="abs pts">+50 punti</div>
+<div id="newc" class="abs"><div class="n">Sara T.</div><div class="s">Prima visita: sabato</div></div>
+<div id="welc" class="abs badge" style="width:320px"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Nuova cliente</div>
+
+<!-- 6 · CHIUSURA -->
+<div id="c-btn" class="abs">Inizia gratis</div>
+<div id="c-offer" class="abs">Piano Free · 0 € per sempre</div>
+<div id="c-url" class="abs">beaflow.it</div>
+<img id="logoK" class="abs logo" src="logo-positivo.svg" alt="Beaflow">
+
+<script>
+
+/* Motore a timeline (vedi 00-linee-guida/HANDOFF.md §7). seek(t) disegna lo stato esatto al secondo t. */
+const DURATION = 15, FPS = 30, SP = 0.8, SO = 0.9;
+function bez(x1,y1,x2,y2){ const cx=3*x1,bx=3*(x2-x1)-cx,ax=1-cx-bx,cy=3*y1,by=3*(y2-y1)-cy,ay=1-cy-by;
+  const fx=t=>((ax*t+bx)*t+cx)*t, fy=t=>((ay*t+by)*t+cy)*t, dx=t=>(3*ax*t+2*bx)*t+cx;
+  return p=>{ if(p<=0)return 0; if(p>=1)return 1; let t=p; for(let i=0;i<10;i++){ const e=fx(t)-p; if(Math.abs(e)<1e-6)break; const d=dx(t); if(Math.abs(d)<1e-6)break; t-=e/d; } return fy(Math.min(1,Math.max(0,t))); }; }
+function spr(k,c,dur){ const w0=Math.sqrt(k), z=c/(2*Math.sqrt(k)), wd=w0*Math.sqrt(1-z*z);
+  return p=>{ if(p>=1)return 1; const t=p*dur; return 1-Math.exp(-z*w0*t)*(Math.cos(wd*t)+(z*w0/wd)*Math.sin(wd*t)); }; }
+const E = { lin:p=>p, enter:bez(.22,1,.36,1), exit:bez(.4,0,1,1), inout:bez(.65,0,.35,1), spring:spr(420,26,SP), soft:spr(260,30,SO) };
+const reg = new Map();
+const $ = s=>[...document.querySelectorAll(s)];
+const els = t => typeof t==='string' ? $(t) : (t instanceof Element ? [t] : [...t].flatMap(els));
+const ent = el => { if(!reg.has(el)) reg.set(el,{p:{},fx:[]}); return reg.get(el); };
+function tw(target,s,d,props,e='enter'){ els(target).forEach(el=>{ const r=ent(el);
+  for(const k in props){ (r.p[k]??=[]).push({s,d,a:props[k][0],b:props[k][1],e}); r.p[k].sort((x,y)=>x.s-y.s);} }); }
+function stagger(target,s,gap,d,props,e){ els(target).forEach((el,i)=>tw(el,s+i*gap,d,props,e)); }
+function fx(target,fn){ els(target).forEach(el=>ent(el).fx.push(fn)); }
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+function val(list,t){ let cur=null; for(const k of list){ if(t>=k.s) cur=k; else break; }
+  if(!cur) return list[0].a; const p=cur.d<=0?1:clamp((t-cur.s)/cur.d); return cur.a+(cur.b-cur.a)*E[cur.e](p); }
+function seek(t){
+  reg.forEach((r,el)=>{
+    const v={}; for(const k in r.p) v[k]=val(r.p[k],t);
+    const has=k=>v[k]!==undefined;
+    if(has('x')||has('y')||has('scale')||has('sx')||has('sy')||has('rot'))
+      el.style.transform=`translate(${v.x??0}px,${v.y??0}px) rotate(${v.rot??0}deg) scale(${(v.scale??1)*(v.sx??1)},${(v.scale??1)*(v.sy??1)})`;
+    if(has('opacity')){ el.style.opacity=v.opacity; el.style.visibility=v.opacity<=0.001?'hidden':'visible'; }
+    if(has('blur')) el.style.filter=v.blur>0.05?`blur(${v.blur}px)`:'none';
+    for(const f of r.fx) f(el,t);
+  });
+}
+const titleIn = (sel,s) => stagger(`${sel} .w`, s, 0.05, 0.4, {opacity:[0,1], y:[24,0]}, 'enter');
+const fadeOut = (sel,s) => tw(sel, s, 0.3, {opacity:[1,0]}, 'exit');
+const hidden  = sel => tw(sel, 0, 0.01, {opacity:[0,0]});
+const fadeIn  = (sel,s,y=24) => tw(sel, s, 0.4, {opacity:[0,1], y:[y,0]}, 'enter');
+const pop = (sel,s,from=.8,y=0) => { hidden(sel); tw(sel,s,0.12,{opacity:[0,1]},'lin'); tw(sel,s,SP,{scale:[from,1],y:[y,0]},'spring'); };
+const out = (sel,s,dy=0) => tw(sel,s,0.3,dy?{opacity:[1,0],y:[0,dy]}:{opacity:[1,0]},'exit');
+
+/* Cambi scena: 0 · 2,5 · 5 · 8 · 10,5 · 13 · 15 (battito a 120 BPM = 0,5 s) */
+const CUT = 2.5;                       // nero -> crema, stacco netto sul battito
+
+/* ---------- 1 · 0–2,5 · Clienti che non tornano? ---------- */
+tw('#logoW',0,0.01,{opacity:[1,1]}); tw('#logoW',CUT,0,{opacity:[1,0]});
+fadeIn('#g-label',0.05,12);
+titleIn('#g-sub',0.1);
+titleIn('#g-title',0.3);
+fadeIn('#g-head',0.6,12); fadeIn('#g-cnt',0.6,12);
+const LOST = [0.85,1.25,1.65];                // i clienti spariti, uno dopo l'altro
+['#r1','#r2','#r3'].forEach((r,i)=>{ const s=LOST[i];
+  hidden(r); tw(r,s,0.12,{opacity:[0,1]},'lin'); tw(r,s,SP,{y:[-90,0],scale:[.94,1]},'spring');
+  hidden('#d'+(i+1)); tw('#d'+(i+1),s,0.3,{opacity:[0,1]},'lin');
+});
+fx('#g-cnt',(el,t)=>{ const n=LOST.filter(s=>t>=s).length; el.textContent = n===1 ? '1 cliente perso' : n+' clienti persi'; });
+LOST.forEach(s=>tw('#g-cnt',s,SP,{scale:[1.18,1]},'spring'));
+
+/* ---------- 2 · 2,5–5 · Falli tornare, con Beaflow. ---------- */
+hidden('#bgLight'); tw('#bgLight',CUT,0,{opacity:[0,1]});
+tw('#logoK',0,0.01,{opacity:[0,0]}); tw('#logoK',CUT,0,{opacity:[0,1]});
+hidden('#v-label'); tw('#v-label',CUT+0.05,0.4,{opacity:[0,1],y:[12,0]});
+hidden('#t2 .w'); titleIn('#t2',CUT+0.25);
+/* le righe dei clienti persi diventano tessere fedeltà */
+[['#k1',1010-766],['#k2',1132-980],['#k3',1254-1194]].forEach(([k,dy],i)=>{ const s=CUT+i*0.1;
+  hidden(k); tw(k,s,0.15,{opacity:[0,1]},'lin'); tw(k,s,SO,{y:[dy,0]},'soft'); });
+const GIFT = [3.4,3.75,4.1];
+['#b1','#b2','#b3'].forEach((b,i)=>pop(b,GIFT[i],.8));
+
+/* ---------- 3 · 5–8 · Ogni visita, punti fedeltà. ---------- */
+out('#t2',4.55); tw(['#k2','#k3','#b1','#b2','#b3'],4.55,0.2,{opacity:[1,0]},'lin');
+tw('#k1',4.55,0.15,{opacity:[1,0]},'lin');
+hidden('#card'); tw('#card',4.6,0.15,{opacity:[0,1]},'lin'); tw('#card',4.6,SO,{sy:[.35,1]},'soft');
+hidden('#t3 .w'); titleIn('#t3',5.05);
+hidden('#bar'); tw('#bar',5.2,0.3,{opacity:[0,1]},'lin');
+fx('#barf',(el,t)=>{ const p = t<6.1 ? 0.8 : 0.8+0.2*E.inout(clamp((t-6.1)/0.45)); el.style.transform=`scaleX(${p})`; });
+fx('#pq',(el,t)=>{ el.textContent = t<6.1 ? '8' : (t<6.35 ? '9' : '10'); });
+tw('#pq',6.1,SP,{scale:[1.12,1]},'spring'); tw('#pq',6.35,SP,{scale:[1.12,1]},'spring');
+pop('#prize',6.75,.8);
+hidden('#gift'); fadeIn('#gift',6.95,12);
+
+/* ---------- 4 · 8–10,5 · Promozioni in pochi tocchi. ---------- */
+out('#t3',7.55); out(['#bar','#prize','#gift'],7.55);
+tw('#card',7.55,0.4,{sy:[1,.78]},'inout'); tw('#card',7.75,0.2,{opacity:[1,0]},'lin');
+hidden('#promo'); tw('#promo',7.8,0.15,{opacity:[0,1]},'lin'); tw('#promo',7.8,SO,{scale:[.96,1]},'soft');
+hidden('#t4 .w'); titleIn('#t4',8.05);
+hidden('#tog'); fadeIn('#tog',8.2,12);
+fx('#togon',(el,t)=>{ const p=E.inout(clamp((t-8.9)/0.25)); el.style.opacity=p; });
+fx('#knob',(el,t)=>{ const p=E.inout(clamp((t-8.9)/0.25)); el.style.transform=`translateX(${p*56}px)`; });
+hidden('#pstat'); fadeIn('#pstat',9.0,10);
+pop('#pbook',9.25,.94,30);
+fx('#pbv',(el,t)=>{ el.textContent = String(Math.round(6*E.inout(clamp((t-9.4)/0.7)))); });
+
+/* ---------- 5 · 10,5–13 · Il passaparola, premiato. ---------- */
+out('#t4',10.05); out(['#tog','#pstat','#pbook'],10.05);
+tw('#promo',10.05,0.4,{sy:[1,.71]},'inout'); tw('#promo',10.25,0.2,{opacity:[1,0]},'lin');
+hidden('#ref'); tw('#ref',10.3,0.15,{opacity:[0,1]},'lin'); tw('#ref',10.3,SO,{scale:[.96,1]},'soft');
+hidden('#t5 .w'); titleIn('#t5',10.55);
+pop('#rpts',11.05,.8);
+pop('#newc',11.35,.94,30);
+pop('#welc',11.75,.8);
+
+/* ---------- 6 · 13–15 · chiusura ---------- */
+out('#v-label',12.55); out('#t5',12.55); out(['#rpts','#newc','#welc'],12.55);
+tw('#ref',12.55,0.4,{sy:[1,.48],y:[0,(910+72)-(766+150)]},'inout'); tw('#ref',12.75,0.2,{opacity:[1,0]},'lin');
+hidden('#c-btn'); tw('#c-btn',12.8,0.12,{opacity:[0,1]},'lin'); tw('#c-btn',12.8,SO,{sx:[.96,1],sy:[.9,1]},'soft');
+tw('#c-btn',14.15,0.1,{scale:[1,.93]},'exit'); tw('#c-btn',14.25,SO,{scale:[.93,1]},'soft');
+hidden('#c-offer'); fadeIn('#c-offer',13.45,16);
+hidden('#c-url');   fadeIn('#c-url',13.6,16);
+
+function initGeometry(){                      // logo: da 60 px in alto a sinistra a 208 px al centro
+  const k=720/240, tx=(520-720/2)-80, ty=640-250;   // logo grande: 720 px di larghezza, centrato
+  tw('#logoK',13.0,0.6,{x:[0,tx],y:[0,ty],scale:[1,k]},'inout');
+}
+
+window.ready = Promise.all([document.fonts.ready, ...[...document.images].map(i=>i.decode().catch(()=>{}))]).then(()=>{ initGeometry(); seek(0); return true; });
+if(location.search.includes('play')){ window.ready.then(()=>{ const t0=performance.now();
+  (function loop(){ seek(((performance.now()-t0)/1000)%DURATION); requestAnimationFrame(loop); })(); }); }
+</script>
+</body>
+</html>

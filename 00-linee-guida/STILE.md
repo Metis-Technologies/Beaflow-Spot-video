@@ -29,6 +29,8 @@ Tutte le misure in px sono riferite al video a 1080×1920.
 | Divisori | `#3A3A3A` su nero | Linee fra le righe di un elenco |
 | Scheda su nero | `#1E1E1E` | Fondo delle schede sul fondo nero (nessun bordo) |
 
+L'oro del logo (`#C9B16C`) resta solo nel logo: etichette e conferme usano l'ottone.
+
 Logica dei colori: il **problema** è nero con rosso, la **soluzione** è crema con ottone.
 Rosso e ottone non compaiono mai nella stessa scena.
 
@@ -38,7 +40,7 @@ Misure riferite al video a 1080 px di larghezza.
 
 | Elemento | Carattere | Misura |
 |---|---|---|
-| Logo «Beaflow» | Noto Serif corsivo 400 | 60 px in alto a sinistra; 208 px in chiusura |
+| Logo «Beaflow» | Logo ufficiale SVG (`comune/logo/`): negativo sul nero, positivo sul crema | 240 × 64 px in alto a sinistra (x 80, y 250); 720 px di larghezza in chiusura |
 | Titolo del gancio | Inter 800, spaziatura −4% | 176 px, interlinea 1 |
 | Seconda riga del gancio | Inter 600, spaziatura −2% | 64 px |
 | Titolo di scena | Inter 800, spaziatura −4% | 112 px, interlinea 1,04 |

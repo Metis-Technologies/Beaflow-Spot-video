@@ -1,4 +1,4 @@
-# 04 · «Il telefono che squilla» (15 s) — v4 approvata (chiusura con «Beaflow»)
+# 04 · «Il telefono che squilla» (15 s) — v5 approvata (logo vero)
 
 Stile «Grafico» (`00-linee-guida/STILE.md`). Cambi scena a 0 · 2,5 · 5 · 8 · 10,5 · 13 s; stacco netto nero → crema a 2,5 s.
 La v3 sostituisce la v2 con un copione centrato sulle prenotazioni online (anche a salone chiuso) e sulla notifica.
@@ -24,3 +24,5 @@ Nomi, orari e servizi a schermo sono dati dimostrativi.
 Rifare il video: `npm install` in `sorgente/`, poi `node render.js segments && node render.js join && python3 audio.py` (vedi `00-linee-guida/HANDOFF.md`).
 
 Chiusura con il nome detto dalla voce («Beaflow. Inizia gratis.», 12,90 → 14,75 s), deciso il 12/11: video invariato, solo audio rifatto.
+
+Logo vero (SVG in `sorgente/` e `comune/logo/`): negativo sul nero, positivo sul crema, 720 px in chiusura (12/11, sera). Solo video rifatto, audio identico alla versione precedente.

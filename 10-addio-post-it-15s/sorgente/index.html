@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>Beaflow · Addio post-it · 15 s · v1</title>
+<style>
+@font-face{font-family:'Inter';font-weight:400;src:url('node_modules/@fontsource/inter/files/inter-latin-400-normal.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-weight:500;src:url('node_modules/@fontsource/inter/files/inter-latin-500-normal.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-weight:600;src:url('node_modules/@fontsource/inter/files/inter-latin-600-normal.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-weight:700;src:url('node_modules/@fontsource/inter/files/inter-latin-700-normal.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-weight:800;src:url('node_modules/@fontsource/inter/files/inter-latin-800-normal.woff2') format('woff2')}
+@font-face{font-family:'Noto Serif';font-style:italic;font-weight:400;src:url('node_modules/@fontsource/noto-serif/files/noto-serif-latin-400-italic.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-weight:600;src:url('node_modules/@fontsource/inter/files/inter-latin-ext-600-normal.woff2') format('woff2');unicode-range:U+20AC}
+:root{
+  --nero:#111111; --bianco:#FFFFFF; --crema:#FBF8F4; --ottone:#775A18; --rosso:#FF5A4F;
+  --grigio-chiaro:#B5B5B5; --grigio-scuro:#5F5F5F; --divisore:#3A3A3A; --scheda-nero:#1E1E1E;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--nero)}
+body{position:relative;font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+.abs{position:absolute}
+.w{display:inline-block;white-space:pre}
+.bg{left:0;top:0;width:1080px;height:1920px}
+#bgDark{background:var(--nero)}
+#bgLight{background:var(--crema)}
+
+/* logo */
+.logo{left:80px;top:250px;width:240px;height:64px;transform-origin:0 0}
+#logoW{color:var(--bianco)}
+#logoK{color:var(--nero)}
+
+/* etichette maiuscole */
+.label{font-weight:700;font-size:32px;line-height:40px;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
+
+/* ===== GANCIO (nero) ===== */
+#g-label{left:80px;top:404px;color:var(--grigio-chiaro)}
+#g-title{left:76px;top:472px;font-weight:800;font-size:176px;line-height:1;letter-spacing:-.04em;color:var(--bianco);white-space:nowrap}
+#g-sub{left:80px;top:672px;font-weight:600;font-size:64px;line-height:80px;letter-spacing:-.02em;color:var(--bianco);white-space:nowrap}
+
+#call{left:80px;top:810px;width:880px;height:196px;background:var(--scheda-nero);border-radius:12px;transform-origin:50% 50%}
+#call .ico{position:absolute;left:39px;top:39px;width:112px;height:112px;border-radius:50%;background:var(--bianco);display:flex;align-items:center;justify-content:center}
+#halo{left:119px;top:849px;width:112px;height:112px;border-radius:50%;border:3px solid var(--bianco);transform-origin:50% 50%}
+#call .who{position:absolute;left:189px;top:38px;font-weight:600;font-size:48px;line-height:58px;color:var(--bianco)}
+#call .st{position:absolute;left:189px;top:100px;font-weight:400;font-size:40px;line-height:50px;color:var(--grigio-chiaro)}
+#call .tm{position:absolute;right:40px;top:70px;font-weight:500;font-size:40px;line-height:50px;color:var(--grigio-chiaro)}
+
+#g-head{left:80px;top:1072px;color:var(--grigio-chiaro)}
+#g-cnt{left:80px;top:1066px;width:880px;text-align:right;font-weight:700;font-size:44px;line-height:52px;color:var(--rosso);transform-origin:100% 50%}
+.div{left:80px;width:880px;height:2px;background:var(--divisore)}
+.row{left:80px;width:880px;height:122px}
+.row .n{position:absolute;left:0;top:34px;font-weight:500;font-size:48px;line-height:56px;color:var(--bianco)}
+.row .p{position:absolute;right:0;top:37px;font-weight:600;font-size:40px;line-height:50px;color:var(--rosso)}
+
+/* ===== SVOLTA E SCENE CHIARE (crema) ===== */
+#v-label{left:80px;top:404px;color:var(--ottone)}
+.title{left:78px;top:484px;font-weight:800;font-size:112px;line-height:1.04;letter-spacing:-.04em;color:var(--nero);white-space:nowrap}
+.card{left:80px;width:880px;height:190px;background:var(--bianco);border-radius:12px;transform-origin:50% 50%}
+.card .n{position:absolute;left:40px;top:36px;font-weight:600;font-size:48px;line-height:58px;color:var(--nero)}
+.card .s{position:absolute;left:40px;top:100px;font-weight:400;font-size:40px;line-height:50px;color:var(--grigio-scuro)}
+.badge{width:278px;height:72px;border-radius:12px;background:var(--ottone);color:var(--bianco);display:flex;align-items:center;justify-content:center;gap:14px;font-weight:700;font-size:34px;transform-origin:50% 50%}
+
+/* ===== SPOT G · gancio: agenda di carta ===== */
+#g-paper{left:80px;top:1060px;width:880px;height:480px;background:var(--scheda-nero);border-radius:12px}
+#g-head{left:120px;top:1096px;color:var(--grigio-chiaro)}
+#g-cnt{left:80px;top:1090px;width:840px;text-align:right;font-weight:700;font-size:40px;line-height:52px;color:var(--rosso);transform-origin:100% 50%}
+.prow{left:120px;width:800px;height:122px}
+.prow .h{position:absolute;left:0;top:37px;font-weight:500;font-size:40px;line-height:50px;color:var(--grigio-chiaro)}
+.prow .n{position:absolute;left:150px;top:34px;font-weight:500;font-size:48px;line-height:56px;color:var(--bianco)}
+.prow .p{position:absolute;right:0;top:37px;font-weight:600;font-size:40px;line-height:50px;color:var(--rosso)}
+.pdiv{left:120px;width:800px;height:2px;background:var(--divisore)}
+#strike{left:266px;top:1209px;width:250px;height:6px;border-radius:3px;background:var(--rosso);transform-origin:0 50%}
+.note{width:340px;height:150px;background:var(--bianco);border-radius:12px;padding:30px 32px;font-weight:600;font-size:40px;line-height:46px;color:var(--nero);transform-origin:50% 50%;white-space:nowrap}
+
+/* scena 2: agenda digitale */
+#ag{left:80px;top:766px;width:880px;height:680px;background:var(--bianco);border-radius:12px;transform-origin:50% 0%}
+#ag .lb{position:absolute;left:40px;top:40px;color:var(--grigio-scuro)}
+.slot{left:120px;width:800px;height:112px}
+.slot .h{position:absolute;left:0;top:31px;font-weight:500;font-size:40px;line-height:50px;color:var(--grigio-scuro)}
+.blk{position:absolute;left:150px;top:0;width:650px;height:112px;border-radius:12px;background:var(--crema);overflow:hidden}
+.blk::before{content:'';position:absolute;left:0;top:0;width:10px;height:112px;background:var(--ottone)}
+.blk .n{position:absolute;left:40px;top:27px;font-weight:600;font-size:44px;line-height:56px;color:var(--nero)}
+.chk{width:64px;height:64px;border-radius:12px;background:var(--ottone);display:flex;align-items:center;justify-content:center;transform-origin:50% 50%}
+
+/* scena 3: nessuna doppia prenotazione */
+#nb{left:80px;top:766px;width:880px;height:300px;background:var(--bianco);border-radius:12px;transform-origin:50% 50%}
+#nb .lb{position:absolute;left:40px;top:40px;color:var(--grigio-scuro)}
+#nb .n{position:absolute;left:40px;top:100px;font-weight:600;font-size:48px;line-height:58px;color:var(--nero)}
+#nb .s{position:absolute;left:40px;top:170px;font-weight:400;font-size:40px;line-height:50px;color:var(--grigio-scuro)}
+#nbt{font-weight:700;color:var(--nero)}
+#occ{left:80px;top:1106px;width:880px;height:150px;background:var(--bianco);border-radius:12px;transform-origin:50% 50%}
+#occ .h{position:absolute;left:40px;top:50px;font-weight:500;font-size:40px;line-height:50px;color:var(--grigio-scuro)}
+#occ .n{position:absolute;left:180px;top:46px;font-weight:600;font-size:48px;line-height:58px;color:var(--nero)}
+#busy{left:556px;top:1145px;width:364px}
+#okb{left:80px;top:1296px;width:300px}
+
+/* scena 4: spostare un appuntamento */
+#mg{left:80px;top:886px;width:880px;height:500px;background:var(--bianco);border-radius:12px;transform-origin:50% 50%}
+#mg .lb{position:absolute;left:40px;top:40px;color:var(--grigio-scuro)}
+.free{position:absolute;left:150px;top:0;width:650px;height:112px;border-radius:12px;background:#F2EEE8}
+.free .n{position:absolute;left:40px;top:29px;font-weight:500;font-size:40px;line-height:54px;color:var(--grigio-scuro)}
+#drag{left:270px;top:996px;width:650px;height:112px;transform-origin:50% 50%}
+#finger{left:780px;top:1012px;width:80px;height:80px;border-radius:50%;background:var(--nero);opacity:.18;transform-origin:50% 50%}
+#moved{left:80px;top:1414px;width:280px}
+
+/* scena 5: la giornata del salone */
+#day{left:80px;top:886px;width:880px;height:600px;background:var(--bianco);border-radius:12px;transform-origin:50% 50%}
+#day .lb{position:absolute;left:40px;top:40px;color:var(--grigio-scuro)}
+.col{position:absolute;top:104px;width:252px;height:470px}
+.col .op{position:absolute;left:0;top:0;font-weight:600;font-size:40px;line-height:50px;color:var(--nero)}
+.cb{position:absolute;left:0;width:252px;border-radius:12px;background:var(--crema);overflow:hidden}
+.cb::before{content:'';position:absolute;left:0;top:0;width:8px;height:100%;background:var(--ottone)}
+.cb .n{position:absolute;left:28px;top:20px;font-weight:600;font-size:34px;line-height:42px;color:var(--nero)}
+.cb.fr{background:#F2EEE8}.cb.fr::before{display:none}
+.cb.fr .n{color:var(--grigio-scuro);font-weight:500}
+
+/* ===== CHIUSURA ===== */
+#c-btn{left:80px;top:910px;width:880px;height:144px;border-radius:12px;background:var(--nero);color:var(--bianco);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:48px;transform-origin:50% 50%}
+#c-offer{left:80px;top:1098px;width:880px;text-align:center;font-weight:600;font-size:44px;line-height:56px;color:var(--nero)}
+#c-url{left:80px;top:1170px;width:880px;text-align:center;font-weight:400;font-size:40px;line-height:50px;color:var(--grigio-scuro)}
+</style>
+</head>
+<body>
+<div id="bgDark" class="abs bg"></div>
+
+<!-- 1 · GANCIO -->
+<img id="logoW" class="abs logo" src="logo-negativo.svg" alt="Beaflow">
+<div id="g-label" class="abs label">Il tuo salone · Agenda</div>
+<div id="g-title" class="abs"><span class="w">Agenda </span><span class="w">e</span><br><span class="w">post<span style="margin:0 -.05em">-</span>it?</span></div>
+<div id="g-sub" class="abs" style="top:848px"><span class="w">Cancellature, </span><span class="w">doppioni,</span><br><span class="w">buchi.</span></div>
+
+<div id="g-paper" class="abs"></div>
+<div id="g-head" class="abs label">Martedì</div>
+<div id="g-cnt" class="abs">1 doppia prenotazione</div>
+<div id="pr1" class="abs prow" style="top:1150px"><div class="h">9:00</div><div class="n">Giulia R.</div><div class="p">cancellato</div></div>
+<div id="pd1" class="abs pdiv" style="top:1272px"></div>
+<div id="pr2" class="abs prow" style="top:1274px"><div class="h">10:00</div><div class="n">Marco · Anna</div><div class="p">doppione</div></div>
+<div id="pd2" class="abs pdiv" style="top:1396px"></div>
+<div id="pr3" class="abs prow" style="top:1398px"><div class="h">11:00</div><div class="n">Luca · Sara</div><div class="p">doppione</div></div>
+<div id="strike" class="abs"></div>
+
+<!-- 2 · SVOLTA -->
+<div id="bgLight" class="abs bg"></div>
+<div id="v-label" class="abs label">Agenda online</div>
+<div id="t2" class="abs title"><span class="w">Con </span><span class="w">Beaflow,</span><br><span class="w">tutto </span><span class="w">in </span><span class="w">agenda.</span></div>
+<div id="ag" class="abs"><div class="lb label">Martedì</div></div>
+<div id="s1" class="abs slot" style="top:870px"><div class="h">9:00</div><div class="blk"><div class="n">Giulia R.</div></div></div>
+<div id="s2" class="abs slot" style="top:1006px"><div class="h">10:00</div><div class="blk"><div class="n">Marco B.</div></div></div>
+<div id="s3" class="abs slot" style="top:1142px"><div class="h">11:00</div><div class="blk"><div class="n">Anna S.</div></div></div>
+<div id="s4" class="abs slot" style="top:1278px"><div class="h">12:00</div><div class="blk"><div class="n">Luca P.</div></div></div>
+<div id="c1" class="abs chk" style="left:816px;top:894px"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+<div id="c2" class="abs chk" style="left:816px;top:1030px"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+<div id="c3" class="abs chk" style="left:816px;top:1166px"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+<div id="c4" class="abs chk" style="left:816px;top:1302px"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+
+<!-- post-it: sopra i due fondi, così nello stacco volano dentro l'agenda -->
+<div id="n1" class="abs note" style="left:560px;top:1170px">Richiamare<br>Sara</div>
+<div id="n2" class="abs note" style="left:150px;top:1360px">Spostare<br>le 15:00?</div>
+
+<!-- 3 · DOPPIE PRENOTAZIONI -->
+<div id="t3" class="abs title"><span class="w">Mai </span><span class="w">più </span><span class="w">doppie</span><br><span class="w">prenotazioni.</span></div>
+<div id="nb" class="abs"><div class="lb label">Nuova prenotazione</div><div class="n">Luca P.</div><div class="s">Martedì · <span id="nbt">10:00</span> · con Marta</div></div>
+<div id="occ" class="abs"><div class="h">10:00</div><div class="n">Marco B.</div></div>
+<div id="busy" class="abs badge"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Orario occupato</div>
+<div id="okb" class="abs badge"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Confermata</div>
+
+<!-- 4 · SPOSTARE -->
+<div id="t4" class="abs title"><span class="w">Spostare </span><span class="w">un</span><br><span class="w">appuntamento?</span><br><span class="w">Un </span><span class="w">tocco.</span></div>
+<div id="mg" class="abs"><div class="lb label">Martedì · Marta</div></div>
+<div id="m1" class="abs slot" style="top:996px"><div class="h">15:00</div><div class="free" id="m1f"><div class="n">Libero</div></div></div>
+<div id="m2" class="abs slot" style="top:1132px"><div class="h">16:00</div><div class="free"><div class="n">Libero</div></div></div>
+<div id="m3" class="abs slot" style="top:1268px"><div class="h">17:00</div><div class="blk"><div class="n">Anna S.</div></div></div>
+<div id="drag" class="abs"><div class="blk" style="left:0"><div class="n">Sara T.</div></div></div>
+<div id="finger" class="abs"></div>
+<div id="moved" class="abs badge"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Spostato</div>
+
+<!-- 5 · LA GIORNATA -->
+<div id="t5" class="abs title"><span class="w">Tutto </span><span class="w">chiaro,</span><br><span class="w">a </span><span class="w">colpo </span><span class="w">d'occhio.</span></div>
+<div id="day" class="abs"><div class="lb label">Martedì · Il salone</div>
+  <div class="col" id="o1" style="left:40px"><div class="op">Marta</div>
+    <div class="cb" style="top:66px;height:120px"><div class="n">Giulia R.</div></div>
+    <div class="cb" style="top:200px;height:120px"><div class="n">Marco B.</div></div>
+    <div class="cb fr" style="top:334px;height:120px"><div class="n">Libero</div></div></div>
+  <div class="col" id="o2" style="left:314px"><div class="op">Elisa</div>
+    <div class="cb" style="top:66px;height:254px"><div class="n">Anna S.</div></div>
+    <div class="cb" style="top:334px;height:120px"><div class="n">Luca P.</div></div></div>
+  <div class="col" id="o3" style="left:588px"><div class="op">Paolo</div>
+    <div class="cb fr" style="top:66px;height:120px"><div class="n">Libero</div></div>
+    <div class="cb" style="top:200px;height:120px"><div class="n">Sara T.</div></div>
+    <div class="cb" style="top:334px;height:120px"><div class="n">Elena V.</div></div></div>
+</div>
+
+<!-- 6 · CHIUSURA -->
+<div id="c-btn" class="abs">Inizia gratis</div>
+<div id="c-offer" class="abs">Piano Free · 0 € per sempre</div>
+<div id="c-url" class="abs">beaflow.it</div>
+<img id="logoK" class="abs logo" src="logo-positivo.svg" alt="Beaflow">
+
+<script>
+
+/* Motore a timeline (vedi 00-linee-guida/HANDOFF.md §7). seek(t) disegna lo stato esatto al secondo t. */
+const DURATION = 15, FPS = 30, SP = 0.8, SO = 0.9;
+function bez(x1,y1,x2,y2){ const cx=3*x1,bx=3*(x2-x1)-cx,ax=1-cx-bx,cy=3*y1,by=3*(y2-y1)-cy,ay=1-cy-by;
+  const fx=t=>((ax*t+bx)*t+cx)*t, fy=t=>((ay*t+by)*t+cy)*t, dx=t=>(3*ax*t+2*bx)*t+cx;
+  return p=>{ if(p<=0)return 0; if(p>=1)return 1; let t=p; for(let i=0;i<10;i++){ const e=fx(t)-p; if(Math.abs(e)<1e-6)break; const d=dx(t); if(Math.abs(d)<1e-6)break; t-=e/d; } return fy(Math.min(1,Math.max(0,t))); }; }
+function spr(k,c,dur){ const w0=Math.sqrt(k), z=c/(2*Math.sqrt(k)), wd=w0*Math.sqrt(1-z*z);
+  return p=>{ if(p>=1)return 1; const t=p*dur; return 1-Math.exp(-z*w0*t)*(Math.cos(wd*t)+(z*w0/wd)*Math.sin(wd*t)); }; }
+const E = { lin:p=>p, enter:bez(.22,1,.36,1), exit:bez(.4,0,1,1), inout:bez(.65,0,.35,1), spring:spr(420,26,SP), soft:spr(260,30,SO) };
+const reg = new Map();
+const $ = s=>[...document.querySelectorAll(s)];
+const els = t => typeof t==='string' ? $(t) : (t instanceof Element ? [t] : [...t].flatMap(els));
+const ent = el => { if(!reg.has(el)) reg.set(el,{p:{},fx:[]}); return reg.get(el); };
+function tw(target,s,d,props,e='enter'){ els(target).forEach(el=>{ const r=ent(el);
+  for(const k in props){ (r.p[k]??=[]).push({s,d,a:props[k][0],b:props[k][1],e}); r.p[k].sort((x,y)=>x.s-y.s);} }); }
+function stagger(target,s,gap,d,props,e){ els(target).forEach((el,i)=>tw(el,s+i*gap,d,props,e)); }
+function fx(target,fn){ els(target).forEach(el=>ent(el).fx.push(fn)); }
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+function val(list,t){ let cur=null; for(const k of list){ if(t>=k.s) cur=k; else break; }
+  if(!cur) return list[0].a; const p=cur.d<=0?1:clamp((t-cur.s)/cur.d); return cur.a+(cur.b-cur.a)*E[cur.e](p); }
+function seek(t){
+  reg.forEach((r,el)=>{
+    const v={}; for(const k in r.p) v[k]=val(r.p[k],t);
+    const has=k=>v[k]!==undefined;
+    if(has('x')||has('y')||has('scale')||has('sx')||has('sy')||has('rot'))
+      el.style.transform=`translate(${v.x??0}px,${v.y??0}px) rotate(${v.rot??0}deg) scale(${(v.scale??1)*(v.sx??1)},${(v.scale??1)*(v.sy??1)})`;
+    if(has('opacity')){ el.style.opacity=v.opacity; el.style.visibility=v.opacity<=0.001?'hidden':'visible'; }
+    if(has('blur')) el.style.filter=v.blur>0.05?`blur(${v.blur}px)`:'none';
+    for(const f of r.fx) f(el,t);
+  });
+}
+const titleIn = (sel,s) => stagger(`${sel} .w`, s, 0.05, 0.4, {opacity:[0,1], y:[24,0]}, 'enter');
+const fadeOut = (sel,s) => tw(sel, s, 0.3, {opacity:[1,0]}, 'exit');
+const hidden  = sel => tw(sel, 0, 0.01, {opacity:[0,0]});
+const fadeIn  = (sel,s,y=24) => tw(sel, s, 0.4, {opacity:[0,1], y:[y,0]}, 'enter');
+const pop = (sel,s,from=.8,y=0) => { hidden(sel); tw(sel,s,0.12,{opacity:[0,1]},'lin'); tw(sel,s,SP,{scale:[from,1],y:[y,0]},'spring'); };
+const out = (sel,s,dy=0) => tw(sel,s,0.3,dy?{opacity:[1,0],y:[0,dy]}:{opacity:[1,0]},'exit');
+
+
+/* Cambi scena: 0 · 2,5 · 5 · 8 · 10,5 · 13 · 15 (battito a 120 BPM = 0,5 s) */
+const CUT = 2.5;                       // nero -> crema, stacco netto sul battito
+
+/* ---------- 1 · 0–2,5 · Agenda e post-it? ---------- */
+tw('#logoW',0,0.01,{opacity:[1,1]}); tw('#logoW',CUT,0,{opacity:[1,0]});
+fadeIn('#g-label',0.05,12);
+titleIn('#g-title',0.1);
+titleIn('#g-sub',0.45);
+hidden('#g-paper'); tw('#g-paper',0.55,0.3,{opacity:[0,1]},'lin');
+fadeIn('#g-head',0.65,12);
+const ROWS = [0.8,1.05,1.3];
+['#pr1','#pr2','#pr3'].forEach((r,i)=>{ const s=ROWS[i];
+  hidden(r); tw(r,s,0.12,{opacity:[0,1]},'lin'); tw(r,s,SP,{y:[-60,0],scale:[.96,1]},'spring'); });
+['#pd1','#pd2'].forEach((d,i)=>{ hidden(d); tw(d,ROWS[i+1],0.3,{opacity:[0,1]},'lin'); });
+hidden('#strike'); tw('#strike',1.0,0.01,{opacity:[0,1]}); tw('#strike',1.0,0.25,{sx:[0,1]},'enter');
+hidden('#g-cnt'); tw('#g-cnt',1.05,0.12,{opacity:[0,1]},'lin');
+fx('#g-cnt',(el,t)=>{ el.textContent = t<1.3 ? '1 doppia prenotazione' : '2 doppie prenotazioni'; });
+[1.05,1.3].forEach(s=>tw('#g-cnt',s,SP,{scale:[1.18,1]},'spring'));
+/* i post-it si accumulano sopra l'agenda */
+hidden('#n1'); tw('#n1',1.6,0.1,{opacity:[0,1]},'lin'); tw('#n1',1.6,SP,{scale:[1.25,1],rot:[12,5]},'spring');
+hidden('#n2'); tw('#n2',1.9,0.1,{opacity:[0,1]},'lin'); tw('#n2',1.9,SP,{scale:[1.25,1],rot:[-12,-4]},'spring');
+
+/* ---------- 2 · 2,5–5 · Con Beaflow, tutto in agenda. ---------- */
+hidden('#bgLight'); tw('#bgLight',CUT,0,{opacity:[0,1]});
+tw('#logoK',0,0.01,{opacity:[0,0]}); tw('#logoK',CUT,0,{opacity:[0,1]});
+hidden('#v-label'); tw('#v-label',CUT+0.05,0.4,{opacity:[0,1],y:[12,0]});
+hidden('#t2 .w'); titleIn('#t2',CUT+0.25);
+hidden('#ag'); tw('#ag',CUT,0.15,{opacity:[0,1]},'lin'); tw('#ag',CUT,SO,{sy:[.7,1]},'soft');
+/* i post-it volano dentro l'agenda e diventano appuntamenti */
+tw('#n1',CUT,0.45,{x:[0,(270+325)-(560+170)],y:[0,1278-1170],rot:[5,0],scale:[1,.4]},'inout'); tw('#n1',CUT+0.25,0.2,{opacity:[1,0]},'lin');
+tw('#n2',CUT,0.45,{x:[0,(270+325)-(150+170)],y:[0,1142-1360],rot:[-4,0],scale:[1,.4]},'inout'); tw('#n2',CUT+0.25,0.2,{opacity:[1,0]},'lin');
+const SLOT = [2.6,2.72,2.84,2.96];
+['#s1','#s2','#s3','#s4'].forEach((s,i)=>{ hidden(s); tw(s,SLOT[i],0.15,{opacity:[0,1]},'lin'); tw(s,SLOT[i],SO,{y:[40,0]},'soft'); });
+const CHK = [3.45,3.7,3.95,4.2];
+['#c1','#c2','#c3','#c4'].forEach((c,i)=>pop(c,CHK[i],.6));
+
+/* ---------- 3 · 5–8 · Mai più doppie prenotazioni. ---------- */
+out('#t2',4.55); tw(['#s2','#s3','#s4','#c1','#c2','#c3','#c4','#s1'],4.55,0.2,{opacity:[1,0]},'lin');
+tw('#ag',4.55,0.4,{sy:[1,300/680]},'inout'); tw('#ag',4.75,0.2,{opacity:[1,0]},'lin');
+hidden('#nb'); tw('#nb',4.8,0.15,{opacity:[0,1]},'lin'); tw('#nb',4.8,SO,{scale:[.96,1]},'soft');
+hidden('#t3 .w'); titleIn('#t3',5.05);
+pop('#occ',5.35,.94,30);
+pop('#busy',5.85,.8);
+fx('#nb',(el,t)=>{ const p=clamp((t-5.85)/0.4); if(p>0&&p<1){ el.style.transform=`translate(${Math.sin(p*Math.PI*6)*14*(1-p)}px,0)`; } });
+fx('#nbt',(el,t)=>{ el.textContent = t<6.55 ? '10:00' : '12:30'; });
+tw('#busy',6.55,0.25,{opacity:[1,.35]},'lin');
+pop('#okb',6.75,.8);
+
+/* ---------- 4 · 8–10,5 · Spostare un appuntamento? Un tocco. ---------- */
+out('#t3',7.55); out(['#occ','#busy','#okb'],7.55);
+tw('#nb',7.55,0.4,{sy:[1,500/300],y:[0,(886+250)-(766+150)]},'inout'); tw('#nb',7.75,0.2,{opacity:[1,0]},'lin');
+hidden('#mg'); tw('#mg',7.8,0.15,{opacity:[0,1]},'lin'); tw('#mg',7.8,SO,{scale:[.97,1]},'soft');
+hidden('#t4 .w'); titleIn('#t4',8.05);
+['#m1','#m2','#m3'].forEach((m,i)=>{ hidden(m); tw(m,7.9+i*0.1,0.15,{opacity:[0,1]},'lin'); tw(m,7.9+i*0.1,SO,{y:[30,0]},'soft'); });
+hidden('#drag'); tw('#drag',7.9,0.15,{opacity:[0,1]},'lin'); tw('#drag',7.9,SO,{y:[30,0]},'soft');
+/* il dito tocca, l'appuntamento scende di un'ora */
+hidden('#finger'); tw('#finger',8.75,0.15,{opacity:[0,.18]},'lin'); tw('#finger',8.75,SP,{scale:[1.6,1]},'spring');
+tw('#drag',8.85,0.12,{scale:[1,1.04]},'enter');
+tw('#drag',9.05,0.45,{y:[0,136]},'inout'); tw('#finger',9.05,0.45,{y:[0,136]},'inout');
+tw('#drag',9.5,SP,{scale:[1.04,1]},'spring'); tw('#finger',9.55,0.2,{opacity:[.18,0]},'lin');
+pop('#moved',9.6,.8);
+
+/* ---------- 5 · 10,5–13 · Tutto chiaro, a colpo d'occhio. ---------- */
+out('#t4',10.05); out('#moved',10.05); tw(['#m1','#m2','#m3','#drag'],10.05,0.2,{opacity:[1,0]},'lin');
+tw('#mg',10.05,0.4,{sy:[1,600/500],y:[0,50]},'inout'); tw('#mg',10.25,0.2,{opacity:[1,0]},'lin');
+hidden('#day'); tw('#day',10.3,0.15,{opacity:[0,1]},'lin'); tw('#day',10.3,SO,{scale:[.97,1]},'soft');
+hidden('#t5 .w'); titleIn('#t5',10.55);
+['#o1','#o2','#o3'].forEach((o,i)=>{ const s=10.7+i*0.25; hidden(o); tw(o,s,0.15,{opacity:[0,1]},'lin'); tw(o,s,SO,{y:[40,0]},'soft'); });
+
+/* ---------- 6 · 13–15 · chiusura ---------- */
+out('#v-label',12.55); out('#t5',12.55); tw(['#o1','#o2','#o3'],12.55,0.2,{opacity:[1,0]},'lin');
+tw('#day',12.55,0.4,{sy:[1,144/600],y:[0,(910+72)-(886+300)]},'inout'); tw('#day',12.75,0.2,{opacity:[1,0]},'lin');
+hidden('#c-btn'); tw('#c-btn',12.8,0.12,{opacity:[0,1]},'lin'); tw('#c-btn',12.8,SO,{sx:[.96,1],sy:[.9,1]},'soft');
+tw('#c-btn',14.15,0.1,{scale:[1,.93]},'exit'); tw('#c-btn',14.25,SO,{scale:[.93,1]},'soft');
+hidden('#c-offer'); fadeIn('#c-offer',13.45,16);
+hidden('#c-url');   fadeIn('#c-url',13.6,16);
+
+function initGeometry(){
+  const k=720/240, tx=(520-720/2)-80, ty=640-250;   // logo grande: 720 px di larghezza, centrato
+  tw('#logoK',13.0,0.6,{x:[0,tx],y:[0,ty],scale:[1,k]},'inout');
+}
+
+window.ready = Promise.all([document.fonts.ready, ...[...document.images].map(i=>i.decode().catch(()=>{}))]).then(()=>{ initGeometry(); seek(0); return true; });
+if(location.search.includes('play')){ window.ready.then(()=>{ const t0=performance.now();
+  (function loop(){ seek(((performance.now()-t0)/1000)%DURATION); requestAnimationFrame(loop); })(); }); }
+</script>
+</body>
+</html>

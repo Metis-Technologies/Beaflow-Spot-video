@@ -25,7 +25,7 @@ body{position:relative;font-family:'Inter',sans-serif;font-variant-numeric:tabul
 #bgLight{background:var(--crema)}
 
 /* logo */
-.logo{left:80px;top:244px;font-family:'Noto Serif',serif;font-style:italic;font-weight:400;font-size:60px;line-height:72px;transform-origin:0 0;white-space:nowrap}
+.logo{left:80px;top:250px;width:240px;height:64px;transform-origin:0 0}
 #logoW{color:var(--bianco)}
 #logoK{color:var(--nero)}
 
@@ -112,7 +112,7 @@ body{position:relative;font-family:'Inter',sans-serif;font-variant-numeric:tabul
 <div id="bgDark" class="abs bg"></div>
 
 <!-- 1 · GANCIO -->
-<div id="logoW" class="abs logo">Beaflow</div>
+<img id="logoW" class="abs logo" src="logo-negativo.svg" alt="Beaflow">
 <div id="g-label" class="abs label">Il tuo salone · Chiusura di sera</div>
 <div id="g-sub" class="abs" style="top:472px"><span class="w">Cassa </span><span class="w">e </span><span class="w">magazzino</span></div>
 <div id="g-title" class="abs" style="top:566px"><span class="w">Non</span><br><span class="w">tornano?</span></div>
@@ -157,7 +157,7 @@ body{position:relative;font-family:'Inter',sans-serif;font-variant-numeric:tabul
 <div id="c-btn" class="abs">Inizia gratis</div>
 <div id="c-offer" class="abs">Piano Free · 0 € per sempre</div>
 <div id="c-url" class="abs">beaflow.it</div>
-<div id="logoK" class="abs logo">Beaflow</div>
+<img id="logoK" class="abs logo" src="logo-positivo.svg" alt="Beaflow">
 
 <script>
 
@@ -266,12 +266,11 @@ hidden('#c-offer'); fadeIn('#c-offer',13.45,16);
 hidden('#c-url');   fadeIn('#c-url',13.6,16);
 
 function initGeometry(){                      // logo: da 60 px in alto a sinistra a 208 px al centro
-  const el=document.querySelector('#logoK'); const w=el.getBoundingClientRect().width;
-  const k=208/60, fw=w*k, tx=(520-fw/2)-80, ty=600-244;
+  const k=720/240, tx=(520-720/2)-80, ty=640-250;   // logo grande: 720 px di larghezza, centrato
   tw('#logoK',13.0,0.6,{x:[0,tx],y:[0,ty],scale:[1,k]},'inout');
 }
 
-window.ready = document.fonts.ready.then(()=>{ initGeometry(); seek(0); return true; });
+window.ready = Promise.all([document.fonts.ready, ...[...document.images].map(i=>i.decode().catch(()=>{}))]).then(()=>{ initGeometry(); seek(0); return true; });
 if(location.search.includes('play')){ window.ready.then(()=>{ const t0=performance.now();
   (function loop(){ seek(((performance.now()-t0)/1000)%DURATION); requestAnimationFrame(loop); })(); }); }
 </script>

@@ -77,7 +77,7 @@ Il logo resta in alto dal primo fotogramma. Il contenuto riempie l'area utile, s
 ## 7. Voce, musica, effetti
 
 - Voce: Eleven v4 «Harrison» (Higgsfield), accelerata dell'8%, pause sotto il mezzo secondo.
-- La voce non pronuncia «Beaflow».
+- La voce pronuncia «Beaflow» solo nella frase finale: «Beaflow. Inizia gratis.» (deciso il 12/11/2026; clip `line6.mp3` comune, inizio a 12,9 s). Nel resto dello spot il nome compare solo scritto.
 - Musica: la stessa traccia strumentale a 120 BPM in tutta la serie, bassa sotto la voce.
 - Suono ricorrente: lo stesso «ding» di notifica in ogni spot.
 

@@ -16,7 +16,8 @@ Archivio di lavoro degli spot motion design 9:16 per Beaflow: regole, testi, sor
 03-online-in-5-minuti-15s/      approvato
 04-telefono-che-squilla-15s/    approvato (v3)
 05-tutto-in-un-app-15s/         v1 da approvare
-06-turni-team-15s/               v1 da approvare
+06-turni-team-15s/               approvato (v2)
+07-cassa-magazzino-15s/         v1 da approvare
 comune/musica/                  base musicale della serie (120 BPM)
 strumenti/                      script di servizio
 ```

@@ -20,12 +20,13 @@ Formato
 Testi
 - Validi per tutte le attività: mai un solo mestiere, «Salone» come esempio.
 - Massimo 6 parole a schermo per volta.
-- Chiusura: «Inizia gratis».
+- Chiusura: «Inizia gratis»; «Beaflow» può comparire scritto nei testi.
 
 Voce
 - Eleven v4 «Harrison» su Higgsfield, calma e precisa, velocità +8%,
   pause sotto 0,5 s.
-- La voce non pronuncia mai «Beaflow».
+- La voce dice «Beaflow» solo nella chiusura: «Beaflow. Inizia gratis.»
+  Nel resto dello spot il nome compare solo scritto.
 
 Consegna
 - Due versioni per spot: con musica e senza musica.

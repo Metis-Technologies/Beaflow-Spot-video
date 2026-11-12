@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>Beaflow · Report · 15 s · v1</title>
+<style>
+@font-face{font-family:'Inter';font-weight:400;src:url('node_modules/@fontsource/inter/files/inter-latin-400-normal.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-weight:500;src:url('node_modules/@fontsource/inter/files/inter-latin-500-normal.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-weight:600;src:url('node_modules/@fontsource/inter/files/inter-latin-600-normal.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-weight:700;src:url('node_modules/@fontsource/inter/files/inter-latin-700-normal.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-weight:800;src:url('node_modules/@fontsource/inter/files/inter-latin-800-normal.woff2') format('woff2')}
+@font-face{font-family:'Noto Serif';font-style:italic;font-weight:400;src:url('node_modules/@fontsource/noto-serif/files/noto-serif-latin-400-italic.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-weight:600;src:url('node_modules/@fontsource/inter/files/inter-latin-ext-600-normal.woff2') format('woff2');unicode-range:U+20AC}
+:root{
+  --nero:#111111; --bianco:#FFFFFF; --crema:#FBF8F4; --ottone:#775A18; --rosso:#FF5A4F;
+  --grigio-chiaro:#B5B5B5; --grigio-scuro:#5F5F5F; --divisore:#3A3A3A; --scheda-nero:#1E1E1E;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--nero)}
+body{position:relative;font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+.abs{position:absolute}
+.w{display:inline-block;white-space:pre}
+.bg{left:0;top:0;width:1080px;height:1920px}
+#bgDark{background:var(--nero)}
+#bgLight{background:var(--crema)}
+
+/* logo */
+.logo{left:80px;top:250px;width:240px;height:64px;transform-origin:0 0}
+#logoW{color:var(--bianco)}
+#logoK{color:var(--nero)}
+
+/* etichette maiuscole */
+.label{font-weight:700;font-size:32px;line-height:40px;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
+
+/* ===== GANCIO (nero) ===== */
+#g-label{left:80px;top:404px;color:var(--grigio-chiaro)}
+#g-title{left:76px;top:472px;font-weight:800;font-size:176px;line-height:1;letter-spacing:-.04em;color:var(--bianco);white-space:nowrap}
+#g-sub{left:80px;top:672px;font-weight:600;font-size:64px;line-height:80px;letter-spacing:-.02em;color:var(--bianco);white-space:nowrap}
+
+#call{left:80px;top:810px;width:880px;height:196px;background:var(--scheda-nero);border-radius:12px;transform-origin:50% 50%}
+#call .ico{position:absolute;left:39px;top:39px;width:112px;height:112px;border-radius:50%;background:var(--bianco);display:flex;align-items:center;justify-content:center}
+#halo{left:119px;top:849px;width:112px;height:112px;border-radius:50%;border:3px solid var(--bianco);transform-origin:50% 50%}
+#call .who{position:absolute;left:189px;top:38px;font-weight:600;font-size:48px;line-height:58px;color:var(--bianco)}
+#call .st{position:absolute;left:189px;top:100px;font-weight:400;font-size:40px;line-height:50px;color:var(--grigio-chiaro)}
+#call .tm{position:absolute;right:40px;top:70px;font-weight:500;font-size:40px;line-height:50px;color:var(--grigio-chiaro)}
+
+#g-head{left:80px;top:1072px;color:var(--grigio-chiaro)}
+#g-cnt{left:80px;top:1066px;width:880px;text-align:right;font-weight:700;font-size:44px;line-height:52px;color:var(--rosso);transform-origin:100% 50%}
+.div{left:80px;width:880px;height:2px;background:var(--divisore)}
+.row{left:80px;width:880px;height:122px}
+.row .n{position:absolute;left:0;top:34px;font-weight:500;font-size:48px;line-height:56px;color:var(--bianco)}
+.row .p{position:absolute;right:0;top:37px;font-weight:600;font-size:40px;line-height:50px;color:var(--rosso)}
+
+/* ===== SVOLTA E SCENE CHIARE (crema) ===== */
+#v-label{left:80px;top:404px;color:var(--ottone)}
+.title{left:78px;top:484px;font-weight:800;font-size:112px;line-height:1.04;letter-spacing:-.04em;color:var(--nero);white-space:nowrap}
+.card{left:80px;width:880px;height:190px;background:var(--bianco);border-radius:12px;transform-origin:50% 50%}
+.card .n{position:absolute;left:40px;top:36px;font-weight:600;font-size:48px;line-height:58px;color:var(--nero)}
+.card .s{position:absolute;left:40px;top:100px;font-weight:400;font-size:40px;line-height:50px;color:var(--grigio-scuro)}
+.badge{width:278px;height:72px;border-radius:12px;background:var(--ottone);color:var(--bianco);display:flex;align-items:center;justify-content:center;gap:14px;font-weight:700;font-size:34px;transform-origin:50% 50%}
+
+@font-face{font-family:'Inter';font-weight:700;src:url('node_modules/@fontsource/inter/files/inter-latin-ext-700-normal.woff2') format('woff2');unicode-range:U+20AC}
+@font-face{font-family:'Inter';font-weight:800;src:url('node_modules/@fontsource/inter/files/inter-latin-ext-800-normal.woff2') format('woff2');unicode-range:U+20AC}
+@font-face{font-family:'Inter';font-weight:500;src:url('node_modules/@fontsource/inter/files/inter-latin-ext-500-normal.woff2') format('woff2');unicode-range:U+20AC}
+@font-face{font-family:'Inter';font-weight:400;src:url('node_modules/@fontsource/inter/files/inter-latin-ext-400-normal.woff2') format('woff2');unicode-range:U+20AC}
+
+/* ===== SPOT K · gancio: lo sai davvero? ===== */
+#g-head{left:80px;top:996px;color:var(--grigio-chiaro)}
+.trow2{left:80px;width:880px;height:122px}
+.trow2 .n{position:absolute;left:0;top:34px;font-weight:500;font-size:48px;line-height:56px;color:var(--bianco)}
+.trow2 .p{position:absolute;right:0;top:22px;font-weight:800;font-size:72px;line-height:80px;color:var(--rosso);transform-origin:50% 50%}
+
+/* tessere dei report */
+.tile{background:var(--bianco);border-radius:12px;transform-origin:50% 50%}
+.tile .k{position:absolute;left:40px;top:36px;font-weight:600;font-size:36px;line-height:44px;color:var(--grigio-scuro);white-space:nowrap}
+.tile .v{position:absolute;left:36px;top:92px;font-weight:800;font-size:112px;line-height:1;letter-spacing:-.04em;color:var(--nero);white-space:nowrap}
+.tile .d{position:absolute;left:40px;top:206px;font-weight:600;font-size:36px;line-height:44px;color:var(--ottone);white-space:nowrap}
+.tile .d span{color:var(--grigio-scuro);font-weight:400}
+.t2{left:80px;width:880px;height:270px}
+.t4 .v{font-size:88px;top:92px}
+.t4 .d{top:192px;font-size:34px;line-height:40px;white-space:normal;width:360px}
+.t4{width:430px;height:284px}
+.t4 .k{font-size:32px;left:36px}
+
+/* scena 3: ricavi nel tempo */
+#ch{left:80px;top:896px;width:880px;height:560px}
+#ch .s{position:absolute;left:40px;top:86px;font-weight:400;font-size:34px;line-height:42px;color:var(--grigio-scuro);white-space:nowrap}
+#ch .s b{color:var(--ottone);font-weight:700}
+.bar{position:absolute;bottom:110px;width:96px;border-radius:12px 12px 0 0;background:#D9D3CA;transform-origin:50% 100%}
+.bar.on{background:var(--ottone)}
+.ml{position:absolute;bottom:50px;width:96px;text-align:center;font-weight:500;font-size:32px;line-height:40px;color:var(--grigio-scuro)}
+#chbase{position:absolute;left:40px;bottom:108px;width:800px;height:2px;background:#ECE7E0}
+
+/* scena 4: servizi e ore di punta */
+#sv{left:80px;top:766px;width:880px;height:340px}
+.svr{position:absolute;left:40px;width:800px;height:60px}
+.svr .n{position:absolute;left:0;top:6px;font-weight:600;font-size:38px;line-height:48px;color:var(--nero);white-space:nowrap}
+.svr .b{position:absolute;left:330px;top:14px;height:32px;border-radius:8px;background:var(--ottone);transform-origin:0 50%}
+.svr .c{position:absolute;right:0;top:6px;font-weight:700;font-size:38px;line-height:48px;color:var(--nero)}
+#hp{left:80px;top:1136px;width:880px;height:340px}
+.hb{position:absolute;bottom:84px;width:64px;border-radius:10px 10px 0 0;background:#D9D3CA;transform-origin:50% 100%}
+.hb.on{background:var(--ottone)}
+.hl{position:absolute;bottom:32px;width:64px;text-align:center;font-weight:500;font-size:32px;line-height:40px;color:var(--grigio-scuro)}
+
+/* scena 5: tessere */
+.op{position:absolute;left:40px;width:350px;height:44px}
+.op .n{position:absolute;left:0;top:0;font-weight:600;font-size:34px;line-height:44px;color:var(--nero)}
+.op .b{position:absolute;left:110px;top:10px;height:24px;border-radius:6px;background:var(--ottone);transform-origin:0 50%}
+.op .c{position:absolute;right:0;top:0;font-weight:700;font-size:34px;line-height:44px;color:var(--nero)}
+
+/* ===== CHIUSURA ===== */
+#c-btn{left:80px;top:910px;width:880px;height:144px;border-radius:12px;background:var(--nero);color:var(--bianco);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:48px;transform-origin:50% 50%}
+#c-offer{left:80px;top:1098px;width:880px;text-align:center;font-weight:600;font-size:44px;line-height:56px;color:var(--nero)}
+#c-url{left:80px;top:1170px;width:880px;text-align:center;font-weight:400;font-size:40px;line-height:50px;color:var(--grigio-scuro)}
+</style>
+</head>
+<body>
+<div id="bgDark" class="abs bg"></div>
+
+<!-- 1 · GANCIO -->
+<img id="logoW" class="abs logo" src="logo-negativo.svg" alt="Beaflow">
+<div id="g-label" class="abs label">Il tuo salone · Report</div>
+<div id="g-sub" class="abs" style="top:472px"><span class="w">Come </span><span class="w">va </span><span class="w">il </span><span class="w">salone?</span></div>
+<div id="g-title" class="abs" style="top:566px"><span class="w">Lo </span><span class="w">sai</span><br><span class="w">davvero?</span></div>
+<div id="g-head" class="abs label">Questo mese</div>
+<div id="d1" class="abs div" style="top:1058px"></div>
+<div id="r1" class="abs trow2" style="top:1060px"><div class="n">Ricavi del mese</div><div class="p">?</div></div>
+<div id="d2" class="abs div" style="top:1180px"></div>
+<div id="r2" class="abs trow2" style="top:1182px"><div class="n">Servizio più richiesto</div><div class="p">?</div></div>
+<div id="d3" class="abs div" style="top:1302px"></div>
+<div id="r3" class="abs trow2" style="top:1304px"><div class="n">Ore di punta</div><div class="p">?</div></div>
+
+<!-- 2 · SVOLTA -->
+<div id="bgLight" class="abs bg"></div>
+<div id="v-label" class="abs label">Report</div>
+<div id="t2" class="abs title"><span class="w">Con </span><span class="w">Beaflow, </span><span class="w">i</span><br><span class="w">numeri </span><span class="w">parlano.</span></div>
+<div id="a1" class="abs tile t2" style="top:766px"><div class="k">Ricavi Totali</div><div class="v" id="a1v">0,00 €</div><div class="d">+12,4% <span>vs periodo precedente</span></div></div>
+<div id="a2" class="abs tile t2" style="top:1066px"><div class="k">Prenotazioni Totali</div><div class="v" id="a2v">0</div><div class="d">+8,1% <span>vs periodo precedente</span></div></div>
+
+<!-- 3 · RICAVI NEL TEMPO -->
+<div id="t3" class="abs title"><span class="w">Vedi </span><span class="w">come</span><br><span class="w">crescono </span><span class="w">i</span><br><span class="w">ricavi.</span></div>
+<div id="ch" class="abs tile"><div class="k">Ricavi nel Tempo</div><div class="s">Ricavi Totali: 4.820,00 € | Crescita: <b>+12,4%</b></div>
+  <div id="chbase"></div>
+  <div class="bar" id="b1" style="left:72px;height:150px"></div><div class="ml" style="left:72px">Giu</div>
+  <div class="bar" id="b2" style="left:202px;height:180px"></div><div class="ml" style="left:202px">Lug</div>
+  <div class="bar" id="b3" style="left:332px;height:165px"></div><div class="ml" style="left:332px">Ago</div>
+  <div class="bar" id="b4" style="left:462px;height:215px"></div><div class="ml" style="left:462px">Set</div>
+  <div class="bar" id="b5" style="left:592px;height:255px"></div><div class="ml" style="left:592px">Ott</div>
+  <div class="bar on" id="b6" style="left:722px;height:300px"></div><div class="ml" style="left:722px">Nov</div>
+</div>
+
+<!-- 4 · SERVIZI E ORE DI PUNTA -->
+<div id="t4" class="abs title"><span class="w">Servizi </span><span class="w">top </span><span class="w">e</span><br><span class="w">ore </span><span class="w">di </span><span class="w">punta.</span></div>
+<div id="sv" class="abs tile"><div class="k">Servizi Più Richiesti</div>
+  <div class="svr" style="top:110px"><div class="n">Trattamento viso</div><div class="b" id="sb1" style="width:340px"></div><div class="c">42</div></div>
+  <div class="svr" style="top:180px"><div class="n">Manicure</div><div class="b" id="sb2" style="width:283px"></div><div class="c">35</div></div>
+  <div class="svr" style="top:250px"><div class="n">Massaggio</div><div class="b" id="sb3" style="width:219px"></div><div class="c">27</div></div>
+</div>
+<div id="hp" class="abs tile"><div class="k">Ore di Punta</div></div>
+
+<!-- 5 · TESSERE -->
+<div id="t5" class="abs title"><span class="w">Clienti, </span><span class="w">team,</span><br><span class="w">scontrino:</span><br><span class="w">tutto </span><span class="w">chiaro.</span></div>
+<div id="q1" class="abs tile t4" style="left:80px;top:896px"><div class="k">Nuovi Clienti</div><div class="v" id="q1v">0</div><div class="d"><span>18,5% del totale</span></div></div>
+<div id="q2" class="abs tile t4" style="left:530px;top:896px"><div class="k">Tasso di Retention</div><div class="v" id="q2v">0%</div><div class="d"><span>126 clienti di ritorno</span></div></div>
+<div id="q3" class="abs tile t4" style="left:80px;top:1196px"><div class="k">Scontrino Medio</div><div class="v" id="q3v">0,00 €</div><div class="d"><span>Ricavo medio per completata</span></div></div>
+<div id="q4" class="abs tile t4" style="left:530px;top:1196px"><div class="k">Performance Operatori</div>
+  <div class="op" style="top:110px"><div class="n">Marta</div><div class="b" id="ob1" style="width:150px"></div><div class="c">62</div></div>
+  <div class="op" style="top:176px"><div class="n">Elisa</div><div class="b" id="ob2" style="width:116px"></div><div class="c">48</div></div>
+</div>
+
+<!-- 6 · CHIUSURA -->
+<div id="c-btn" class="abs">Inizia gratis</div>
+<div id="c-offer" class="abs">Piano Free · 0 € per sempre</div>
+<div id="c-url" class="abs">beaflow.it</div>
+<img id="logoK" class="abs logo" src="logo-positivo.svg" alt="Beaflow">
+
+<script>
+// barre delle ore di punta (9–17), generate qui per comodità
+(()=>{ const hp=document.getElementById('hp'); const H=[70,110,150,120,60,90,140,200,130];
+  H.forEach((h,i)=>{ const b=document.createElement('div'); b.className='hb'+(i===7?' on':''); b.id='hb'+i; b.style.left=(48+i*90)+'px'; b.style.height=h+'px'; hp.appendChild(b);
+    if(i%2===0){ const l=document.createElement('div'); l.className='hl'; l.style.left=(48+i*90)+'px'; l.textContent=String(9+i); hp.appendChild(l);} }); })();
+
+/* Motore a timeline (vedi 00-linee-guida/HANDOFF.md §7). seek(t) disegna lo stato esatto al secondo t. */
+const DURATION = 15, FPS = 30, SP = 0.8, SO = 0.9;
+function bez(x1,y1,x2,y2){ const cx=3*x1,bx=3*(x2-x1)-cx,ax=1-cx-bx,cy=3*y1,by=3*(y2-y1)-cy,ay=1-cy-by;
+  const fx=t=>((ax*t+bx)*t+cx)*t, fy=t=>((ay*t+by)*t+cy)*t, dx=t=>(3*ax*t+2*bx)*t+cx;
+  return p=>{ if(p<=0)return 0; if(p>=1)return 1; let t=p; for(let i=0;i<10;i++){ const e=fx(t)-p; if(Math.abs(e)<1e-6)break; const d=dx(t); if(Math.abs(d)<1e-6)break; t-=e/d; } return fy(Math.min(1,Math.max(0,t))); }; }
+function spr(k,c,dur){ const w0=Math.sqrt(k), z=c/(2*Math.sqrt(k)), wd=w0*Math.sqrt(1-z*z);
+  return p=>{ if(p>=1)return 1; const t=p*dur; return 1-Math.exp(-z*w0*t)*(Math.cos(wd*t)+(z*w0/wd)*Math.sin(wd*t)); }; }
+const E = { lin:p=>p, enter:bez(.22,1,.36,1), exit:bez(.4,0,1,1), inout:bez(.65,0,.35,1), spring:spr(420,26,SP), soft:spr(260,30,SO) };
+const reg = new Map();
+const $ = s=>[...document.querySelectorAll(s)];
+const els = t => typeof t==='string' ? $(t) : (t instanceof Element ? [t] : [...t].flatMap(els));
+const ent = el => { if(!reg.has(el)) reg.set(el,{p:{},fx:[]}); return reg.get(el); };
+function tw(target,s,d,props,e='enter'){ els(target).forEach(el=>{ const r=ent(el);
+  for(const k in props){ (r.p[k]??=[]).push({s,d,a:props[k][0],b:props[k][1],e}); r.p[k].sort((x,y)=>x.s-y.s);} }); }
+function stagger(target,s,gap,d,props,e){ els(target).forEach((el,i)=>tw(el,s+i*gap,d,props,e)); }
+function fx(target,fn){ els(target).forEach(el=>ent(el).fx.push(fn)); }
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+function val(list,t){ let cur=null; for(const k of list){ if(t>=k.s) cur=k; else break; }
+  if(!cur) return list[0].a; const p=cur.d<=0?1:clamp((t-cur.s)/cur.d); return cur.a+(cur.b-cur.a)*E[cur.e](p); }
+function seek(t){
+  reg.forEach((r,el)=>{
+    const v={}; for(const k in r.p) v[k]=val(r.p[k],t);
+    const has=k=>v[k]!==undefined;
+    if(has('x')||has('y')||has('scale')||has('sx')||has('sy')||has('rot'))
+      el.style.transform=`translate(${v.x??0}px,${v.y??0}px) rotate(${v.rot??0}deg) scale(${(v.scale??1)*(v.sx??1)},${(v.scale??1)*(v.sy??1)})`;
+    if(has('opacity')){ el.style.opacity=v.opacity; el.style.visibility=v.opacity<=0.001?'hidden':'visible'; }
+    if(has('blur')) el.style.filter=v.blur>0.05?`blur(${v.blur}px)`:'none';
+    for(const f of r.fx) f(el,t);
+  });
+}
+const titleIn = (sel,s) => stagger(`${sel} .w`, s, 0.05, 0.4, {opacity:[0,1], y:[24,0]}, 'enter');
+const fadeOut = (sel,s) => tw(sel, s, 0.3, {opacity:[1,0]}, 'exit');
+const hidden  = sel => tw(sel, 0, 0.01, {opacity:[0,0]});
+const fadeIn  = (sel,s,y=24) => tw(sel, s, 0.4, {opacity:[0,1], y:[y,0]}, 'enter');
+const pop = (sel,s,from=.8,y=0) => { hidden(sel); tw(sel,s,0.12,{opacity:[0,1]},'lin'); tw(sel,s,SP,{scale:[from,1],y:[y,0]},'spring'); };
+const out = (sel,s,dy=0) => tw(sel,s,0.3,dy?{opacity:[1,0],y:[0,dy]}:{opacity:[1,0]},'exit');
+
+/* Cambi scena: 0 · 2,5 · 5 · 8 · 10,5 · 13 · 15 (battito a 120 BPM = 0,5 s) */
+const CUT = 2.5;                       // nero -> crema, stacco netto sul battito
+const it = (n,dec=0)=>{ const [a,b]=n.toFixed(dec).split('.'); return a.replace(/\B(?=(\d{3})+(?!\d))/g,'.')+(b?','+b:''); };   // formato italiano: 4.820,00
+
+/* ---------- 1 · 0–2,5 · Come va il salone? Lo sai davvero? ---------- */
+tw('#logoW',0,0.01,{opacity:[1,1]}); tw('#logoW',CUT,0,{opacity:[1,0]});
+fadeIn('#g-label',0.05,12);
+titleIn('#g-sub',0.1);
+titleIn('#g-title',0.3);
+fadeIn('#g-head',0.6,12);
+const ROW=[0.8,1.15,1.5];
+['#r1','#r2','#r3'].forEach((r,i)=>{ const s=ROW[i];
+  hidden(r); tw(r,s,0.12,{opacity:[0,1]},'lin'); tw(r,s,SP,{y:[-60,0]},'spring');
+  hidden('#d'+(i+1)); tw('#d'+(i+1),s,0.3,{opacity:[0,1]},'lin');
+  tw(`${r} .p`,s+0.15,SP,{scale:[1.5,1]},'spring'); });
+
+/* ---------- 2 · 2,5–5 · Con Beaflow, i numeri parlano. ---------- */
+hidden('#bgLight'); tw('#bgLight',CUT,0,{opacity:[0,1]});
+tw('#logoK',0,0.01,{opacity:[0,0]}); tw('#logoK',CUT,0,{opacity:[0,1]});
+hidden('#v-label'); tw('#v-label',CUT+0.05,0.4,{opacity:[0,1],y:[12,0]});
+hidden('#t2 .w'); titleIn('#t2',CUT+0.25);
+[['#a1',1060-766],['#a2',1182-1066]].forEach(([a,dy],i)=>{ const s=CUT+i*0.1; hidden(a); tw(a,s,0.15,{opacity:[0,1]},'lin'); tw(a,s,SO,{y:[dy,0]},'soft'); });
+fx('#a1v',(el,t)=>{ el.textContent = it(4820*E.inout(clamp((t-2.9)/0.9)),2)+' €'; });
+fx('#a2v',(el,t)=>{ el.textContent = it(Math.round(186*E.inout(clamp((t-3.0)/0.9)))); });
+tw(['#a1 .d','#a2 .d'],0,0.01,{opacity:[0,0]}); tw('#a1 .d',3.85,0.3,{opacity:[0,1]},'lin'); tw('#a2 .d',3.95,0.3,{opacity:[0,1]},'lin');
+
+/* ---------- 3 · 5–8 · Vedi come crescono i ricavi. ---------- */
+out('#t2',4.55); tw('#a2',4.55,0.2,{opacity:[1,0]},'lin');
+tw('#a1',4.55,0.25,{opacity:[1,0]},'lin');
+hidden('#ch'); tw('#ch',4.65,0.15,{opacity:[0,1]},'lin'); tw('#ch',4.65,SO,{sy:[270/560,1],y:[766-896,0]},'soft');
+hidden('#t3 .w'); titleIn('#t3',5.05);
+['#b1','#b2','#b3','#b4','#b5','#b6'].forEach((b,i)=>{ const s=5.4+i*0.18; tw(b,0,0.01,{sy:[0,0]}); tw(b,s,SO,{sy:[0,1]},'soft'); });
+
+/* ---------- 4 · 8–10,5 · Servizi top e ore di punta. ---------- */
+out('#t3',7.55);
+tw('#ch',7.55,0.4,{sy:[1,340/560],y:[0,766-896]},'inout'); tw('#ch',7.75,0.2,{opacity:[1,0]},'lin');
+hidden('#sv'); tw('#sv',7.8,0.15,{opacity:[0,1]},'lin');
+hidden('#t4 .w'); titleIn('#t4',8.05);
+['#sb1','#sb2','#sb3'].forEach((b,i)=>{ tw(b,0,0.01,{sx:[0,0]}); tw(b,8.2+i*0.12,0.5,{sx:[0,1]},'enter'); });
+hidden('#hp'); tw('#hp',8.55,0.15,{opacity:[0,1]},'lin'); tw('#hp',8.55,SO,{y:[30,0]},'soft');
+for(let i=0;i<9;i++){ tw('#hb'+i,0,0.01,{sy:[0,0]}); tw('#hb'+i,8.75+i*0.07,SO,{sy:[0,1]},'soft'); }
+tw('#hb7',9.6,SP,{sx:[1.15,1]},'spring');
+
+/* ---------- 5 · 10,5–13 · Clienti, team, scontrino: tutto chiaro. ---------- */
+out('#t4',10.05); tw(['#sv','#hp'],10.05,0.3,{opacity:[1,0]},'lin');
+const Q=[10.3,10.45,10.6,10.75];
+['#q1','#q2','#q3','#q4'].forEach((q,i)=>pop(q,Q[i],.94,30));
+hidden('#t5 .w'); titleIn('#t5',10.55);
+fx('#q1v',(el,t)=>{ el.textContent = it(Math.round(24*E.inout(clamp((t-10.5)/0.7)))); });
+fx('#q2v',(el,t)=>{ el.textContent = it(Math.round(68*E.inout(clamp((t-10.65)/0.7))))+'%'; });
+fx('#q3v',(el,t)=>{ el.textContent = it(38.5*E.inout(clamp((t-10.8)/0.7)),2)+' €'; });
+['#ob1','#ob2'].forEach((b,i)=>{ tw(b,0,0.01,{sx:[0,0]}); tw(b,11.0+i*0.12,0.5,{sx:[0,1]},'enter'); });
+
+/* ---------- 6 · 13–15 · chiusura ---------- */
+out('#v-label',12.55); out('#t5',12.55); out(['#q1','#q2','#q4'],12.55);
+tw('#q3',12.55,0.4,{sx:[1,880/430],sy:[1,144/284],x:[0,(80+440)-(80+215)],y:[0,(910+72)-(1196+142)]},'inout'); tw('#q3',12.75,0.2,{opacity:[1,0]},'lin');
+hidden('#c-btn'); tw('#c-btn',12.8,0.12,{opacity:[0,1]},'lin'); tw('#c-btn',12.8,SO,{sx:[.96,1],sy:[.9,1]},'soft');
+tw('#c-btn',14.15,0.1,{scale:[1,.93]},'exit'); tw('#c-btn',14.25,SO,{scale:[.93,1]},'soft');
+hidden('#c-offer'); fadeIn('#c-offer',13.45,16);
+hidden('#c-url');   fadeIn('#c-url',13.6,16);
+
+function initGeometry(){
+  const k=720/240, tx=(520-720/2)-80, ty=640-250;   // logo grande: 720 px di larghezza, centrato
+  tw('#logoK',13.0,0.6,{x:[0,tx],y:[0,ty],scale:[1,k]},'inout');
+}
+
+window.ready = Promise.all([document.fonts.ready, ...[...document.images].map(i=>i.decode().catch(()=>{}))]).then(()=>{ initGeometry(); seek(0); return true; });
+if(location.search.includes('play')){ window.ready.then(()=>{ const t0=performance.now();
+  (function loop(){ seek(((performance.now()-t0)/1000)%DURATION); requestAnimationFrame(loop); })(); }); }
+</script>
+</body>
+</html>

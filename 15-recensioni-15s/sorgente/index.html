@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>Beaflow · Recensioni · 15 s · v1</title>
+<style>
+@font-face{font-family:'Inter';font-weight:400;src:url('node_modules/@fontsource/inter/files/inter-latin-400-normal.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-weight:500;src:url('node_modules/@fontsource/inter/files/inter-latin-500-normal.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-weight:600;src:url('node_modules/@fontsource/inter/files/inter-latin-600-normal.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-weight:700;src:url('node_modules/@fontsource/inter/files/inter-latin-700-normal.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-weight:800;src:url('node_modules/@fontsource/inter/files/inter-latin-800-normal.woff2') format('woff2')}
+@font-face{font-family:'Noto Serif';font-style:italic;font-weight:400;src:url('node_modules/@fontsource/noto-serif/files/noto-serif-latin-400-italic.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-weight:600;src:url('node_modules/@fontsource/inter/files/inter-latin-ext-600-normal.woff2') format('woff2');unicode-range:U+20AC}
+:root{
+  --nero:#111111; --bianco:#FFFFFF; --crema:#FBF8F4; --ottone:#775A18; --rosso:#FF5A4F;
+  --grigio-chiaro:#B5B5B5; --grigio-scuro:#5F5F5F; --divisore:#3A3A3A; --scheda-nero:#1E1E1E;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--nero)}
+body{position:relative;font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+.abs{position:absolute}
+.w{display:inline-block;white-space:pre}
+.bg{left:0;top:0;width:1080px;height:1920px}
+#bgDark{background:var(--nero)}
+#bgLight{background:var(--crema)}
+
+/* logo */
+.logo{left:80px;top:250px;width:240px;height:64px;transform-origin:0 0}
+#logoW{color:var(--bianco)}
+#logoK{color:var(--nero)}
+
+/* etichette maiuscole */
+.label{font-weight:700;font-size:32px;line-height:40px;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
+
+/* ===== GANCIO (nero) ===== */
+#g-label{left:80px;top:404px;color:var(--grigio-chiaro)}
+#g-title{left:76px;top:472px;font-weight:800;font-size:176px;line-height:1;letter-spacing:-.04em;color:var(--bianco);white-space:nowrap}
+#g-sub{left:80px;top:672px;font-weight:600;font-size:64px;line-height:80px;letter-spacing:-.02em;color:var(--bianco);white-space:nowrap}
+
+#call{left:80px;top:810px;width:880px;height:196px;background:var(--scheda-nero);border-radius:12px;transform-origin:50% 50%}
+#call .ico{position:absolute;left:39px;top:39px;width:112px;height:112px;border-radius:50%;background:var(--bianco);display:flex;align-items:center;justify-content:center}
+#halo{left:119px;top:849px;width:112px;height:112px;border-radius:50%;border:3px solid var(--bianco);transform-origin:50% 50%}
+#call .who{position:absolute;left:189px;top:38px;font-weight:600;font-size:48px;line-height:58px;color:var(--bianco)}
+#call .st{position:absolute;left:189px;top:100px;font-weight:400;font-size:40px;line-height:50px;color:var(--grigio-chiaro)}
+#call .tm{position:absolute;right:40px;top:70px;font-weight:500;font-size:40px;line-height:50px;color:var(--grigio-chiaro)}
+
+#g-head{left:80px;top:1072px;color:var(--grigio-chiaro)}
+#g-cnt{left:80px;top:1066px;width:880px;text-align:right;font-weight:700;font-size:44px;line-height:52px;color:var(--rosso);transform-origin:100% 50%}
+.div{left:80px;width:880px;height:2px;background:var(--divisore)}
+.row{left:80px;width:880px;height:122px}
+.row .n{position:absolute;left:0;top:34px;font-weight:500;font-size:48px;line-height:56px;color:var(--bianco)}
+.row .p{position:absolute;right:0;top:37px;font-weight:600;font-size:40px;line-height:50px;color:var(--rosso)}
+
+/* ===== SVOLTA E SCENE CHIARE (crema) ===== */
+#v-label{left:80px;top:404px;color:var(--ottone)}
+.title{left:78px;top:484px;font-weight:800;font-size:112px;line-height:1.04;letter-spacing:-.04em;color:var(--nero);white-space:nowrap}
+.card{left:80px;width:880px;height:190px;background:var(--bianco);border-radius:12px;transform-origin:50% 50%}
+.card .n{position:absolute;left:40px;top:36px;font-weight:600;font-size:48px;line-height:58px;color:var(--nero)}
+.card .s{position:absolute;left:40px;top:100px;font-weight:400;font-size:40px;line-height:50px;color:var(--grigio-scuro)}
+.badge{width:278px;height:72px;border-radius:12px;background:var(--ottone);color:var(--bianco);display:flex;align-items:center;justify-content:center;gap:14px;font-weight:700;font-size:34px;transform-origin:50% 50%}
+
+
+/* ===== SPOT M · gancio: poche stelle ===== */
+#pr{left:80px;top:1070px;width:880px;height:330px;background:var(--scheda-nero);border-radius:12px;transform-origin:50% 50%}
+#pr .lb{position:absolute;left:40px;top:40px;color:var(--grigio-chiaro)}
+#pr svg{position:absolute;left:36px;top:104px}
+#pr .v{position:absolute;left:128px;top:96px;font-weight:800;font-size:96px;line-height:1;letter-spacing:-.04em;color:var(--bianco)}
+#pr .c{position:absolute;left:340px;top:126px;font-weight:500;font-size:40px;line-height:50px;color:var(--grigio-chiaro)}
+#prl{left:120px;top:1316px;font-weight:600;font-size:40px;line-height:50px;color:var(--rosso);transform-origin:0 50%;white-space:nowrap}
+
+/* scena 2: inviti */
+#vl{left:80px;top:896px;width:880px;height:520px;background:var(--bianco);border-radius:12px;transform-origin:50% 0%}
+#vl .lb{position:absolute;left:40px;top:40px;color:var(--grigio-scuro)}
+.vr{left:120px;width:800px;height:120px}
+.vr .n{position:absolute;left:0;top:12px;font-weight:600;font-size:44px;line-height:54px;color:var(--nero)}
+.vr .s{position:absolute;left:0;top:66px;font-weight:400;font-size:36px;line-height:44px;color:var(--grigio-scuro)}
+.inv{width:330px}
+
+/* scene 3–4: il messaggio */
+#ms{left:80px;top:766px;width:880px;height:520px;background:var(--bianco);border-radius:12px;transform-origin:50% 0%}
+#ms .ic{position:absolute;left:40px;top:40px;width:80px;height:80px;border-radius:50%;background:var(--nero);color:var(--bianco);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:34px}
+#ms .who{position:absolute;left:144px;top:42px;font-weight:600;font-size:44px;line-height:54px;color:var(--nero)}
+#ms .tm{position:absolute;left:144px;top:96px;font-weight:400;font-size:34px;line-height:40px;color:var(--grigio-scuro)}
+#ms .t{position:absolute;left:40px;top:160px;width:800px;font-weight:500;font-size:44px;line-height:56px;color:var(--nero)}
+.st{position:absolute;top:340px;width:120px;height:120px}
+.st svg{position:absolute;left:0;top:0}
+#rv{left:80px;top:1316px;width:880px;height:190px;background:var(--bianco);border-radius:12px;transform-origin:50% 50%}
+#rv .n{position:absolute;left:40px;top:36px;font-weight:600;font-size:44px;line-height:54px;color:var(--nero)}
+#rv .t{position:absolute;left:40px;top:100px;font-weight:400;font-size:40px;line-height:50px;color:var(--grigio-scuro)}
+#rv .mini{position:absolute;right:40px;top:44px}
+
+/* scena 5: la scheda cresce */
+#pf{left:80px;top:766px;width:880px;height:430px;background:var(--bianco);border-radius:12px;transform-origin:50% 50%}
+#pf .lb{position:absolute;left:40px;top:40px;color:var(--grigio-scuro)}
+#pf .big{position:absolute;left:36px;top:110px}
+#pf .v{position:absolute;left:170px;top:104px;font-weight:800;font-size:144px;line-height:1;letter-spacing:-.04em;color:var(--nero)}
+#pf .c{position:absolute;left:40px;top:280px;font-weight:600;font-size:48px;line-height:58px;color:var(--nero)}
+#pf .u{position:absolute;left:40px;top:346px;font-weight:600;font-size:40px;line-height:50px;color:var(--ottone)}
+
+/* ===== CHIUSURA ===== */
+#c-btn{left:80px;top:910px;width:880px;height:144px;border-radius:12px;background:var(--nero);color:var(--bianco);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:48px;transform-origin:50% 50%}
+#c-offer{left:80px;top:1098px;width:880px;text-align:center;font-weight:600;font-size:44px;line-height:56px;color:var(--nero)}
+#c-url{left:80px;top:1170px;width:880px;text-align:center;font-weight:400;font-size:40px;line-height:50px;color:var(--grigio-scuro)}
+</style>
+</head>
+<body>
+<div id="bgDark" class="abs bg"></div>
+
+<!-- 1 · GANCIO -->
+<img id="logoW" class="abs logo" src="logo-negativo.svg" alt="Beaflow">
+<div id="g-label" class="abs label">Il tuo salone · Recensioni</div>
+<div id="g-sub" class="abs" style="top:472px"><span class="w">Clienti </span><span class="w">contenti,</span><br><span class="w">ma </span><span class="w">online:</span></div>
+<div id="g-title" class="abs" style="top:660px"><span class="w">Poche</span><br><span class="w">stelle?</span></div>
+<div id="pr" class="abs"><div class="lb label">Il tuo salone</div><svg  width="80" height="80" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z" fill="#B5B5B5" stroke="none" stroke-width="0" stroke-linejoin="round"/></svg><div class="v">3,8</div><div class="c">3 recensioni</div></div>
+<div id="prl" class="abs">Ultima recensione: 5 mesi fa</div>
+
+<!-- 2 · SVOLTA -->
+<div id="bgLight" class="abs bg"></div>
+<div id="v-label" class="abs label">Recensioni</div>
+<div id="t2" class="abs title"><span class="w">Con </span><span class="w">Beaflow,</span><br><span class="w">le </span><span class="w">recensioni</span><br><span class="w">arrivano.</span></div>
+<div id="vl" class="abs"><div class="lb label">Visite di oggi</div></div>
+<div id="v1" class="abs vr" style="top:986px"><div class="n">Giulia R.</div><div class="s">Trattamento viso</div></div>
+<div id="v2" class="abs vr" style="top:1126px"><div class="n">Marco B.</div><div class="s">Massaggio</div></div>
+<div id="v3" class="abs vr" style="top:1266px"><div class="n">Anna S.</div><div class="s">Manicure</div></div>
+<div id="iv1" class="abs badge inv" style="left:590px;top:1004px"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Invito inviato</div>
+<div id="iv2" class="abs badge inv" style="left:590px;top:1144px"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Invito inviato</div>
+<div id="iv3" class="abs badge inv" style="left:590px;top:1284px"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Invito inviato</div>
+
+
+<!-- 3–4 · IL MESSAGGIO -->
+<div id="t3" class="abs title"><span class="w">Dopo </span><span class="w">la </span><span class="w">visita,</span><br><span class="w">parte </span><span class="w">l'invito.</span></div>
+<div id="ms" class="abs"><div class="ic">S</div><div class="who">Salone</div><div class="tm">Messaggio · ora</div><div class="t">Com'è andata al Salone? Lascia una recensione.</div>
+<div class="st" id="s0" style="left:40px"><svg  width="120" height="120" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z" fill="none" stroke="#D9D3CA" stroke-width="1.4" stroke-linejoin="round"/></svg><svg class="on" id="so0" width="120" height="120" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z" fill="#775A18" stroke="#775A18" stroke-width="1.4" stroke-linejoin="round"/></svg></div>
+<div class="st" id="s1" style="left:200px"><svg  width="120" height="120" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z" fill="none" stroke="#D9D3CA" stroke-width="1.4" stroke-linejoin="round"/></svg><svg class="on" id="so1" width="120" height="120" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z" fill="#775A18" stroke="#775A18" stroke-width="1.4" stroke-linejoin="round"/></svg></div>
+<div class="st" id="s2" style="left:360px"><svg  width="120" height="120" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z" fill="none" stroke="#D9D3CA" stroke-width="1.4" stroke-linejoin="round"/></svg><svg class="on" id="so2" width="120" height="120" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z" fill="#775A18" stroke="#775A18" stroke-width="1.4" stroke-linejoin="round"/></svg></div>
+<div class="st" id="s3" style="left:520px"><svg  width="120" height="120" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z" fill="none" stroke="#D9D3CA" stroke-width="1.4" stroke-linejoin="round"/></svg><svg class="on" id="so3" width="120" height="120" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z" fill="#775A18" stroke="#775A18" stroke-width="1.4" stroke-linejoin="round"/></svg></div>
+<div class="st" id="s4" style="left:680px"><svg  width="120" height="120" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z" fill="none" stroke="#D9D3CA" stroke-width="1.4" stroke-linejoin="round"/></svg><svg class="on" id="so4" width="120" height="120" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z" fill="#775A18" stroke="#775A18" stroke-width="1.4" stroke-linejoin="round"/></svg></div>
+</div>
+<div id="t4" class="abs title"><span class="w">Cinque </span><span class="w">stelle,</span><br><span class="w">in </span><span class="w">un </span><span class="w">tocco.</span></div>
+<div id="rv" class="abs"><div class="n">Giulia R.</div><div class="t">«Bravissimi, torno presto.»</div><div class="mini"><svg  width="36" height="36" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z" fill="#775A18" stroke="none" stroke-width="0" stroke-linejoin="round"/></svg><svg  width="36" height="36" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z" fill="#775A18" stroke="none" stroke-width="0" stroke-linejoin="round"/></svg><svg  width="36" height="36" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z" fill="#775A18" stroke="none" stroke-width="0" stroke-linejoin="round"/></svg><svg  width="36" height="36" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z" fill="#775A18" stroke="none" stroke-width="0" stroke-linejoin="round"/></svg><svg  width="36" height="36" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z" fill="#775A18" stroke="none" stroke-width="0" stroke-linejoin="round"/></svg></div></div>
+<div id="finger" class="abs" style="left:0;top:0;width:80px;height:80px;border-radius:50%;background:var(--nero);transform-origin:50% 50%"></div>
+
+<!-- 5 · CRESCITA -->
+<div id="t5" class="abs title"><span class="w">Più </span><span class="w">stelle, </span><span class="w">più</span><br><span class="w">clienti </span><span class="w">nuovi.</span></div>
+<div id="pf" class="abs"><div class="lb label">Il tuo salone</div><div class="big"><svg  width="120" height="120" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z" fill="#775A18" stroke="none" stroke-width="0" stroke-linejoin="round"/></svg></div><div class="v" id="rate">3,8</div><div class="c" id="cnt">3 recensioni</div><div class="u">Ultima recensione: oggi</div></div>
+
+<!-- 6 · CHIUSURA -->
+<div id="c-btn" class="abs">Inizia gratis</div>
+<div id="c-offer" class="abs">Piano Free · 0 € per sempre</div>
+<div id="c-url" class="abs">beaflow.it</div>
+<img id="logoK" class="abs logo" src="logo-positivo.svg" alt="Beaflow">
+
+<script>
+
+/* Motore a timeline (vedi 00-linee-guida/HANDOFF.md §7). seek(t) disegna lo stato esatto al secondo t. */
+const DURATION = 15, FPS = 30, SP = 0.8, SO = 0.9;
+function bez(x1,y1,x2,y2){ const cx=3*x1,bx=3*(x2-x1)-cx,ax=1-cx-bx,cy=3*y1,by=3*(y2-y1)-cy,ay=1-cy-by;
+  const fx=t=>((ax*t+bx)*t+cx)*t, fy=t=>((ay*t+by)*t+cy)*t, dx=t=>(3*ax*t+2*bx)*t+cx;
+  return p=>{ if(p<=0)return 0; if(p>=1)return 1; let t=p; for(let i=0;i<10;i++){ const e=fx(t)-p; if(Math.abs(e)<1e-6)break; const d=dx(t); if(Math.abs(d)<1e-6)break; t-=e/d; } return fy(Math.min(1,Math.max(0,t))); }; }
+function spr(k,c,dur){ const w0=Math.sqrt(k), z=c/(2*Math.sqrt(k)), wd=w0*Math.sqrt(1-z*z);
+  return p=>{ if(p>=1)return 1; const t=p*dur; return 1-Math.exp(-z*w0*t)*(Math.cos(wd*t)+(z*w0/wd)*Math.sin(wd*t)); }; }
+const E = { lin:p=>p, enter:bez(.22,1,.36,1), exit:bez(.4,0,1,1), inout:bez(.65,0,.35,1), spring:spr(420,26,SP), soft:spr(260,30,SO) };
+const reg = new Map();
+const $ = s=>[...document.querySelectorAll(s)];
+const els = t => typeof t==='string' ? $(t) : (t instanceof Element ? [t] : [...t].flatMap(els));
+const ent = el => { if(!reg.has(el)) reg.set(el,{p:{},fx:[]}); return reg.get(el); };
+function tw(target,s,d,props,e='enter'){ els(target).forEach(el=>{ const r=ent(el);
+  for(const k in props){ (r.p[k]??=[]).push({s,d,a:props[k][0],b:props[k][1],e}); r.p[k].sort((x,y)=>x.s-y.s);} }); }
+function stagger(target,s,gap,d,props,e){ els(target).forEach((el,i)=>tw(el,s+i*gap,d,props,e)); }
+function fx(target,fn){ els(target).forEach(el=>ent(el).fx.push(fn)); }
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+function val(list,t){ let cur=null; for(const k of list){ if(t>=k.s) cur=k; else break; }
+  if(!cur) return list[0].a; const p=cur.d<=0?1:clamp((t-cur.s)/cur.d); return cur.a+(cur.b-cur.a)*E[cur.e](p); }
+function seek(t){
+  reg.forEach((r,el)=>{
+    const v={}; for(const k in r.p) v[k]=val(r.p[k],t);
+    const has=k=>v[k]!==undefined;
+    if(has('x')||has('y')||has('scale')||has('sx')||has('sy')||has('rot'))
+      el.style.transform=`translate(${v.x??0}px,${v.y??0}px) rotate(${v.rot??0}deg) scale(${(v.scale??1)*(v.sx??1)},${(v.scale??1)*(v.sy??1)})`;
+    if(has('opacity')){ el.style.opacity=v.opacity; el.style.visibility=v.opacity<=0.001?'hidden':'visible'; }
+    if(has('blur')) el.style.filter=v.blur>0.05?`blur(${v.blur}px)`:'none';
+    for(const f of r.fx) f(el,t);
+  });
+}
+const titleIn = (sel,s) => stagger(`${sel} .w`, s, 0.05, 0.4, {opacity:[0,1], y:[24,0]}, 'enter');
+const fadeOut = (sel,s) => tw(sel, s, 0.3, {opacity:[1,0]}, 'exit');
+const hidden  = sel => tw(sel, 0, 0.01, {opacity:[0,0]});
+const fadeIn  = (sel,s,y=24) => tw(sel, s, 0.4, {opacity:[0,1], y:[y,0]}, 'enter');
+const pop = (sel,s,from=.8,y=0) => { hidden(sel); tw(sel,s,0.12,{opacity:[0,1]},'lin'); tw(sel,s,SP,{scale:[from,1],y:[y,0]},'spring'); };
+const out = (sel,s,dy=0) => tw(sel,s,0.3,dy?{opacity:[1,0],y:[0,dy]}:{opacity:[1,0]},'exit');
+
+/* Cambi scena: 0 · 2,5 · 5 · 8 · 10,5 · 13 · 15 (battito a 120 BPM = 0,5 s) */
+const CUT = 2.5;                       // nero -> crema, stacco netto sul battito
+
+/* ---------- 1 · 0–2,5 · Clienti contenti, ma online: poche stelle? ---------- */
+tw('#logoW',0,0.01,{opacity:[1,1]}); tw('#logoW',CUT,0,{opacity:[1,0]});
+fadeIn('#g-label',0.05,12);
+titleIn('#g-sub',0.1);
+titleIn('#g-title',0.4);
+pop('#pr',0.85,.94,30);
+hidden('#prl'); tw('#prl',1.45,0.12,{opacity:[0,1]},'lin'); tw('#prl',1.45,SP,{scale:[1.12,1]},'spring');
+
+/* ---------- 2 · 2,5–5 · Con Beaflow, le recensioni arrivano. ---------- */
+hidden('#bgLight'); tw('#bgLight',CUT,0,{opacity:[0,1]});
+tw('#logoK',0,0.01,{opacity:[0,0]}); tw('#logoK',CUT,0,{opacity:[0,1]});
+hidden('#v-label'); tw('#v-label',CUT+0.05,0.4,{opacity:[0,1],y:[12,0]});
+hidden('#t2 .w'); titleIn('#t2',CUT+0.25);
+hidden('#vl'); tw('#vl',CUT,0.15,{opacity:[0,1]},'lin'); tw('#vl',CUT,SO,{sy:[330/520,1],y:[1070-896,0]},'soft');
+['#v1','#v2','#v3'].forEach((v,i)=>{ const s=2.6+i*0.12; hidden(v); tw(v,s,0.15,{opacity:[0,1]},'lin'); tw(v,s,SO,{y:[40,0]},'soft'); });
+pop('#iv1',3.4,.8); pop('#iv2',3.7,.8); pop('#iv3',4.0,.8);
+
+/* ---------- 3 · 5–8 · Dopo la visita, parte l'invito. ---------- */
+out('#t2',4.55); tw(['#v2','#v3','#iv1','#iv2','#iv3','#v1'],4.55,0.2,{opacity:[1,0]},'lin');
+tw('#vl',4.55,0.3,{opacity:[1,0]},'lin');
+hidden('#ms'); tw('#ms',4.75,0.15,{opacity:[0,1]},'lin'); tw('#ms',4.75,SP,{y:[-40,0],scale:[.96,1]},'spring');
+hidden('#t3 .w'); titleIn('#t3',5.05);
+for(let i=0;i<5;i++){ pop('#s'+i,5.6+i*0.08,.6); hidden('#so'+i); }
+
+/* ---------- 4 · 8–10,5 · Cinque stelle, in un tocco. ---------- */
+out('#t3',7.55);
+hidden('#t4 .w'); titleIn('#t4',8.05);
+hidden('#finger');
+tw('#finger',8.2,0.01,{x:[80+40+640+20,80+40+640+20],y:[766+340+20,766+340+20]});
+tw('#finger',8.2,0.12,{opacity:[0,.18]},'lin'); tw('#finger',8.2,SP,{scale:[1.6,1]},'spring'); tw('#finger',8.7,0.2,{opacity:[.18,0]},'lin');
+for(let i=0;i<5;i++){ const s=8.3+i*0.09; tw('#so'+i,s,0.08,{opacity:[0,1]},'lin'); tw('#s'+i,s,SP,{scale:[1.25,1]},'spring'); }
+pop('#rv',9.1,.94,30);
+
+/* ---------- 5 · 10,5–13 · Più stelle, più clienti nuovi. ---------- */
+out('#t4',10.05); out('#rv',10.05);
+tw('#ms',10.05,0.4,{sy:[1,430/520]},'inout'); tw('#ms',10.25,0.2,{opacity:[1,0]},'lin');
+hidden('#pf'); tw('#pf',10.3,0.15,{opacity:[0,1]},'lin'); tw('#pf',10.3,SO,{scale:[.97,1]},'soft');
+hidden('#t5 .w'); titleIn('#t5',10.55);
+fx('#rate',(el,t)=>{ el.textContent = (3.8+1.1*E.inout(clamp((t-10.8)/0.9))).toFixed(1).replace('.',','); });
+fx('#cnt',(el,t)=>{ el.textContent = Math.round(3+45*E.inout(clamp((t-10.8)/0.9)))+' recensioni'; });
+tw('#rate',11.7,SP,{scale:[1.1,1]},'spring');
+
+/* ---------- 6 · 13–15 · chiusura ---------- */
+out('#v-label',12.55); out('#t5',12.55);
+tw('#pf',12.55,0.4,{sy:[1,144/430],y:[0,(910+72)-(766+215)]},'inout'); tw('#pf',12.75,0.2,{opacity:[1,0]},'lin');
+hidden('#c-btn'); tw('#c-btn',12.8,0.12,{opacity:[0,1]},'lin'); tw('#c-btn',12.8,SO,{sx:[.96,1],sy:[.9,1]},'soft');
+tw('#c-btn',14.15,0.1,{scale:[1,.93]},'exit'); tw('#c-btn',14.25,SO,{scale:[.93,1]},'soft');
+hidden('#c-offer'); fadeIn('#c-offer',13.45,16);
+hidden('#c-url');   fadeIn('#c-url',13.6,16);
+
+function initGeometry(){
+  const k=720/240, tx=(520-720/2)-80, ty=640-250;   // logo grande: 720 px di larghezza, centrato
+  tw('#logoK',13.0,0.6,{x:[0,tx],y:[0,ty],scale:[1,k]},'inout');
+}
+
+window.ready = Promise.all([document.fonts.ready, ...[...document.images].map(i=>i.decode().catch(()=>{}))]).then(()=>{ initGeometry(); seek(0); return true; });
+if(location.search.includes('play')){ window.ready.then(()=>{ const t0=performance.now();
+  (function loop(){ seek(((performance.now()-t0)/1000)%DURATION); requestAnimationFrame(loop); })(); }); }
+</script>
+</body>
+</html>

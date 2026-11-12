@@ -24,6 +24,8 @@ Archivio di lavoro degli spot motion design 9:16 per Beaflow: regole, testi, sor
 11-scheda-cliente-15s/           v1 da approvare
 12-pagamenti-15s/                v1 da approvare
 13-lista-attesa-15s/             v1 da approvare
+14-report-15s/                   v1 da approvare
+15-recensioni-15s/               v1 da approvare
 comune/musica/                  base musicale della serie (120 BPM)
 comune/logo/                    logo Beaflow SVG (negativo e positivo)
 strumenti/                      script di servizio

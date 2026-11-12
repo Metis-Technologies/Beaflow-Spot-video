@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>Spot Beaflow · Online in 5 minuti · 9:16 · 15 s</title>
+<style>
+@font-face{font-family:"Noto Serif";font-weight:400;font-style:normal;src:url(node_modules/@fontsource/noto-serif/files/noto-serif-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Noto Serif";font-weight:400;font-style:italic;src:url(node_modules/@fontsource/noto-serif/files/noto-serif-latin-400-italic.woff2) format("woff2")}
+@font-face{font-family:"Inter";font-weight:500;src:url(node_modules/@fontsource/inter/files/inter-latin-500-normal.woff2) format("woff2")}
+@font-face{font-family:"Inter";font-weight:600;src:url(node_modules/@fontsource/inter/files/inter-latin-600-normal.woff2) format("woff2")}
+@font-face{font-family:"Inter";font-weight:700;src:url(node_modules/@fontsource/inter/files/inter-latin-700-normal.woff2) format("woff2")}
+:root{ --cream1:#FBF8F4; --cream2:#F3E8DC; --ink:#1A1A1A; --brass:#775A18; --muted:#6b665f; --line:#d9d5ce; }
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--cream1)}
+body{font-family:Inter,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+#stage{position:absolute;inset:0;overflow:hidden;background:linear-gradient(180deg,var(--cream1) 0%,var(--cream2) 100%)}
+.abs{position:absolute}
+.title{position:absolute;left:80px;width:880px;font:400 96px/1.05 "Noto Serif",serif;letter-spacing:-.02em}
+.title .w{display:inline-block;white-space:pre}
+.title.big{font-size:156px;line-height:1.02;letter-spacing:-.03em}
+.sub{position:absolute;left:80px;width:880px;font:500 44px/1.2 Inter,sans-serif;color:var(--muted)}
+.shadow{box-shadow:0 30px 60px -28px rgba(70,45,10,.38),0 6px 18px -8px rgba(70,45,10,.14)}
+.card{position:absolute;left:70px;width:890px;background:#fff;border-radius:44px;border:1px solid rgba(0,0,0,.06);padding:44px}
+.lbl{font:700 24px Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+/* striscia: tre passaggi + cronometro */
+#strip{left:80px;top:270px;width:880px;height:76px;display:flex;align-items:center;justify-content:space-between;z-index:20}
+#steps{display:flex;align-items:center}
+.st{width:68px;height:68px;border-radius:50%;background:#fff;border:3px solid var(--line);display:grid;place-items:center;font:700 30px Inter,sans-serif;color:var(--muted)}
+.st.act{border-color:var(--brass);color:var(--brass)}
+.st.done{background:var(--ink);border-color:var(--ink);color:#fff}
+.st svg{display:none}.st.done svg{display:block}.st.done span{display:none}
+.ln{position:relative;width:74px;height:6px;background:var(--line);margin:0 10px;border-radius:6px;overflow:hidden}
+.ln i{position:absolute;inset:0;background:var(--ink);transform-origin:0 50%}
+#timer{height:68px;padding:0 28px 0 22px;border-radius:34px;background:#fff;border:1px solid rgba(0,0,0,.06);display:flex;align-items:center;gap:14px;font:700 36px Inter,sans-serif}
+/* interruttore */
+#tog{top:0;height:170px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;z-index:15}
+#tog b{display:block;font:600 44px Inter,sans-serif}
+#tog small{display:block;font:500 30px Inter,sans-serif;color:var(--muted);margin-top:6px}
+#sw{position:relative;width:150px;height:84px;border-radius:42px;background:var(--line);flex:none}
+#knob{position:absolute;left:8px;top:8px;width:68px;height:68px;border-radius:50%;background:#fff;box-shadow:0 4px 10px rgba(0,0,0,.25)}
+#togRing{left:70px;top:0;width:890px;height:170px;border-radius:44px;border:5px solid var(--brass);z-index:14}
+/* scena 2 */
+#field{height:104px;border-radius:26px;border:1.5px solid var(--line);margin-top:14px;display:flex;align-items:center;padding:0 30px;font:500 40px Inter,sans-serif;white-space:pre}
+#cur2{display:inline-block;width:3px;height:46px;background:var(--ink);margin-left:3px}
+#chips{display:flex;flex-wrap:wrap;gap:16px;margin-top:18px}
+.chip{font:600 32px Inter,sans-serif;padding:18px 30px;border-radius:999px;border:1.5px solid rgba(0,0,0,.14);background:#fff}
+.chip.on,#fly{background:#000;color:#fff;border-color:#000}
+#fly{position:absolute;left:0;top:0;font:600 32px Inter,sans-serif;padding:18px 30px;border-radius:999px;border:1.5px solid #000;z-index:18}
+/* scena 3 */
+#c3 .hd{height:74px;display:flex;align-items:center;justify-content:flex-end}
+.rw{height:96px;border-top:1.5px solid #eee;display:flex;align-items:center;gap:22px;font:600 34px Inter,sans-serif}
+.rw i{width:44px;height:44px;border-radius:50%;background:var(--ink);display:grid;place-items:center;flex:none}
+.rw span{margin-left:auto;font:500 30px Inter,sans-serif;color:var(--muted)}
+.rw em{font:700 34px Inter,sans-serif;font-style:normal;width:170px;text-align:right}
+/* scena 4-5 */
+#pub{left:260px;top:960px;width:560px;height:132px;border-radius:66px;background:#000;color:#fff;display:grid;place-items:center;font:600 48px Inter,sans-serif;box-shadow:0 40px 60px -30px rgba(0,0,0,.55)}
+#notif{top:850px;height:170px;display:flex;align-items:center;gap:28px;padding:0 36px}
+#notif .ic{width:96px;height:96px;border-radius:26px;background:#000;color:#fff;display:grid;place-items:center;font:italic 400 60px "Noto Serif",serif;flex:none}
+#notif b{display:block;font:700 34px Inter,sans-serif}
+#notif span{display:block;font:500 29px Inter,sans-serif;color:var(--muted);margin-top:6px;white-space:nowrap}
+#slot{left:215px;top:1070px;width:600px;height:92px;border-radius:46px;background:#fff;border:1px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;gap:18px;font:600 34px Inter,sans-serif}
+#slot i{width:44px;height:44px;border-radius:50%;background:var(--brass);display:grid;place-items:center}
+#cursor{left:0;top:0;width:92px;height:92px;margin:-46px 0 0 -46px;border-radius:50%;background:rgba(26,26,26,.14);border:4px solid rgba(26,26,26,.6);z-index:40}
+/* chiusura */
+#logo{left:0;width:1080px;top:610px;text-align:center;font:italic 400 220px/1.2 "Noto Serif",serif;letter-spacing:-.03em;white-space:nowrap}
+#logo span{display:inline-block}
+#cta{left:260px;width:560px;top:1010px;height:144px;border-radius:72px;background:#000;color:#fff;display:grid;place-items:center;font:600 52px Inter,sans-serif;box-shadow:0 40px 60px -30px rgba(0,0,0,.55)}
+#url{left:0;width:1080px;top:1214px;text-align:center;font:500 44px Inter,sans-serif}
+#plan{left:0;width:1080px;top:1292px;text-align:center;font:500 34px Inter,sans-serif;color:var(--muted)}
+</style>
+</head>
+<body>
+<div id="stage">
+  <!-- striscia in alto: resta dalla scena 1 alla 4 -->
+  <div id="strip" class="abs">
+    <div id="steps">
+      <div class="st" id="st1"><span>1</span><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+      <div class="ln"><i id="ln1"></i></div>
+      <div class="st" id="st2"><span>2</span><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+      <div class="ln"><i id="ln2"></i></div>
+      <div class="st" id="st3"><span>3</span><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+    </div>
+    <div id="timer" class="shadow"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#775A18" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="14" r="8"/><path d="M12 10v4l2.5 2M9 2h6M12 2v4"/></svg><span id="tv">0:00</span></div>
+  </div>
+
+  <!-- interruttore: spento all'inizio, acceso al passaggio 3 -->
+  <div id="togRing" class="abs"></div>
+  <div id="tog" class="card shadow">
+    <div><b>Prenotazioni online</b><small id="togState">Chiuse</small></div>
+    <div id="sw"><div id="knob"></div></div>
+  </div>
+
+  <!-- SCENA 1 -->
+  <h1 class="title big" id="t1" style="top:420px"><span class="w">Online </span><span class="w">in</span><br><span class="w">5 </span><span class="w">minuti.</span></h1>
+
+  <!-- SCENA 2 -->
+  <h1 class="title" id="t2" style="top:400px"><span class="w">1. </span><span class="w">Crea </span><span class="w">l’account</span></h1>
+  <div id="c2" class="card shadow" style="top:560px">
+    <div class="lbl">Nome attività</div>
+    <div id="field"><span id="typed"></span><span id="cur2"></span></div>
+    <div class="lbl" style="margin-top:38px">Che attività hai?</div>
+    <div id="chips"><span class="chip" id="chipSalone">Salone</span><span class="chip">Barbiere</span><span class="chip">Beauty Center</span><span class="chip">Spa</span><span class="chip">Nails</span><span class="chip">Massage</span><span class="chip">Tattoo</span></div>
+  </div>
+  <div id="fly">Salone</div>
+
+  <!-- SCENA 3 -->
+  <h1 class="title" id="t3" style="top:400px"><span class="w">2. </span><span class="w">Orari </span><span class="w">e </span><span class="w">servizi</span></h1>
+  <div class="sub" id="sub3" style="top:512px">Già pronti per la tua attività.</div>
+  <div id="c3" class="card shadow" style="top:620px">
+    <div class="hd"><span class="lbl">Preset</span></div>
+    <div class="rw"><i></i>Orari<span>Mar – Sab</span><em>9 – 19</em></div>
+    <div class="rw"><i></i>Taglio e piega<span>1 h</span><em>35,00 €</em></div>
+    <div class="rw"><i></i>Colore<span>1 h 30</span><em>60,00 €</em></div>
+    <div class="rw"><i></i>Piega<span>30 min</span><em>20,00 €</em></div>
+  </div>
+
+  <!-- SCENA 4 -->
+  <h1 class="title" id="t4" style="top:400px"><span class="w">3. </span><span class="w">Pubblica</span></h1>
+  <div id="pub" class="abs">Pubblica</div>
+
+  <!-- SCENA 5 -->
+  <h1 class="title" id="t5" style="top:290px"><span class="w">Ecco </span><span class="w">la </span><span class="w">prima</span><br><span class="w">prenotazione.</span></h1>
+  <div id="notif" class="card shadow"><div class="ic">B</div><div><b>Nuova prenotazione</b><span>Giulia R. · Taglio e piega · Sab 10:30</span></div></div>
+  <div id="slot" class="abs shadow"><i><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></i>Sab 10:30 · Confermata</div>
+
+  <div id="cursor" class="abs"></div>
+
+  <!-- SCENA 6 -->
+  <div id="logo" class="abs"><span>B</span><span>e</span><span>a</span><span>f</span><span>l</span><span>o</span><span>w</span></div>
+  <div id="cta" class="abs">Inizia gratis</div>
+  <div id="url" class="abs">beaflow.it</div>
+  <div id="plan" class="abs">Piano Free · 0 € per sempre</div>
+</div>
+
+<script>
+/* Timeline deterministica: seek(t) disegna il fotogramma al secondo t.
+   tw(target, inizio, durata, {prop:[da, a]}, curva) = coppia di keyframe. */
+const DURATION = 15, FPS = 30, SP = 0.8, SO = 0.9;
+function bez(x1,y1,x2,y2){ const cx=3*x1,bx=3*(x2-x1)-cx,ax=1-cx-bx,cy=3*y1,by=3*(y2-y1)-cy,ay=1-cy-by;
+  const fx=t=>((ax*t+bx)*t+cx)*t, fy=t=>((ay*t+by)*t+cy)*t, dx=t=>(3*ax*t+2*bx)*t+cx;
+  return p=>{ if(p<=0)return 0; if(p>=1)return 1; let t=p; for(let i=0;i<10;i++){ const e=fx(t)-p; if(Math.abs(e)<1e-6)break; const d=dx(t); if(Math.abs(d)<1e-6)break; t-=e/d; } return fy(Math.min(1,Math.max(0,t))); }; }
+function spr(k,c,dur){ const w0=Math.sqrt(k), z=c/(2*Math.sqrt(k)), wd=w0*Math.sqrt(1-z*z);
+  return p=>{ if(p>=1)return 1; const t=p*dur; return 1-Math.exp(-z*w0*t)*(Math.cos(wd*t)+(z*w0/wd)*Math.sin(wd*t)); }; }
+const E = { lin:p=>p, enter:bez(.22,1,.36,1), exit:bez(.4,0,1,1), inout:bez(.65,0,.35,1), spring:spr(420,26,SP), soft:spr(260,30,SO) };
+const reg = new Map();
+const $ = s=>[...document.querySelectorAll(s)];
+const els = t => typeof t==='string' ? $(t) : (t instanceof Element ? [t] : [...t]);
+const ent = el => { if(!reg.has(el)) reg.set(el,{p:{},fx:[]}); return reg.get(el); };
+function tw(target,s,d,props,e='enter'){ els(target).forEach(el=>{ const r=ent(el);
+  for(const k in props){ (r.p[k]??=[]).push({s,d,a:props[k][0],b:props[k][1],e}); r.p[k].sort((x,y)=>x.s-y.s);} }); }
+function stagger(target,s,gap,d,props,e){ els(target).forEach((el,i)=>tw(el,s+i*gap,d,props,e)); }
+function fx(target,fn){ els(target).forEach(el=>ent(el).fx.push(fn)); }
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+function val(list,t){ let cur=null; for(const k of list){ if(t>=k.s) cur=k; else break; }
+  if(!cur) return list[0].a; const p=cur.d<=0?1:clamp((t-cur.s)/cur.d); return cur.a+(cur.b-cur.a)*E[cur.e](p); }
+function seek(t){
+  reg.forEach((r,el)=>{
+    const v={}; for(const k in r.p) v[k]=val(r.p[k],t);
+    const has=k=>v[k]!==undefined;
+    if(has('x')||has('y')||has('scale')||has('sx')||has('sy')||has('rot'))
+      el.style.transform=`translate(${v.x??0}px,${v.y??0}px) rotate(${v.rot??0}deg) scale(${(v.scale??1)*(v.sx??1)},${(v.scale??1)*(v.sy??1)})`;
+    if(has('opacity')){ el.style.opacity=v.opacity; el.style.visibility=v.opacity<=0.001?'hidden':'visible'; }
+    if(has('blur')) el.style.filter=v.blur>0.05?`blur(${v.blur}px)`:'none';
+    for(const f of r.fx) f(el,t);
+  });
+}
+const titleIn = (sel,s) => stagger(`${sel} .w`, s, 0.05, 0.4, {opacity:[0,1], y:[24,0]}, 'enter');
+const fadeOut = (sel,s) => tw(sel, s, 0.3, {opacity:[1,0]}, 'exit');
+const hidden  = sel => tw(sel, 0, 0.01, {opacity:[0,0]});
+const fadeIn  = (sel,s,y=24) => tw(sel, s, 0.4, {opacity:[0,1], y:[y,0]}, 'enter');
+$('.rw i').forEach(i=>i.innerHTML='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>');
+
+/* ====== TIMELINE 15 s — cambi scena a 0 · 2 · 5 · 8 · 10,5 · 13 (battiti a 120 BPM) ====== */
+const T_ON = 8.95;                                   // l'interruttore scatta: prenotazioni aperte
+// striscia: passaggi + cronometro (0:00 → 5:00 fra 2 s e T_ON)
+tw('#strip',1.45,0.4,{opacity:[0,1],y:[-20,0]},'enter'); tw('#strip',10.15,0.3,{opacity:[1,0]},'exit');
+fx('#tv',(el,t)=>{ const s=Math.round(clamp((t-2.0)/(T_ON-2.0))*300); el.textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); });
+[['#st1',2.0,4.1],['#st2',5.0,7.2],['#st3',8.0,T_ON]].forEach(([id,a,d])=>fx(id,(el,t)=>{ el.classList.toggle('act',t>=a&&t<d); el.classList.toggle('done',t>=d); }));
+tw('#st1',4.1,SP,{scale:[1.25,1]},'spring'); tw('#st2',7.2,SP,{scale:[1.25,1]},'spring'); tw('#st3',T_ON,SP,{scale:[1.25,1]},'spring');
+tw('#ln1',0,0.01,{sx:[0,0]}); tw('#ln1',4.1,0.8,{sx:[0,1]},'inout');
+tw('#ln2',0,0.01,{sx:[0,0]}); tw('#ln2',7.2,0.7,{sx:[0,1]},'inout');
+// interruttore: centro (scena 1) → in basso (2-3) → centro e ON (4) → in alto (5)
+tw('#tog',0,0.3,{opacity:[0,1]},'enter');
+tw('#tog',0,0.01,{y:[900,900]});
+tw('#tog',1.45,0.5,{y:[900,1370]},'inout');
+tw('#tog',7.85,0.6,{y:[1370,700]},'inout');
+tw('#tog',10.05,0.5,{y:[700,600]},'inout');
+tw('#tog',12.65,0.3,{opacity:[1,0]},'exit');
+tw('#knob',T_ON,SO,{x:[0,66]},'soft');
+fx('#sw',(el,t)=>{ el.style.background = t>=T_ON+0.08 ? '#1A1A1A' : ''; });
+fx('#togState',(el,t)=>{ const on=t>=T_ON+0.08; el.textContent=on?'Aperte':'Chiuse'; el.style.color=on?'#775A18':''; });
+hidden('#togRing'); tw('#togRing',0,0.01,{y:[700,700]});
+tw('#togRing',T_ON,0.8,{sx:[1,1.07],sy:[1,1.35]},'enter'); tw('#togRing',T_ON,0.8,{opacity:[.8,0]},'lin');
+// SCENA 1 · 0 → 2
+titleIn('#t1',0.0);
+fadeOut('#t1',1.45);
+// SCENA 2 · 2 → 5
+titleIn('#t2',2.0);
+fadeIn('#c2',2.05,60);
+const NAME='Il tuo salone';
+fx('#typed',(el,t)=>{ el.textContent=NAME.slice(0,clamp(Math.floor((t-2.3)/0.04)+1,0,NAME.length)); });
+fx('#cur2',(el,t)=>{ el.style.opacity=(t>2.2&&t<3.1)?1:0; });
+stagger('.chip',2.9,0.05,0.12,{opacity:[0,1]},'lin'); stagger('.chip',2.9,0.05,SP,{scale:[.7,1]},'spring');
+fx('#chipSalone',(el,t)=>el.classList.toggle('on',t>=4.0));
+fadeOut('#t2',4.55); tw('#c2',4.55,0.3,{opacity:[1,0],y:[0,-40]},'exit');
+// SCENA 3 · 5 → 8
+titleIn('#t3',5.0); fadeIn('#sub3',5.15);
+fadeIn('#c3',4.9,60);
+stagger('.rw',5.5,0.3,0.4,{opacity:[0,1],x:[-30,0]},'enter');
+stagger('.rw i',5.6,0.3,SP,{scale:[0,1]},'spring');
+fadeOut('#t3',7.55); tw('#sub3',7.55,0.3,{opacity:[1,0]},'exit'); tw('#c3',7.55,0.3,{opacity:[1,0],y:[0,-40]},'exit');
+// SCENA 4 · 8 → 10,5
+titleIn('#t4',8.0);
+tw('#pub',8.15,0.12,{opacity:[0,1]},'lin'); tw('#pub',8.15,SP,{scale:[.8,1]},'spring');
+tw('#pub',8.8,0.1,{scale:[1,.93]},'exit'); tw('#pub',8.9,SO,{scale:[.93,1]},'soft');
+fadeOut('#t4',10.05); tw('#pub',10.05,0.3,{opacity:[1,0],scale:[1,.9]},'exit');
+// SCENA 5 · 10,5 → 13
+titleIn('#t5',10.5);
+hidden('#notif'); tw('#notif',10.8,0.12,{opacity:[0,1]},'lin'); tw('#notif',10.8,SP,{y:[-160,0],scale:[.9,1]},'spring');
+hidden('#slot'); tw('#slot',11.7,0.12,{opacity:[0,1]},'lin'); tw('#slot',11.7,SP,{y:[-70,0],scale:[.8,1]},'spring');
+fadeOut('#t5',12.65); tw('#notif',12.65,0.3,{opacity:[1,0]},'exit'); tw('#slot',12.65,0.3,{opacity:[1,0]},'exit');
+// SCENA 6 · 13 → 15
+stagger('#logo span',13.0,0.03,0.45,{opacity:[0,1],blur:[18,0],y:[14,0]},'enter');
+tw('#cta',13.35,0.12,{opacity:[0,1]},'lin'); tw('#cta',13.35,SO,{scale:[.8,1]},'soft');
+tw('#url',13.45,0.4,{opacity:[0,1],y:[20,0]},'enter'); tw('#plan',13.5,0.4,{opacity:[0,1],y:[20,0]},'enter');
+tw('#cta',14.15,0.1,{scale:[1,.93]},'exit'); tw('#cta',14.25,SO,{scale:[.93,1]},'soft');
+
+/* cursore e «Salone» che vola: le coordinate si misurano sul layout assestato */
+function initGeometry(){
+  const st=document.querySelector('#stage').getBoundingClientRect();
+  const box=sel=>{ const r=document.querySelector(sel).getBoundingClientRect(); return {x:r.left-st.left,y:r.top-st.top,w:r.width,h:r.height}; };
+  seek(3.85); const chip=box('#chipSalone');
+  seek(6.5);  const hd=box('#c3 .hd');
+  seek(8.7);  const pub=box('#pub');
+  const cx=chip.x+chip.w/2+26, cy=chip.y+chip.h/2+22, bx=pub.x+pub.w/2+120, by=pub.y+pub.h/2+26;
+  hidden('#cursor');
+  tw('#cursor',3.4,0.2,{opacity:[0,1]},'lin'); tw('#cursor',3.4,0.5,{x:[cx+260,cx],y:[cy+380,cy]},'inout');
+  tw('#cursor',3.95,0.1,{scale:[1,.72]},'exit'); tw('#cursor',4.05,0.25,{scale:[.72,1]},'enter');
+  tw('#cursor',4.3,0.25,{opacity:[1,0]},'exit');
+  tw('#cursor',8.3,0.01,{x:[bx+240,bx+240],y:[by+360,by+360]},'lin');
+  tw('#cursor',8.3,0.2,{opacity:[0,1]},'lin'); tw('#cursor',8.3,0.45,{x:[bx+240,bx],y:[by+360,by]},'inout');
+  tw('#cursor',8.8,0.1,{scale:[1,.72]},'exit'); tw('#cursor',8.9,0.25,{scale:[.72,1]},'enter');
+  tw('#cursor',9.2,0.25,{opacity:[1,0]},'exit');
+  hidden('#fly'); tw('#fly',4.0,0.01,{opacity:[0,1]},'lin');
+  tw('#fly',0,0.01,{x:[chip.x,chip.x],y:[chip.y,chip.y]});
+  tw('#fly',4.55,0.5,{x:[chip.x,hd.x],y:[chip.y,hd.y+(hd.h-chip.h)/2]},'inout');
+  tw('#fly',7.55,0.3,{opacity:[1,0]},'exit');
+}
+window.ready = document.fonts.ready.then(()=>{ initGeometry(); seek(0); return true; });
+if(location.search.includes('play')){ window.ready.then(()=>{ const t0=performance.now();
+  (function loop(){ seek(((performance.now()-t0)/1000)%DURATION); requestAnimationFrame(loop); })(); }); }
+</script>
+</body>
+</html>

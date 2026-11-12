@@ -1,28 +1,24 @@
-# 04 · «Il telefono che squilla» (15 s) — v2 prodotta, da approvare
+# 04 · «Il telefono che squilla» (15 s) — v3 prodotta, da approvare
 
-Primo spot nello stile «Grafico» (`00-linee-guida/STILE.md`). Cambi scena a 0 · 2 · 4,5 · 7 · 10 · 13 s; stacco netto nero → crema a 7,0 s.
+Stile «Grafico» (`00-linee-guida/STILE.md`). Cambi scena a 0 · 2,5 · 5 · 8 · 10,5 · 13 s; stacco netto nero → crema a 2,5 s.
+La v3 sostituisce la v2 con un copione centrato sulle prenotazioni online (anche a salone chiuso) e sulla notifica.
 
 | Scena | Tempo | Fondo | Testo a schermo | Voce (inizio) |
 |---|---|---|---|---|
-| 1 | 0 – 2 | nero | Squilla. · scheda «Cliente · Sta chiamando…» | Il telefono squilla. (0,05) |
-| 2 | 2 – 4,5 | nero | E hai le mani occupate. · prima chiamata persa | E tu hai le mani occupate. (2,05) |
-| 3 | 4,5 – 7 | nero | «Chiamate perse oggi» · contatore fino a 3 perse | Ogni chiamata persa, un cliente perso. (4,40) |
-| 4 | 7 – 10 | crema | Ora prenotano da soli. · le tre righe diventano schede | Ora prenotano da soli, anche mentre lavori. (7,05) |
-| 5 | 10 – 13 | crema | tre «Confermata» · 3 prenotazioni. 0 telefonate. | Tre prenotazioni, zero telefonate. (10,05) |
+| 1 | 0 – 2,5 | nero | Squilla / mentre lavori? · scheda «Cliente · Sta chiamando…» · 3 chiamate perse in rosso | Il telefono squilla mentre lavori? (0,05) |
+| 2 | 2,5 – 5 | crema | Ti prenotano online, da soli. · le tre righe diventano schede «Confermata» | I clienti prenotano online, da soli. (2,55) |
+| 3 | 5 – 8 | crema | Anche di sera, a salone chiuso. · orologio 22:57 → 23:00 · «Prenotazioni aperte» · nuova scheda confermata | Anche di sera, quando sei chiuso. (5,05) |
+| 4 | 8 – 10,5 | crema | Nuova prenotazione · notifica che scende · «Agenda di domani» con la riga «Nuova» | E a te arriva solo la notifica. (8,05) |
+| 5 | 10,5 – 13 | crema | Tu pensa solo al cliente. · agenda di domani piena · «Agenda piena. 0 telefonate.» | Tu resti concentrato sul cliente. (10,55) |
 | 6 | 13 – 15 | crema | Logo · Inizia gratis · Piano Free · 0 € per sempre · beaflow.it | Inizia gratis. (13,50) |
 
-Nomi uguali in gancio e svolta: Giulia R., Marco B., Sara T. (il «Numero sconosciuto» dell'anteprima è diventato Sara T.).
-Riga «3 prenotazioni. 0 telefonate.» confermata.
+Voce Harrison (Eleven v4) accelerata dell'8%; `line6.mp3` («Inizia gratis.») è la stessa della v2. Musica della serie a 120 BPM.
+Effetti: squillo con vibrazione nel gancio, tonfo per ogni chiamata persa, il «ding» della serie su ogni «Confermata» e sulla notifica, tic sul cambio dei minuti.
 
-Voce Harrison (Eleven v4) accelerata dell'8%. Musica della serie a 120 BPM. Effetti: squillo con vibrazione ogni secondo nel gancio, tonfo per ogni chiamata persa, il «ding» della serie su ogni «Confermata».
+Nomi, orari e servizi a schermo sono dati dimostrativi.
 
-Nomi, orari, servizi e importi a schermo sono dati dimostrativi.
-
-- `export/` — versione con musica e senza musica (v2: schede senza bordo; la v1 aveva il bordo di 3 px).
-- `sorgente/` — `index.html` (animazione), `render.js` (ripresa e codifica), `audio.py` (voce, effetti, musica).
-- `audio/` — clip della voce `line1.mp3` … `line6.mp3`.
-- `stile/anteprime/` — i tre fotogrammi approvati.
-- `stile/canvas/` — tavole del confronto fra i tre stili (A, B, C) e della versione corretta (C2).
-- `stile/gen.py`, `stile/gen2.py` — script che hanno generato le tavole.
+- `export/` — v3 con musica e senza musica; la v2 resta in `export/` finché la v3 non è approvata.
+- `audio/` — voce v3 (`line1.mp3` … `line6.mp3`); le clip della v2 sono in `audio/archivio-v2/`.
+- `sorgente/` — `index.html`, `render.js`, `audio.py` della v3 (la v2 è nella storia git).
 
 Rifare il video: `npm install` in `sorgente/`, poi `node render.js segments && node render.js join && python3 audio.py` (vedi `00-linee-guida/HANDOFF.md`).

@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<title>Beaflow · Il telefono che squilla · 15 s</title>
+<title>Beaflow · Il telefono che squilla · 15 s · v3</title>
 <style>
 @font-face{font-family:'Inter';font-weight:400;src:url('node_modules/@fontsource/inter/files/inter-latin-400-normal.woff2') format('woff2')}
 @font-face{font-family:'Inter';font-weight:500;src:url('node_modules/@fontsource/inter/files/inter-latin-500-normal.woff2') format('woff2')}
@@ -11,7 +11,6 @@
 @font-face{font-family:'Inter';font-weight:800;src:url('node_modules/@fontsource/inter/files/inter-latin-800-normal.woff2') format('woff2')}
 @font-face{font-family:'Noto Serif';font-style:italic;font-weight:400;src:url('node_modules/@fontsource/noto-serif/files/noto-serif-latin-400-italic.woff2') format('woff2')}
 @font-face{font-family:'Inter';font-weight:600;src:url('node_modules/@fontsource/inter/files/inter-latin-ext-600-normal.woff2') format('woff2');unicode-range:U+20AC}
-
 :root{
   --nero:#111111; --bianco:#FFFFFF; --crema:#FBF8F4; --ottone:#775A18; --rosso:#FF5A4F;
   --grigio-chiaro:#B5B5B5; --grigio-scuro:#5F5F5F; --divisore:#3A3A3A; --scheda-nero:#1E1E1E;
@@ -52,13 +51,36 @@ body{position:relative;font-family:'Inter',sans-serif;font-variant-numeric:tabul
 .row .n{position:absolute;left:0;top:34px;font-weight:500;font-size:48px;line-height:56px;color:var(--bianco)}
 .row .p{position:absolute;right:0;top:37px;font-weight:600;font-size:40px;line-height:50px;color:var(--rosso)}
 
-/* ===== SVOLTA (crema) ===== */
+/* ===== SVOLTA E SCENE CHIARE (crema) ===== */
 #v-label{left:80px;top:404px;color:var(--ottone)}
-#v-title{left:78px;top:484px;font-weight:800;font-size:112px;line-height:1.04;letter-spacing:-.04em;color:var(--nero);white-space:nowrap}
+.title{left:78px;top:484px;font-weight:800;font-size:112px;line-height:1.04;letter-spacing:-.04em;color:var(--nero);white-space:nowrap}
 .card{left:80px;width:880px;height:190px;background:var(--bianco);border-radius:12px;transform-origin:50% 50%}
 .card .n{position:absolute;left:40px;top:36px;font-weight:600;font-size:48px;line-height:58px;color:var(--nero)}
 .card .s{position:absolute;left:40px;top:100px;font-weight:400;font-size:40px;line-height:50px;color:var(--grigio-scuro)}
 .badge{width:278px;height:72px;border-radius:12px;background:var(--ottone);color:var(--bianco);display:flex;align-items:center;justify-content:center;gap:14px;font-weight:700;font-size:34px;transform-origin:50% 50%}
+
+/* scena 3: orologio */
+#clock{left:80px;top:766px;width:880px;height:404px;background:var(--bianco);border-radius:12px;transform-origin:50% 0%}
+#clock .lb{position:absolute;left:40px;top:44px;color:var(--grigio-scuro)}
+#clock .tt{position:absolute;left:32px;top:104px;font-weight:800;font-size:176px;line-height:1;letter-spacing:-.04em;color:var(--nero)}
+#clock .st{position:absolute;left:40px;top:316px;display:flex;align-items:center;gap:16px;font-weight:600;font-size:40px;line-height:50px;color:var(--ottone)}
+#clock .dot{width:20px;height:20px;border-radius:50%;background:var(--ottone)}
+
+/* scena 4: notifica */
+#notif{left:80px;top:800px;width:880px;height:230px;background:var(--bianco);border-radius:12px;transform-origin:50% 0%}
+#notif .ic{position:absolute;left:40px;top:40px;width:96px;height:96px;border-radius:12px;background:var(--nero);color:var(--bianco);display:flex;align-items:center;justify-content:center;font-family:'Noto Serif',serif;font-style:italic;font-size:60px;line-height:1}
+#notif .lb{position:absolute;left:168px;top:40px;color:var(--grigio-scuro)}
+#notif .n{position:absolute;left:168px;top:92px;font-weight:600;font-size:48px;line-height:58px;color:var(--nero)}
+#notif .s{position:absolute;left:168px;top:156px;font-weight:400;font-size:40px;line-height:50px;color:var(--grigio-scuro)}
+
+/* scene 4-5: agenda di domani (contenitore: righe a 0, 122, 244, 366) */
+#agenda{left:80px;top:850px;width:880px;height:470px}
+#a-label{left:0;top:-64px;color:var(--ottone)}
+.slot{left:0;width:880px;height:104px;background:var(--bianco);border-radius:12px;transform-origin:50% 50%}
+.slot .h{position:absolute;left:40px;top:26px;font-weight:700;font-size:48px;line-height:52px;color:var(--ottone)}
+.slot .n{position:absolute;left:210px;top:26px;font-weight:600;font-size:48px;line-height:52px;color:var(--nero)}
+.slot .s{position:absolute;right:40px;top:28px;font-weight:400;font-size:40px;line-height:50px;color:var(--grigio-scuro)}
+#nuova{left:668px;top:20px;width:172px;height:64px;border-radius:12px;background:var(--ottone);color:var(--bianco);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:32px;transform-origin:50% 50%}
 #v-sum{left:80px;top:1428px;font-weight:600;font-size:44px;line-height:56px;color:var(--nero);white-space:nowrap}
 
 /* ===== CHIUSURA ===== */
@@ -70,11 +92,11 @@ body{position:relative;font-family:'Inter',sans-serif;font-variant-numeric:tabul
 <body>
 <div id="bgDark" class="abs bg"></div>
 
-<!-- GANCIO -->
+<!-- 1 · GANCIO -->
 <div id="logoW" class="abs logo">Beaflow</div>
 <div id="g-label" class="abs label">Il tuo salone · Chiamata in arrivo</div>
-<div id="g-title" class="abs"><span class="w">Squilla.</span></div>
-<div id="g-sub" class="abs"><span class="w">E </span><span class="w">hai </span><span class="w">le </span><span class="w">mani </span><span class="w">occupate.</span></div>
+<div id="g-title" class="abs"><span class="w">Squilla</span></div>
+<div id="g-sub" class="abs"><span class="w">mentre </span><span class="w">lavori?</span></div>
 
 <div id="halo" class="abs"></div>
 <div id="call" class="abs">
@@ -93,10 +115,10 @@ body{position:relative;font-family:'Inter',sans-serif;font-variant-numeric:tabul
 <div id="d3" class="abs div" style="top:1384px"></div>
 <div id="r3" class="abs row" style="top:1386px"><div class="n">Sara T.</div><div class="p">Persa · 10:05</div></div>
 
-<!-- SVOLTA -->
+<!-- 2 · SVOLTA -->
 <div id="bgLight" class="abs bg"></div>
 <div id="v-label" class="abs label">Prenotazioni online</div>
-<div id="v-title" class="abs"><span class="w">Ora </span><span class="w">prenotano</span><br><span class="w">da </span><span class="w">soli.</span></div>
+<div id="t2" class="abs title"><span class="w">Ti </span><span class="w">prenotano</span><br><span class="w">online, </span><span class="w">da </span><span class="w">soli.</span></div>
 
 <div id="k1" class="abs card" style="top:766px"><div class="n">Giulia R.</div><div class="s">Taglio e piega · 10:30</div></div>
 <div id="k2" class="abs card" style="top:980px"><div class="n">Marco B.</div><div class="s">Barba · 11:15</div></div>
@@ -104,15 +126,45 @@ body{position:relative;font-family:'Inter',sans-serif;font-variant-numeric:tabul
 <div id="b1" class="abs badge" style="left:640px;top:825px"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Confermata</div>
 <div id="b2" class="abs badge" style="left:640px;top:1039px"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Confermata</div>
 <div id="b3" class="abs badge" style="left:640px;top:1253px"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Confermata</div>
-<div id="v-sum" class="abs">3 prenotazioni. 0 telefonate.</div>
 
-<!-- CHIUSURA -->
+<!-- 3 · ANCHE DI SERA -->
+<div id="t3" class="abs title"><span class="w">Anche </span><span class="w">di </span><span class="w">sera,</span><br><span class="w">a </span><span class="w">salone </span><span class="w">chiuso.</span></div>
+<div id="clock" class="abs">
+  <div class="lb label">Salone chiuso</div>
+  <div class="tt" id="clockT">22:57</div>
+  <div class="st"><div class="dot"></div>Prenotazioni aperte</div>
+</div>
+<div id="k4" class="abs card" style="top:1214px"><div class="n">Luca M.</div><div class="s">Colore · domani 9:30</div></div>
+<div id="b4" class="abs badge" style="left:640px;top:1273px"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Confermata</div>
+
+<!-- 4 · NOTIFICA -->
+<div id="t4" class="abs title"><span class="w">Nuova</span><br><span class="w">prenotazione</span></div>
+<div id="notif" class="abs">
+  <div class="ic">B</div>
+  <div class="lb label">Beaflow · ora</div>
+  <div class="n">Luca M. · Colore</div>
+  <div class="s">Domani · 9:30</div>
+</div>
+
+<!-- 5 · AGENDA PIENA -->
+<div id="t5" class="abs title"><span class="w">Tu </span><span class="w">pensa</span><br><span class="w">solo </span><span class="w">al </span><span class="w">cliente.</span></div>
+<div id="agenda" class="abs">
+  <div id="a-label" class="abs label">Agenda di domani</div>
+  <div id="s1" class="abs slot" style="top:0"><div class="h">9:30</div><div class="n">Luca M.</div><div id="nuova" class="abs">Nuova</div></div>
+  <div id="s2" class="abs slot" style="top:122px"><div class="h">10:30</div><div class="n">Giulia R.</div><div class="s">Taglio e piega</div></div>
+  <div id="s3" class="abs slot" style="top:244px"><div class="h">11:15</div><div class="n">Marco B.</div><div class="s">Barba</div></div>
+  <div id="s4" class="abs slot" style="top:366px"><div class="h">15:00</div><div class="n">Sara T.</div><div class="s">Manicure</div></div>
+</div>
+<div id="v-sum" class="abs">Agenda piena. 0 telefonate.</div>
+
+<!-- 6 · CHIUSURA -->
 <div id="c-btn" class="abs">Inizia gratis</div>
 <div id="c-offer" class="abs">Piano Free · 0 € per sempre</div>
 <div id="c-url" class="abs">beaflow.it</div>
 <div id="logoK" class="abs logo">Beaflow</div>
 
 <script>
+
 /* Motore a timeline (vedi 00-linee-guida/HANDOFF.md §7). seek(t) disegna lo stato esatto al secondo t. */
 const DURATION = 15, FPS = 30, SP = 0.8, SO = 0.9;
 function bez(x1,y1,x2,y2){ const cx=3*x1,bx=3*(x2-x1)-cx,ax=1-cx-bx,cy=3*y1,by=3*(y2-y1)-cy,ay=1-cy-by;
@@ -148,31 +200,30 @@ const fadeOut = (sel,s) => tw(sel, s, 0.3, {opacity:[1,0]}, 'exit');
 const hidden  = sel => tw(sel, 0, 0.01, {opacity:[0,0]});
 const fadeIn  = (sel,s,y=24) => tw(sel, s, 0.4, {opacity:[0,1], y:[y,0]}, 'enter');
 const pop = (sel,s,from=.8,y=0) => { hidden(sel); tw(sel,s,0.12,{opacity:[0,1]},'lin'); tw(sel,s,SP,{scale:[from,1],y:[y,0]},'spring'); };
+const out = (sel,s,dy=0) => tw(sel,s,0.3,dy?{opacity:[1,0],y:[0,dy]}:{opacity:[1,0]},'exit');
 
-/* Cambi scena: 0 · 2 · 4,5 · 7 · 10 · 13 · 15 (battito a 120 BPM = 0,5 s) */
-const CUT = 7.0;                       // nero -> crema, stacco netto sul battito
+/* Cambi scena: 0 · 2,5 · 5 · 8 · 10,5 · 13 · 15 (battito a 120 BPM = 0,5 s) */
+const CUT = 2.5;                       // nero -> crema, stacco netto sul battito
 
-/* ---------- 1 · 0–2 · Squilla. ---------- */
+/* ---------- 1 · 0–2,5 · Squilla mentre lavori? ---------- */
 tw('#logoW',0,0.01,{opacity:[1,1]}); tw('#logoW',CUT,0,{opacity:[1,0]});
 fadeIn('#g-label',0.05,12);
-titleIn('#g-title',0.15);
-pop('#call',0.5,.85);
+titleIn('#g-title',0.1);
+titleIn('#g-sub',0.35);
+pop('#call',0.4,.85);
 hidden('#halo');
-const RINGS = [0.9,1.9,2.9,3.9,4.9,5.9];   // uno squillo al secondo
+const RINGS = [0.7,1.7];                      // uno squillo al secondo
 fx('#call',(el,t)=>{                          // vibrazione durante ogni squillo (0,4 s)
   let r=0; for(const s of RINGS){ const d=t-s; if(d>=0&&d<0.4){ r=Math.sin(d*2*Math.PI*22)*1.1*(1-d/0.4); } }
-  if(t>=0.5+SP) el.style.transform=`rotate(${r}deg)`;
+  if(t>=0.4+SP && t<CUT) el.style.transform=`rotate(${r}deg)`;
 });
 fx('#halo',(el,t)=>{                          // onda attorno all'icona
   let o=0,s=1; if(t<CUT){ for(const r of RINGS){ const d=t-r; if(d>=0&&d<0.8){ const p=d/0.8; o=0.55*(1-p); s=1+0.7*E.enter(p); } } }
   el.style.opacity=o; el.style.visibility=o>0.001?'visible':'hidden'; el.style.transform=`scale(${s})`;
 });
-fx('#timer',(el,t)=>{ const n=Math.max(0,Math.min(7,Math.floor(t+0.4))); el.textContent='0:0'+n; });
-
-/* ---------- 2 · 2–4,5 · E hai le mani occupate. ---------- */
-titleIn('#g-sub',2.05);
-fadeIn('#g-head',3.2,12); fadeIn('#g-cnt',3.2,12);
-const MISS = [3.5,4.6,5.5];                   // ogni chiamata persa scende nella lista
+fx('#timer',(el,t)=>{ const n=Math.max(0,Math.min(9,Math.floor(t+0.6))); el.textContent='0:0'+n; });
+fadeIn('#g-head',0.8,12); fadeIn('#g-cnt',0.8,12);
+const MISS = [1.1,1.6,2.05];                  // ogni chiamata persa scende nella lista
 ['#r1','#r2','#r3'].forEach((r,i)=>{ const s=MISS[i];
   hidden(r); tw(r,s,0.12,{opacity:[0,1]},'lin'); tw(r,s,SP,{y:[-90,0],scale:[.94,1]},'spring');
   hidden('#d'+(i+1)); tw('#d'+(i+1),s,0.3,{opacity:[0,1]},'lin');
@@ -180,29 +231,51 @@ const MISS = [3.5,4.6,5.5];                   // ogni chiamata persa scende nell
 fx('#g-cnt',(el,t)=>{ const n=MISS.filter(s=>t>=s).length; el.textContent = n===1 ? '1 persa' : n+' perse'; });
 MISS.forEach(s=>tw('#g-cnt',s,SP,{scale:[1.18,1]},'spring'));
 
-/* ---------- 3 · 4,5–7 · le altre due chiamate perse (vedi MISS) ---------- */
-
-/* ---------- 4 · 7–10 · Ora prenotano da soli. ---------- */
+/* ---------- 2 · 2,5–5 · Ti prenotano online, da soli. ---------- */
 hidden('#bgLight'); tw('#bgLight',CUT,0,{opacity:[0,1]});
 tw('#logoK',0,0.01,{opacity:[0,0]}); tw('#logoK',CUT,0,{opacity:[0,1]});
 hidden('#v-label'); tw('#v-label',CUT+0.05,0.4,{opacity:[0,1],y:[12,0]});
-titleIn('#v-title',CUT+0.3);
-/* le righe delle chiamate perse diventano schede: partono dalla posizione delle righe */
+hidden('#t2 .w'); titleIn('#t2',CUT+0.25);
+/* le righe delle chiamate perse diventano schede */
 [['#k1',1138-766],['#k2',1262-980],['#k3',1386-1194]].forEach(([k,dy],i)=>{ const s=CUT+i*0.1;
   hidden(k); tw(k,s,0.15,{opacity:[0,1]},'lin'); tw(k,s,SO,{y:[dy,0]},'soft');
 });
-
-/* ---------- 5 · 10–13 · Confermata ×3 · 3 prenotazioni. 0 telefonate. ---------- */
-const CONF = [10.05,10.45,10.85];
+const CONF = [3.5,3.85,4.2];
 ['#b1','#b2','#b3'].forEach((b,i)=>pop(b,CONF[i],.8));
-hidden('#v-sum'); fadeIn('#v-sum',11.2,16);
+
+/* ---------- 3 · 5–8 · Anche di sera, a salone chiuso. ---------- */
+out('#t2',4.55);
+/* le tre schede si richiudono nella prima, che diventa l'orologio */
+tw(['#k2','#b2'],4.55,0.35,{y:[0,-214]},'inout'); tw(['#k3','#b3'],4.55,0.35,{y:[0,-428]},'inout');
+tw(['#k1','#k2','#k3','#b1','#b2','#b3'],4.55,0.22,{opacity:[1,0]},'lin');
+hidden('#clock'); tw('#clock',4.85,0.15,{opacity:[0,1]},'lin'); tw('#clock',4.85,SO,{sy:[.47,1]},'soft');
+hidden('#t3 .w'); titleIn('#t3',5.05);
+fx('#clockT',(el,t)=>{ const m = t<5.6?57 : t<5.9?58 : t<6.2?59 : 0; el.textContent = m===0 ? '23:00' : '22:'+m; });
+pop('#k4',6.5,.9,40);
+pop('#b4',6.95,.8);
+
+/* ---------- 4 · 8–10,5 · Nuova prenotazione ---------- */
+out('#t3',7.55); out(['#clock','#k4','#b4'],7.55,-40);
+hidden('#t4 .w'); titleIn('#t4',8.05);
+hidden('#notif'); tw('#notif',8.3,0.12,{opacity:[0,1]},'lin'); tw('#notif',8.3,SP,{y:[-160,0],scale:[.9,1]},'spring');
+hidden('#agenda'); tw('#agenda',8.9,0.4,{opacity:[0,1]},'enter');
+tw('#agenda',0,0.01,{y:[300,300]}); tw('#agenda',8.9,0.4,{y:[330,300]},'enter');
+hidden('#s2'); hidden('#s3'); hidden('#s4');
+pop('#nuova',9.25,.8);
+
+/* ---------- 5 · 10,5–13 · Tu pensa solo al cliente. ---------- */
+out('#t4',10.05); out('#notif',10.05,-60);
+tw('#agenda',10.5,0.5,{y:[300,0]},'inout');
+hidden('#t5 .w'); titleIn('#t5',10.6);
+[['#s2',10.95],['#s3',11.15],['#s4',11.35]].forEach(([s,t])=>pop(s,t,.9,30));
+hidden('#v-sum'); fadeIn('#v-sum',11.75,16);
 
 /* ---------- 6 · 13–15 · chiusura ---------- */
-fadeOut('#v-label',12.55); fadeOut('#v-title',12.55); fadeOut('#v-sum',12.55);
-[['#k1','#b1',766],['#k2','#b2',980],['#k3','#b3',1194]].forEach(([k,b,top])=>{
-  const dy = 910 + 72 - (top + 95);           // centro della scheda -> centro del bottone
-  tw([k,b],12.55,0.35,{y:[0,dy]},'inout');
-  tw([k,b],12.55,0.25,{opacity:[1,0]},'lin');
+out('#v-label',12.55); out('#t5',12.55); out('#v-sum',12.55); out('#a-label',12.55);
+['#s1','#s2','#s3','#s4'].forEach((s,i)=>{
+  const dy = 910 + 72 - (850 + i*122 + 52);    // centro della riga -> centro del bottone
+  tw(s,12.55,0.35,{y:[0,dy]},'inout');
+  tw(s,12.55,0.25,{opacity:[1,0]},'lin');
 });
 hidden('#c-btn'); tw('#c-btn',12.8,0.12,{opacity:[0,1]},'lin'); tw('#c-btn',12.8,SO,{sx:[.96,1],sy:[.9,1]},'soft');
 tw('#c-btn',14.15,0.1,{scale:[1,.93]},'exit'); tw('#c-btn',14.25,SO,{scale:[.93,1]},'soft');

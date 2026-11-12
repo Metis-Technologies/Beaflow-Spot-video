@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Audio dello spot «Il telefono che squilla» (15 s): voce (../audio/line1..6.mp3, accelerata dell'8%), effetti sintetizzati,
+"""Audio dello spot «Il telefono che squilla» (15 s, v3): voce (../audio/line1..6.mp3, accelerata dell'8%), effetti sintetizzati,
 musica della serie (../../comune/musica/beaflow_musica_120bpm.mp3).
 Produce spot-musica.mp4 e spot-senza-musica.mp4 a partire da muto.mp4."""
 import subprocess
@@ -10,7 +10,7 @@ import soundfile as sf
 ROOT = Path(__file__).resolve().parent
 SR, DUR, TEMPO = 48000, 15.0, 1.08
 rng = np.random.default_rng(7)
-VOICE = [("line1", 0.05), ("line2", 2.05), ("line3", 4.40), ("line4", 7.05), ("line5", 10.05), ("line6", 13.5)]
+VOICE = [("line1", 0.05), ("line2", 2.55), ("line3", 5.05), ("line4", 8.05), ("line5", 10.55), ("line6", 13.5)]
 
 def env(n, attack=0.002, decay=0.08):
     t = np.arange(n) / SR
@@ -52,18 +52,26 @@ def ring(dur=0.4):                    # squillo: due toni modulati a 20 Hz, come
 
 def build_sfx():                      # un effetto per ogni evento visivo, allo stesso istante della timeline (index.html)
     s = np.zeros(int(DUR * SR))
-    put(s, pop(520), 0.5, 0.14)                                   # scena 1: arriva la chiamata
-    for r in (0.9, 1.9, 2.9, 3.9, 4.9, 5.9):                      # uno squillo al secondo, con vibrazione
+    put(s, pop(520), 0.4, 0.14)                                   # scena 1: arriva la chiamata
+    for r in (0.7, 1.7):                                          # uno squillo al secondo, con vibrazione
         put(s, ring(), r, 0.07); put(s, buzz(), r, 0.05)
-    for m in (3.5, 4.6, 5.5):                                     # scene 2-3: ogni chiamata persa scende nella lista
+    for m in (1.1, 1.6, 2.05):                                    # ogni chiamata persa scende nella lista
         put(s, thud(), m, 0.26); put(s, tick(900), m + 0.02, 0.06)
-    put(s, click(), 7.0, 0.2); put(s, big_pop(), 7.0, 0.12)       # scena 4: stacco nero -> crema sul battito
-    for i in range(3): put(s, pop(600 * 2 ** (i / 12)), 7.02 + i * 0.1, 0.12)
-    for c in (10.05, 10.45, 10.85):                               # scena 5: Confermata, il ding ricorrente della serie
+    put(s, click(), 2.5, 0.2); put(s, big_pop(), 2.5, 0.12)       # scena 2: stacco nero -> crema sul battito
+    for i in range(3): put(s, pop(600 * 2 ** (i / 12)), 2.52 + i * 0.1, 0.12)
+    for c in (3.5, 3.85, 4.2):                                    # Confermata: il ding ricorrente della serie
         put(s, ding(880), c, 0.2)
-    put(s, buzz(), 10.05, 0.04)
-    put(s, tick(1250), 11.2, 0.06)
-    put(s, whoosh(0.5), 12.5, 0.08); put(s, pop(700), 12.8, 0.16) # scena 6: schede -> bottone, logo
+    put(s, whoosh(0.45), 4.55, 0.07)                              # scena 3: le schede si richiudono nell'orologio
+    put(s, pop(500), 4.9, 0.14)
+    for m in (5.6, 5.9, 6.2): put(s, tick(1250), m, 0.07)         # 22:57 -> 23:00
+    put(s, pop(700), 6.5, 0.14); put(s, ding(880), 6.95, 0.2)     # nuova prenotazione confermata
+    put(s, whoosh(0.5), 7.55, 0.07)                               # scena 4: notifica
+    put(s, ding(880), 8.3, 0.26); put(s, buzz(), 8.3, 0.06)
+    put(s, pop(650), 8.9, 0.12); put(s, pop(760), 9.25, 0.14)
+    put(s, whoosh(0.45), 10.05, 0.07)                             # scena 5: agenda piena
+    for i, t in enumerate((10.95, 11.15, 11.35)): put(s, pop(600 * 2 ** (i / 12)), t, 0.13)
+    put(s, tick(1250), 11.75, 0.06)
+    put(s, whoosh(0.5), 12.5, 0.08); put(s, pop(700), 12.8, 0.16) # scena 6: righe -> bottone, logo
     put(s, whoosh(0.45), 13.0, 0.05); put(s, click(), 14.15, 0.2)
     return s
 

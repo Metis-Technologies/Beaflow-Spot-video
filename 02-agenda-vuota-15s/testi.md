@@ -1,4 +1,4 @@
-# 02 · «Agenda vuota il martedì?» (15 s) — approvato
+# 02 · «Agenda vuota il martedì?» (15 s) — v2 con logo, da riapprovare
 
 Spot su Esplora. Cambi scena a 0 · 2 · 5,5 · 8,5 · 11 · 13 s.
 
@@ -9,7 +9,7 @@ Spot su Esplora. Cambi scena a 0 · 2 · 5,5 · 8,5 · 11 · 13 s.
 | 3 | 5,5 – 8,5 | Prenotano quando vogliono. | Prenotano quando vogliono, anche quando sei chiuso. (5,55) |
 | 4 | 8,5 – 11 | Lo sai subito. | E tu lo sai subito, con una notifica. (8,55) |
 | 5 | 11 – 13 | Agenda piena. In automatico. | Agenda piena, in automatico. (11,00) |
-| 6 | 13 – 15 | Logo e pulsante «Inizia gratis» | Inizia gratis. (13,50) |
+| 6 | 13 – 15 | Logo e pulsante «Inizia gratis» | Beaflow. Inizia gratis. (vedi v2) |
 
 Voce Harrison accelerata dell'8%. Musica della serie a 120 BPM.
 
@@ -17,3 +17,10 @@ Voce Harrison accelerata dell'8%. Musica della serie a 120 BPM.
 - `export/archivio/` — prima versione da 15 s con il gancio «Ti stanno cercando», scartata.
 - `archivio-esplora-20s/` — prima versione da 20 s fatta sul brief del collaboratore (`00-linee-guida/brief-collaboratore-esplora.md`), giudicata troppo lenta.
 - `sorgente/` e `audio/` si riempiono con `bash strumenti/importa-spot-15s.sh`.
+
+## v2 (12/11/2026)
+
+- Logo ufficiale SVG (positivo) in alto a sinistra per tutto lo spot (240×64 px, x 80 / y 250) e grande in chiusura (720 px). I contenuti sono scesi di 100 px per lasciare spazio al logo.
+- Chiusura della voce: «Beaflow. Inizia gratis.» (clip comune agli spot 04–11, `audio/line6.mp3`). La vecchia «Inizia gratis.» resta in `audio/line6-inizia-gratis.mp3`.
+- Voce: frase 5 anticipata a 10,95 s, chiusura a 13,10 s (fine 14,95 s); frasi 5 e 6 con le pause accorciate.
+- La v1 è in `export/archivio/`.

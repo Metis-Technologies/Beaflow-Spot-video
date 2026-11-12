@@ -11,9 +11,9 @@ Archivio di lavoro degli spot motion design 9:16 per Beaflow: regole, testi, sor
   istruzioni-progetto.md        istruzioni del progetto Claude
   brief-collaboratore-esplora.md
 01-gestionale-30s/              consegnato
-02-agenda-vuota-15s/            approvato
+02-agenda-vuota-15s/            v2 con logo, da riapprovare
   archivio-esplora-20s/         prima versione da 20 s, scartata
-03-online-in-5-minuti-15s/      approvato
+03-online-in-5-minuti-15s/      v2 con logo, da riapprovare
 04-telefono-che-squilla-15s/    approvato (v5)
 05-tutto-in-un-app-15s/         v3 da approvare
 06-turni-team-15s/               approvato (v4)
@@ -21,6 +21,7 @@ Archivio di lavoro degli spot motion design 9:16 per Beaflow: regole, testi, sor
 08-riprenditi-il-tempo-15s/     v2 da approvare
 09-falli-tornare-15s/            v1 da approvare
 10-addio-post-it-15s/            v1 da approvare
+11-scheda-cliente-15s/           v1 da approvare
 comune/musica/                  base musicale della serie (120 BPM)
 comune/logo/                    logo Beaflow SVG (negativo e positivo)
 strumenti/                      script di servizio

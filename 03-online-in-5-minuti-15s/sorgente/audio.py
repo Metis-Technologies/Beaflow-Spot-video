@@ -9,7 +9,7 @@ import soundfile as sf
 ROOT = Path(__file__).resolve().parent
 SR, DUR, TEMPO = 48000, 15.0, 1.08
 rng = np.random.default_rng(7)
-VOICE = [("line1", 0.05), ("line2", 1.97), ("line3", 5.07), ("line4", 8.15), ("line5", 11.15), ("line6", 13.5)]
+VOICE = [("line1", 0.05), ("line2", 1.97), ("line3", 5.07), ("line4", 8.15), ("line5", 10.9), ("line6", 12.9)]
 
 def env(n, attack=0.002, decay=0.08):
     t = np.arange(n) / SR

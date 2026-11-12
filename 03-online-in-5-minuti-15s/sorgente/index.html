@@ -67,6 +67,11 @@ body{font-family:Inter,sans-serif;color:var(--ink);-webkit-font-smoothing:antial
 #cta{left:260px;width:560px;top:1010px;height:144px;border-radius:72px;background:#000;color:#fff;display:grid;place-items:center;font:600 52px Inter,sans-serif;box-shadow:0 40px 60px -30px rgba(0,0,0,.55)}
 #url{left:0;width:1080px;top:1214px;text-align:center;font:500 44px Inter,sans-serif}
 #plan{left:0;width:1080px;top:1292px;text-align:center;font:500 34px Inter,sans-serif;color:var(--muted)}
+
+/* logo ufficiale (12/11): in alto a sinistra per tutto lo spot, grande in chiusura; contenuti scesi di 100 px */
+#stage > *:not(#logoK){translate:0 100px}
+#logoK{left:80px;top:250px;width:240px;height:64px;transform-origin:0 0;z-index:50}
+#logo{display:none}
 </style>
 </head>
 <body>
@@ -130,6 +135,7 @@ body{font-family:Inter,sans-serif;color:var(--ink);-webkit-font-smoothing:antial
   <div id="cta" class="abs">Inizia gratis</div>
   <div id="url" class="abs">beaflow.it</div>
   <div id="plan" class="abs">Piano Free · 0 € per sempre</div>
+  <img id="logoK" class="abs" src="logo-positivo.svg" alt="Beaflow">
 </div>
 
 <script>
@@ -220,7 +226,6 @@ hidden('#notif'); tw('#notif',10.8,0.12,{opacity:[0,1]},'lin'); tw('#notif',10.8
 hidden('#slot'); tw('#slot',11.7,0.12,{opacity:[0,1]},'lin'); tw('#slot',11.7,SP,{y:[-70,0],scale:[.8,1]},'spring');
 fadeOut('#t5',12.65); tw('#notif',12.65,0.3,{opacity:[1,0]},'exit'); tw('#slot',12.65,0.3,{opacity:[1,0]},'exit');
 // SCENA 6 · 13 → 15
-stagger('#logo span',13.0,0.03,0.45,{opacity:[0,1],blur:[18,0],y:[14,0]},'enter');
 tw('#cta',13.35,0.12,{opacity:[0,1]},'lin'); tw('#cta',13.35,SO,{scale:[.8,1]},'soft');
 tw('#url',13.45,0.4,{opacity:[0,1],y:[20,0]},'enter'); tw('#plan',13.5,0.4,{opacity:[0,1],y:[20,0]},'enter');
 tw('#cta',14.15,0.1,{scale:[1,.93]},'exit'); tw('#cta',14.25,SO,{scale:[.93,1]},'soft');
@@ -246,7 +251,10 @@ function initGeometry(){
   tw('#fly',4.55,0.5,{x:[chip.x,hd.x],y:[chip.y,hd.y+(hd.h-chip.h)/2]},'inout');
   tw('#fly',7.55,0.3,{opacity:[1,0]},'exit');
 }
-window.ready = document.fonts.ready.then(()=>{ initGeometry(); seek(0); return true; });
+/* logo: da 240 px in alto a sinistra a 720 px al centro, sopra il bottone */
+const LK=720/240, LX=(540-360)-80, LY=(842-96)-250;
+tw('#logoK',13.0,0.6,{x:[0,LX],y:[0,LY],scale:[1,LK]},'inout');
+window.ready = Promise.all([document.fonts.ready, ...[...document.images].map(i=>i.decode().catch(()=>{}))]).then(()=>{ initGeometry(); seek(0); return true; });
 if(location.search.includes('play')){ window.ready.then(()=>{ const t0=performance.now();
   (function loop(){ seek(((performance.now()-t0)/1000)%DURATION); requestAnimationFrame(loop); })(); }); }
 </script>

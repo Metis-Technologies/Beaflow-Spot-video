@@ -9,7 +9,7 @@ import soundfile as sf
 ROOT = Path(__file__).resolve().parent
 SR, DUR, TEMPO = 48000, 15.0, 1.08
 rng = np.random.default_rng(7)
-VOICE = [("line1", 0.05), ("line2", 2.08), ("line3", 5.55), ("line4", 8.55), ("line5", 11.0), ("line6", 13.5)]
+VOICE = [("line1", 0.05), ("line2", 2.08), ("line3", 5.55), ("line4", 8.55), ("line5", 10.95), ("line6", 13.1)]
 
 def env(n, attack=0.002, decay=0.08):
     t = np.arange(n) / SR
@@ -68,11 +68,26 @@ def decode(path, af=None):
     x, _ = sf.read(wav, dtype="float64")
     return x
 
+def trim_pauses(x, max_pause=0.18):
+    """Accorcia le pause interne più lunghe di max_pause (es. dopo «Uno:»), tagliando nel silenzio."""
+    win = 960
+    quiet = np.sqrt(np.convolve(x * x, np.ones(win) / win, "same")) < 0.008
+    cuts = np.flatnonzero(np.diff(quiet.astype(int))) + 1
+    segs, flags = np.split(x, cuts), np.split(quiet, cuts)
+    keep, out = int(max_pause * SR), []
+    for k, (seg, fl) in enumerate(zip(segs, flags)):
+        if fl[0] and len(seg) > keep and 0 < k < len(segs) - 1:
+            h = keep // 2; out += [seg[:h], seg[-h:]]
+        else:
+            out.append(seg)
+    return np.concatenate(out)
+
 def build_voice():
     v = np.zeros(int(DUR * SR))
     for clip, start in VOICE:
         x = decode(ROOT.parent / "audio" / f"{clip}.mp3", f"atempo={TEMPO}")
         nz = np.where(np.abs(x) > 0.004)[0]; x = x[max(nz[0] - 480, 0): nz[-1] + 2400]
+        if clip in ("line5", "line6"): x = trim_pauses(x)   # chiusura «Beaflow. Inizia gratis.» come negli spot 04-11
         print(f"  {clip} {start:5.2f} -> {start + len(x) / SR:5.2f}")
         put(v, x, start, 1.0)
     return v * (0.80 / np.abs(v).max())

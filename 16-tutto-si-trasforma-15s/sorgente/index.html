@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<title>Beaflow · Tutto si trasforma · 15 s · v1</title>
+<title>Beaflow · Tutto si trasforma · 15 s · v2/v3</title>
 <style>
 @font-face{font-family:'Inter';font-weight:400;src:url('node_modules/@fontsource/inter/files/inter-latin-400-normal.woff2') format('woff2')}
 @font-face{font-family:'Inter';font-weight:600;src:url('node_modules/@fontsource/inter/files/inter-latin-600-normal.woff2') format('woff2')}
@@ -137,6 +137,8 @@ const FL=[[2.5,.55],[12.85,.7]];
 fx('#flash',(el,t)=>{ let o=0; for(const [c,a] of FL){ const d=t-c; if(d>-0.06&&d<0.5) o=Math.max(o, a*(d<0? (d+0.06)/0.06 : Math.exp(-d*9))); } el.style.opacity=o; });
 
 /* ───────── scena 3D ───────── */
+// ?v=a: calendario solo nella scena 3 (v2) · ?v=b: calendario in tutto lo spot (v3)
+const VAR = new URLSearchParams(location.search).get('v') || 'b';
 const canvas = document.getElementById('gl');
 const renderer = new THREE.WebGLRenderer({canvas, antialias:true, preserveDrawingBuffer:true});
 renderer.setPixelRatio(1); renderer.setSize(1080,1920,false);
@@ -167,8 +169,28 @@ tiles.instanceColor = new THREE.InstancedBufferAttribute(new Float32Array(N*3),3
 scene.add(tiles);
 
 // pannello dell'agenda (scena 3)
-const panel = new THREE.Mesh(new RoundedBoxGeometry(4.3,4.4,0.12,4,0.1), new THREE.MeshStandardMaterial({color:0x1b1b1b, metalness:0.5, roughness:0.4}));
-panel.position.set(0,-1.35,-0.25); scene.add(panel);
+const panel = new THREE.Mesh(new RoundedBoxGeometry(4.25,3.75,0.12,4,0.12), new THREE.MeshStandardMaterial({color:0x1b1b1b, metalness:0.5, roughness:0.4}));
+scene.add(panel);
+
+// etichette: numeri dei giorni e iniziali, da un atlante 8×16 (righe 0–7 chiare, 8–15 scure)
+const GLY = [...Array.from({length:31},(_,k)=>String(k+1)), 'L','M','M','G','V','S','D'];
+const atlas = document.createElement('canvas'); atlas.width=1024; atlas.height=2048;
+const atex = new THREE.CanvasTexture(atlas); atex.colorSpace = THREE.SRGBColorSpace; atex.anisotropy = 4;
+function drawAtlas(){ const g=atlas.getContext('2d'); g.clearRect(0,0,1024,2048); g.textAlign='center'; g.textBaseline='middle';
+  for(const [base,col] of [[0,'#D9D3C7'],[64,'#17130B']]) GLY.forEach((tx,k)=>{ const c=base+k, x=(c%8)*128+64, y=Math.floor(c/8)*128+68;
+    g.fillStyle=col; g.font = (tx.length>1?'800 78px':'800 84px')+' Inter'; g.fillText(tx,x,y); });
+  atex.needsUpdate=true; }
+const lmat = new THREE.MeshBasicMaterial({map:atex, transparent:true, depthWrite:false, polygonOffset:true, polygonOffsetFactor:-2, polygonOffsetUnits:-2});
+lmat.onBeforeCompile = sh => {
+  sh.vertexShader = 'attribute float aCell;\nattribute float aAlpha;\nvarying float vAlpha;\n' + sh.vertexShader.replace('#include <uv_vertex>',
+    '#include <uv_vertex>\nvMapUv = (uv + vec2(mod(aCell,8.0), 15.0-floor(aCell/8.0))) / vec2(8.0,16.0);\nvAlpha = aAlpha;');
+  sh.fragmentShader = 'varying float vAlpha;\n' + sh.fragmentShader.replace('#include <map_fragment>','#include <map_fragment>\ndiffuseColor.a *= vAlpha;');
+};
+const lgeo = new THREE.PlaneGeometry(1,1);
+const aCell = new THREE.InstancedBufferAttribute(new Float32Array(N),1), aAlpha = new THREE.InstancedBufferAttribute(new Float32Array(N),1);
+lgeo.setAttribute('aCell',aCell); lgeo.setAttribute('aAlpha',aAlpha);
+const labels = new THREE.InstancedMesh(lgeo, lmat, N); labels.frustumCulled=false; tiles.frustumCulled=false; scene.add(labels);
+const TLAB = new THREE.Matrix4().makeTranslation(0,0,0.53).multiply(new THREE.Matrix4().makeScale(0.78,0.78,1));
 
 // particelle
 const PN=700, pp=new Float32Array(PN*3), p0=[];
@@ -185,25 +207,46 @@ const V=(x,y,z)=>new THREE.Vector3(x,y,z), Q=new THREE.Quaternion(), Eu=new THRE
 const qe=(x,y,z)=>new THREE.Quaternion().setFromEuler(Eu.set(x,y,z));
 const F = {
   fogli(t){ return R.map((r,i)=>({ p:V(r[0]*8-4, r[1]*10-5, r[2]*-12+3.5).add(V(0,Math.sin(t*0.8+i)*0.15,0)),
-      q:qe(r[3]*6+t*(r[4]-.5)*1.2, r[5]*6+t*(r[6]-.5), r[4]*6), s:V(0.95,1.2,0.03), g:(i%4===0)?0.55:0, c:1 })); },
-  anello(t){ return R.map((r,i)=>{ const a=i/N*Math.PI*2 + t*0.55; const rad=2.0;
+      q:qe(r[3]*6+t*(r[4]-.5)*1.2, r[5]*6+t*(r[6]-.5), r[4]*6), s:V(0.95,1.2,0.03), g:(i%4===0)?0.55:0, c:1,
+      l: VAR==='b' ? 64+Math.floor(r[6]*31) : -1 })); },
+  anello(t){ if(VAR==='b') return R.map((r,i)=>{ const tilt=qe(0.35,0.25,0);
+      if(i<31){ const a=-i/31*Math.PI*2 + Math.PI/2 + t*0.55; const p=V(Math.cos(a)*2.05, Math.sin(a)*2.05, 0).applyQuaternion(tilt).add(C);
+        return { p, q:tilt.clone().multiply(qe(0,0,a-Math.PI/2)), s:V(0.36,0.36,0.09), g:0.55, c:0, l:64+i }; }
+      const a=(i-31)/17*Math.PI*2 - t*0.8; const p=V(Math.cos(a)*1.3, Math.sin(a)*1.3, 0).applyQuaternion(tilt).add(C);
+      return { p, q:tilt.clone().multiply(qe(0,0,a)), s:V(0.11,0.11,0.11), g:1.3, c:0, l:-1 }; });
+    return R.map((r,i)=>{ const a=i/N*Math.PI*2 + t*0.55; const rad=2.0;
       const p=V(Math.cos(a)*rad, Math.sin(a)*rad, 0).applyQuaternion(qe(0.35,0.25,0)).add(C);
-      return { p, q:qe(0.35,0.25,0).multiply(qe(0,0,a)), s:V(0.5,0.16,0.22), g:0.75, c:0 }; }); },
-  agenda(t){ return R.map((r,i)=>{ const col=i%4, row=Math.floor(i/4);
-      const booked=[1,6,9,14,19,20,27,30,35,41,44].includes(i); const on=booked? clamp((t-5.55-[1,6,9,14,19,20,27,30,35,41,44].indexOf(i)*0.13)/0.25):0;
-      return { p:V((col-1.5)*0.95, C.y+(5.5-row)*0.31, 0), q:new THREE.Quaternion(), s:V(0.84,0.26,0.08+on*0.1), g:0.04+on*1.0, c:0 }; }); },
+      return { p, q:qe(0.35,0.25,0).multiply(qe(0,0,a)), s:V(0.5,0.16,0.22), g:0.75, c:0, l:-1 }; }); },
+  calendario(t){ const K=0.86, cy=C.y+0.45, hy=cy+1.95*K;          // centro e cerniera (anelli)
+    const BOOK=[3,5,9,12,16,18,22,24,27,29,30];
+    return R.map((r,i)=>{ let p, s, g=0.04, l=-1, row=0;
+      if(i<7){ p=V((i-3)*0.56, 1.25, 0); s=V(0.5,0.3,0.03); l=31+i; g=0; }                       // iniziali dei giorni
+      else if(i<42){ const cell=i-7, col=cell%7; row=1+Math.floor(cell/7); const day=cell-1;
+        p=V((col-3)*0.56, 1.25-0.12-row*0.47, 0);
+        if(day>=1&&day<=31){ const k=BOOK.indexOf(day), on=k<0?0:clamp((t-5.55-k*0.13)/0.25);
+          s=V(0.5,0.4,0.07+on*0.09); g=0.04+on*0.62; l=(on>0.5?64:0)+day-1; }
+        else s=V(0.5,0.4,0.03); }
+      else if(i<46){ p=V((i-43.5)*1.0, 1.72, 0); s=V(0.97,0.36,0.1); g=0.45; }                      // barra in alto
+      else { p=V(i===46?-1.15:1.15, 1.98, 0.05); s=V(0.13,0.5,0.13); g=0.9; }                     // anelli della spirale
+      p.multiplyScalar(K).add(V(0,cy,0)); s.multiplyScalar(K);
+      // pagina che si sfoglia sul battito di 7,5 s: rotazione attorno alla cerniera, le righe basse in ritardo
+      const th = -E.inout(clamp((t-7.1-row*0.035)/0.5))*Math.PI*0.92;
+      const q = new THREE.Quaternion();
+      if(th!==0 && i<46){ const rq=qe(th,0,0); p.sub(V(0,hy,0)).applyQuaternion(rq).add(V(0,hy,0)); q.premultiply(rq); }
+      return { p, q, s, g, c:0, l }; }); },
   barre(t){ const h=[2,3,2,4,3,5,4,6]; return R.map((r,i)=>{ const k=i%8, lv=Math.floor(i/8), vis=lv<h[k];
-      return { p:V((k-3.5)*0.52, C.y-0.75+lv*0.4, 0), q:qe(0,0,0), s:vis?V(0.42,0.34,0.42):V(0.001,0.001,0.001), g:vis?(lv===h[k]-1?1.1:0.03):0, c:0 }; }); },
+      return { p:V((k-3.5)*0.52, C.y-0.75+lv*0.4, 0), q:qe(0,0,0), s:vis?V(0.42,0.34,0.42):V(0.001,0.001,0.001), g:vis?(lv===h[k]-1?1.1:0.03):0, c:0, l:-1 }; }); },
   sfera(t){ const ga=Math.PI*(3-Math.sqrt(5)); return R.map((r,i)=>{ const y=1-(i+0.5)/N*2, rr=Math.sqrt(1-y*y), th=ga*i+t*0.5;
       const n=V(Math.cos(th)*rr, y, Math.sin(th)*rr); const puls=1+0.06*Math.sin((t-10)*Math.PI*4);
       const q=new THREE.Quaternion().setFromUnitVectors(V(0,0,1), n);
-      return { p:n.clone().multiplyScalar(1.35*puls).add(C), q, s:V(0.34,0.34,0.07), g:0.25+0.45*Math.max(0,Math.sin((t-10)*Math.PI*4)), c:0 }; }); },
-  punto(t){ return R.map(()=>({ p:C.clone(), q:new THREE.Quaternion(), s:V(0.02,0.02,0.02), g:4, c:0 })); },
-  alone(t){ return R.map((r,i)=>{ const a=i/N*Math.PI*2 + t*0.3; const tilt=qe(1.15,0,0.1);
-      const p=V(Math.cos(a)*3.4, Math.sin(a)*3.4, 0).applyQuaternion(tilt).add(V(0,1.0,-3.4));
-      return { p, q:tilt.clone().multiply(qe(0,0,a)), s:V(0.36,0.08,0.08), g:0.6, c:0 }; }); },
+      return { p:n.clone().multiplyScalar(1.35*puls).add(C), q, s:V(0.34,0.34,0.07), g:0.25+0.45*Math.max(0,Math.sin((t-10)*Math.PI*4)), c:0, l:-1 }; }); },
+  punto(t){ return R.map(()=>({ p:C.clone(), q:new THREE.Quaternion(), s:V(0.02,0.02,0.02), g:4, c:0, l:-1 })); },
+  alone(t){ return R.map((r,i)=>{ const a=i/N*Math.PI*2 + t*0.3; const tilt=qe(VAR==='b'?1.06:1.15,0,0.1);
+      const p=V(Math.cos(a)*3.4, Math.sin(a)*3.4, 0).applyQuaternion(tilt).add(V(0,VAR==='b'?0.95:1.0,VAR==='b'?-4.0:-3.4));
+      return VAR==='b' ? { p, q:tilt.clone().multiply(qe(0,0,a)), s:V(0.3,0.3,0.05), g:0.6, c:0, l:64+(i%31) }
+                      : { p, q:tilt.clone().multiply(qe(0,0,a)), s:V(0.36,0.08,0.08), g:0.6, c:0, l:-1 }; }); },
 };
-const TR = [['fogli','anello',2.15,0.85],['anello','agenda',4.55,0.8],['agenda','barre',7.05,0.8],['barre','sfera',9.55,0.8],['sfera','punto',12.1,0.7],['punto','alone',12.86,0.9]];
+const TR = [['fogli','anello',2.15,0.85],['anello','calendario',4.55,0.8],['calendario','barre',7.4,0.75],['barre','sfera',9.55,0.8],['sfera','punto',12.1,0.7],['punto','alone',12.86,0.9]];
 const paper = new THREE.Color(0x8f8a83), metal = new THREE.Color(0x3a3a3a), tmpC=new THREE.Color();
 const M4=new THREE.Matrix4();
 function tilesAt(t){
@@ -214,11 +257,14 @@ function tilesAt(t){
       const u=E.morph(clamp((t-s-del)/d)), A=get(a)[i], B=get(b)[i];
       const p=A.p.clone().lerp(B.p,u); const arc=Math.sin(Math.PI*u);
       p.add(V((R[i][0]-.5)*1.6*arc, (R[i][1]-.5)*1.2*arc, (R[i][2]-.2)*2.2*arc));
-      st={ p, q:A.q.clone().slerp(B.q,u), s:A.s.clone().lerp(B.s,u), g:A.g+(B.g-A.g)*u+arc*0.35, c:A.c+(B.c-A.c)*u };
+      const la = A.l===B.l ? (A.l>=0?1:0) : (u<0.5 ? (A.l>=0?1-2*u:0) : (B.l>=0?2*u-1:0));
+      st={ p, q:A.q.clone().slerp(B.q,u), s:A.s.clone().lerp(B.s,u), g:A.g+(B.g-A.g)*u+arc*0.35, c:A.c+(B.c-A.c)*u, l:(u<0.5?A.l:B.l), la };
     }
     M4.compose(st.p, st.q, st.s); tiles.setMatrixAt(i,M4);
+    labels.setMatrixAt(i, M4.clone().multiply(TLAB)); aCell.array[i]=Math.max(0,st.l); aAlpha.array[i]= st.l<0 ? 0 : (st.la ?? 1);
     aGlow.array[i]=st.g; tmpC.copy(metal).lerp(paper,st.c); tiles.setColorAt(i,tmpC);
   }
+  labels.instanceMatrix.needsUpdate=true; aCell.needsUpdate=true; aAlpha.needsUpdate=true;
   tiles.instanceMatrix.needsUpdate=true; tiles.instanceColor.needsUpdate=true; aGlow.needsUpdate=true;
 }
 
@@ -265,8 +311,11 @@ function render3d(t){
   let pulse=0; for(const b of [2.5,5,7.5,10,12.5,13]) { const d=t-b; if(d>-0.05&&d<0.4) pulse=Math.max(pulse,Math.exp(-Math.max(d,0)*8)); }
   bloom.strength = 0.78 + 0.7*pulse; bloom.radius = 0.5;
   // pannello agenda
-  const pin=E.soft(clamp((t-4.75)/SO)), pout=E.exit(clamp((t-7.0)/0.35));
+  const pin=E.soft(clamp((t-4.75)/SO)), pout=E.exit(clamp((t-7.45)/0.3));
   const ps=Math.max(0.0001, pin*(1-pout)); panel.scale.set(ps,ps,ps); panel.visible=ps>0.001;
+  { const K=0.86, cy=C.y+0.45, hy=cy+1.95*K, th=-E.inout(clamp((t-7.1)/0.5))*Math.PI*0.92;
+    const pc=V(0,cy+0.08*K,-0.12).sub(V(0,hy,0)).applyAxisAngle(V(1,0,0),th).add(V(0,hy,0));
+    panel.position.copy(pc); panel.rotation.set(th,0,0); }
   // particelle
   for(let i=0;i<PN;i++){ const q=p0[i]; pp[i*3]=q[0]+Math.sin(t*0.4+i)*0.2; pp[i*3+1]=((q[1]+t*q[3]+12)%24+24)%24-12; pp[i*3+2]=q[2]; }
   pgeo.attributes.position.needsUpdate=true;
@@ -276,7 +325,7 @@ function render3d(t){
 
 function seek(t){ seek2d(t); render3d(t); }
 window.seek = seek;
-window.ready = document.fonts.ready.then(()=>Promise.all([...document.images].map(im=>im.decode().catch(()=>{})))).then(()=>{ seek(0); return true; });
+window.ready = document.fonts.load('800 84px Inter').then(()=>document.fonts.ready).then(()=>{ drawAtlas(); }).then(()=>Promise.all([...document.images].map(im=>im.decode().catch(()=>{})))).then(()=>{ seek(0); return true; });
 if(location.search.includes('play')){ window.ready.then(()=>{ const t0=performance.now();
   (function loop(){ seek(((performance.now()-t0)/1000)%DURATION); requestAnimationFrame(loop); })(); }); }
 </script>

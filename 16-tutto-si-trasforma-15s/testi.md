@@ -17,3 +17,11 @@ Voci 1–5 generate su Higgsfield il 17/11 e scaricate dal browser integrato (il
 
 Rifare il video: `npm install` in `sorgente/` (three, @fontsource/inter, playwright), poi `node render.js segments && node render.js join && python3 audio.py`.
 La pagina va servita via http (lo fa `render.js`); WebGL software, circa 45 s per scena.
+
+## v2 e v3 (18/11): calendario
+
+Stessi testi, voce e tempi della v1. Le tessere portano i numeri dei giorni (atlante di cifre su piani istanziati sopra le tessere).
+- **v2** (`render.js` con `VAR=a`): nella scena 3 le tessere compongono un calendario mensile 3D (iniziali L M M G V S D, 31 giorni, barra e due anelli della spirale); i giorni prenotati si accendono d'oro uno dopo l'altro; sul battito di 7,5 s la pagina si sfoglia attorno agli anelli e i giorni diventano le barre del grafico.
+- **v3** (`VAR=b`): come la v2, in più fogli del calendario strappati nella scena 1, ruota dei 31 giorni numerati nella scena 2 e alone di giorni attorno al logo in chiusura.
+
+Rifare: `VAR=a node render.js segments && node render.js join && python3 audio.py` (v2), idem con `VAR=b` (v3).

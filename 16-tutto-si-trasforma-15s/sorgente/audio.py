@@ -56,7 +56,8 @@ def build_sfx():                      # un effetto per ogni evento visivo (index
     put(s, riser(0.55), 1.95, 0.12); put(s, impact(), 2.5, 0.32); put(s, shimmer(1568), 2.55, 0.08)   # implosione -> anello d'oro
     put(s, whoosh(0.6), 4.5, 0.08); put(s, impact(), 5.0, 0.16)          # anello -> agenda
     for i in range(11): put(s, pop(700 * 2 ** ((i % 5) / 12)), 5.55 + i * 0.13, 0.06)   # appuntamenti che si accendono
-    put(s, whoosh(0.6), 7.0, 0.08); put(s, impact(), 7.5, 0.16)          # agenda -> grafico
+    put(s, whoosh(0.6), 7.0, 0.08); put(s, whoosh(0.3), 7.15, 0.07)     # la pagina del calendario si sfoglia
+    put(s, impact(), 7.5, 0.16)                                          # calendario -> grafico
     for i in range(8): put(s, tick(900 + 60 * i), 7.75 + i * 0.12, 0.05)
     put(s, whoosh(0.6), 9.5, 0.08); put(s, impact(), 10.0, 0.16)         # grafico -> sfera
     put(s, ding(880), 10.25, 0.26); put(s, buzz(), 10.25, 0.05)          # notifica: suono della serie

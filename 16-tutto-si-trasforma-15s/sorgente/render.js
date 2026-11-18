@@ -30,7 +30,7 @@ function serve() {
   const b = await chromium.launch({ executablePath: CHROME, args: ['--force-color-profile=srgb','--font-render-hinting=none','--use-angle=swiftshader','--enable-unsafe-swiftshader','--ignore-gpu-blocklist'] });
   const p = await b.newPage({ viewport: { width: 1080, height: 1920 }, deviceScaleFactor: 1 });
   p.on('pageerror', e => console.error('pagina:', e.message));
-  await p.goto(`http://localhost:${srv.address().port}/index.html`); await p.evaluate('window.ready');
+  await p.goto(`http://localhost:${srv.address().port}/index.html?v=${process.env.VAR||'b'}`); await p.evaluate('window.ready');
   if (mode === 'stills') {
     fs.mkdirSync('frames', { recursive: true });
     for (const t of rest) { await p.evaluate(t => seek(t), +t); await p.screenshot({ path: `frames/s_${(+t).toFixed(2).padStart(5,'0')}.jpg`, type: 'jpeg', quality: 80 }); }

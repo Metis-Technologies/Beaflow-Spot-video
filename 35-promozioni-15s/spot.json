@@ -1,0 +1,61 @@
+{
+  "numero": 35,
+  "nome": "promozioni",
+  "titolo": "Promozioni in pochi tocchi",
+  "ossatura": "A",
+  "tema": "chiaro",
+  "versione": 1,
+  "seme": 351,
+  "funzione": "promozioni",
+  "note": "Dati dimostrativi. Da verificare: creazione e invio promozioni ai clienti in Beaflow.",
+  "scene": [
+    {
+      "schermo": [
+        "Giornate"
+      ],
+      "accento": [
+        "vuote?"
+      ],
+      "voce": "Hai giornate vuote?",
+      "voce_inizio": 0.05,
+      "si_vede": "settimana di tessere, martedì e mercoledì quasi vuoti (rossi)"
+    },
+    {
+      "schermo": [
+        "Con Beaflow,",
+        "una promozione."
+      ],
+      "voce": "Con Beaflow, lanci una promozione.",
+      "voce_inizio": 2.6,
+      "si_vede": "arriva il buono «Promo del martedì −20%», alone di tessere"
+    },
+    {
+      "schermo": [
+        "La crei",
+        "in un tocco."
+      ],
+      "voce": "La crei in un tocco.",
+      "voce_inizio": 5.0,
+      "si_vede": "tasto «Pubblica» premuto due volte, onde di tessere"
+    },
+    {
+      "schermo": [
+        "Arriva ai",
+        "tuoi clienti."
+      ],
+      "voce": "Arriva ai tuoi clienti.",
+      "voce_inizio": 7.6,
+      "si_vede": "il buono diventa otto aeroplanini che volano verso le case, che si accendono"
+    },
+    {
+      "schermo": [
+        "L'agenda",
+        "si riempie."
+      ],
+      "voce": "E l'agenda si riempie.",
+      "voce_inizio": 10.1,
+      "si_vede": "la settimana si riempie d'oro, «+12 prenotazioni»"
+    }
+  ],
+  "dati": {}
+}

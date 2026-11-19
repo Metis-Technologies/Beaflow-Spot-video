@@ -1,0 +1,61 @@
+{
+  "numero": 34,
+  "nome": "falli-tornare-3d",
+  "titolo": "Falli tornare",
+  "ossatura": "A",
+  "tema": "chiaro",
+  "versione": 1,
+  "seme": 341,
+  "funzione": "fedeltà a punti",
+  "note": "Dati dimostrativi. Da verificare: programma fedeltà a punti/timbri in Beaflow.",
+  "scene": [
+    {
+      "schermo": [
+        "Clienti che"
+      ],
+      "accento": [
+        "non tornano?"
+      ],
+      "voce": "Clienti che non tornano?",
+      "voce_inizio": 0.05,
+      "si_vede": "tessere che si allontanano (clienti che se ne vanno)"
+    },
+    {
+      "schermo": [
+        "Con Beaflow,",
+        "punti fedeltà."
+      ],
+      "voce": "Con Beaflow, premi la fedeltà.",
+      "voce_inizio": 2.6,
+      "si_vede": "arriva la carta fedeltà, anello di monete attorno"
+    },
+    {
+      "schermo": [
+        "Ogni visita,",
+        "punti."
+      ],
+      "voce": "Ogni visita vale punti.",
+      "voce_inizio": 5.0,
+      "si_vede": "pioggia di monete, i timbri si riempiono, «+10 punti»"
+    },
+    {
+      "schermo": [
+        "Un premio,",
+        "al traguardo."
+      ],
+      "voce": "Al traguardo, un premio.",
+      "voce_inizio": 7.6,
+      "si_vede": "decimo timbro, «Premio sbloccato», regalo di tessere che si apre"
+    },
+    {
+      "schermo": [
+        "Tornano",
+        "volentieri."
+      ],
+      "voce": "E tornano volentieri.",
+      "voce_inizio": 10.1,
+      "si_vede": "freccia circolare del ritorno, «Bentornata, Giulia!»"
+    }
+  ],
+  "dati": {}
+}

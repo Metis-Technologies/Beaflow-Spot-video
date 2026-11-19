@@ -6,6 +6,8 @@ Dalla cartella principale del repo:
   python3 strumenti/spot.py nuovo 41 sai-sempre-cosa-ce --titolo "Sai sempre cosa c'è" --ossatura A --da 40-chiusura-cassa-15s
   python3 strumenti/spot.py costruisci 41-sai-sempre-cosa-ce-15s      # spot.json + scena.js -> sorgente/index.html, testi.md
   python3 strumenti/spot.py voci 41-... 42-...                        # frasi da generare, a gruppi di 4
+  python3 strumenti/spot.py scarica 41-... 1=<url> 2=<url>            # clip dritte in audio/ (dove la rete lo permette)
+  python3 strumenti/spot.py importa-voci ~/Scaricati --sposta         # clip scaricate col browser -> audio/, download puliti
   python3 strumenti/spot.py fotogrammi 41-...  [tempi]                # fotogrammi di controllo + foglio
   python3 strumenti/spot.py render 41-...  [s3 ...]                   # scene -> muto.mp4
   python3 strumenti/spot.py audio 41-...                              # voce + effetti + musica -> export/
@@ -256,12 +258,62 @@ def voci(a):
             aiuti = [x["pronuncia"]] if x.get("pronuncia") else []
             aiuti += [f"«{r['scrivi']}» si pronuncia {r['prompt']}" for p, r in lessico["parole"].items() if r.get("scrivi") and r["scrivi"].lower() in testo.lower()]
             if aiuti: prompt += "; " + "; ".join(aiuti)
-            lavori.append({"file": f"{d.name}/audio/line{i}.mp3", "richiesta": {"model": VOCE["model"], "prompt": prompt,
+            lavori.append({"file": f"{d.name}/audio/line{i}.mp3", "scarica_come": f"beaflow_{d.name}_line{i}.mp3", "richiesta": {"model": VOCE["model"], "prompt": prompt,
                            "dialogue": [{"text": testo, "voice_type": VOCE["voice_type"], "voice_id": VOCE["voice_id"]}]}})
     if not lavori: print("Nessuna frase da generare (le clip esistono già: --tutte per rigenerarle)."); return
     print(f"{len(lavori)} frasi da generare con Higgsfield (generate_audio_batch), al massimo 4 per gruppo. La chiusura «Beaflow. Inizia gratis.» è comune: comune/voce/chiusura.mp3\n")
     for k in range(0, len(lavori), 4):
         print(f"── gruppo {k//4 + 1}"); print(json.dumps(lavori[k:k + 4], ensure_ascii=False, indent=1))
+    print("\nPoi: con un terminale che raggiunge Higgsfield  →  spot.py scarica <spot> 1=<url> 2=<url> …"
+          "\n     altrimenti scaricare col browser usando i nomi «scarica_come»  →  spot.py importa-voci <cartella dei download> --sposta")
+
+
+def durata_mp3(f):
+    r = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(f)], capture_output=True, text=True)
+    try: return float(r.stdout.strip())
+    except ValueError: return None
+
+
+def scarica(a):
+    """Scarica le clip direttamente in <spot>/audio/ (serve una rete che raggiunge i link di Higgsfield: il PC sì, il container cloud no)."""
+    import urllib.request
+    d = cartella(a.spot); (d / "audio").mkdir(exist_ok=True); guai = 0
+    for voce in a.clip:
+        m = re.match(r"^([1-5])=(https://.+)$", voce)
+        if not m: sys.exit(f"ERRORE: «{voce}» non è nella forma  numero=https://…  (numero della scena da 1 a 5)")
+        dst = d / "audio" / f"line{m.group(1)}.mp3"; tmp = dst.with_suffix(".mp3.parziale")
+        try:
+            with urllib.request.urlopen(urllib.request.Request(m.group(2), headers={"User-Agent": "curl/8"}), timeout=60) as r: tmp.write_bytes(r.read())
+        except Exception as e:
+            tmp.unlink(missing_ok=True); guai += 1; print(f"  NON scaricata line{m.group(1)}: {str(e)[:120]}"); continue
+        sec = durata_mp3(tmp)
+        if not sec: tmp.unlink(); guai += 1; print(f"  NON valida line{m.group(1)}: il file scaricato non è un audio"); continue
+        tmp.replace(dst); print(f"  ok {d.name}/audio/{dst.name}  ({sec:.2f} s)")
+    if guai: sys.exit("Da qui i link non si raggiungono o non sono validi: scaricare col browser e usare  spot.py importa-voci")
+
+
+def importa_voci(a):
+    """Porta in <spot>/audio/lineN.mp3 le clip scaricate col browser con i nomi beaflow_<cartella-spot>_lineN.mp3 (campo «scarica_come» di spot.py voci)."""
+    src = Path(a.cartella).expanduser()
+    if not src.is_dir(): sys.exit(f"ERRORE: {src} non è una cartella")
+    fatti, altri = 0, []
+    for f in sorted(src.iterdir()):
+        m = re.match(r"^beaflow_(.+-15s)_line([1-5])(?: ?\(\d+\))?\.mp3$", f.name)
+        if not m:
+            if f.name.startswith(".org.chromium.Chromium.") or f.name.startswith("beaflow"): altri.append(f)
+            continue
+        d = REPO / m.group(1)
+        if not (d / "spot.json").exists(): print(f"  saltata {f.name}: lo spot {m.group(1)} non esiste"); continue
+        sec = durata_mp3(f)
+        if not sec: print(f"  saltata {f.name}: non è un audio valido (scaricamento incompleto?)"); continue
+        (d / "audio").mkdir(exist_ok=True); dst = d / "audio" / f"line{m.group(2)}.mp3"
+        shutil.copy(f, dst); fatti += 1
+        if a.sposta: f.unlink()
+        print(f"  ok {m.group(1)}/audio/{dst.name}  ({sec:.2f} s)" + ("  · tolta dai download" if a.sposta else ""))
+    for f in altri:
+        sec = durata_mp3(f)
+        print(f"  DA SISTEMARE A MANO: {f.name}  ({f.stat().st_size} byte" + (f", audio di {sec:.2f} s" if sec else ", non è un audio") + "): nome non riconosciuto")
+    print(f"{fatti} clip importate." + ("" if a.sposta or not fatti else "  Con --sposta le clip vengono anche tolte dalla cartella dei download."))
 
 
 # ───────── comandi che usano il motore ─────────
@@ -304,11 +356,15 @@ def main():
     for c in ("costruisci", "audio", "controlli", "tutto"):
         x = sub.add_parser(c); x.add_argument("spot"); x.add_argument("--sovrascrivi", action="store_true", help="sostituisce un video già presente in export/")
     v = sub.add_parser("voci"); v.add_argument("spot", nargs="+"); v.add_argument("--tutte", action="store_true")
+    sc = sub.add_parser("scarica"); sc.add_argument("spot"); sc.add_argument("clip", nargs="+", help="numero=url, es. 1=https://…")
+    iv = sub.add_parser("importa-voci"); iv.add_argument("cartella"); iv.add_argument("--sposta", action="store_true", help="toglie le clip dalla cartella dei download dopo averle copiate")
     f = sub.add_parser("fotogrammi"); f.add_argument("spot"); f.add_argument("tempi", nargs="*")
     r = sub.add_parser("render"); r.add_argument("spot"); r.add_argument("scene", nargs="*")
     a = p.parse_args()
     if a.cmd == "nuovo": return nuovo(a)
     if a.cmd == "voci": return voci(a)
+    if a.cmd == "scarica": return scarica(a)
+    if a.cmd == "importa-voci": return importa_voci(a)
     d = cartella(a.spot)
     extra = ["--sovrascrivi"] if getattr(a, "sovrascrivi", False) else []
     if a.cmd == "costruisci": costruisci(d)

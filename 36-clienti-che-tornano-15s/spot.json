@@ -1,0 +1,61 @@
+{
+  "numero": 36,
+  "nome": "clienti-che-tornano",
+  "titolo": "Clienti che tornano",
+  "ossatura": "A",
+  "tema": "chiaro",
+  "versione": 1,
+  "seme": 361,
+  "funzione": "tasso di ritorno (report, Pro)",
+  "note": "Dati dimostrativi. Da verificare: statistiche clienti nuovi / di ritorno in Beaflow.",
+  "scene": [
+    {
+      "schermo": [
+        "Quanti clienti"
+      ],
+      "accento": [
+        "tornano?"
+      ],
+      "voce": "Quanti clienti tornano davvero?",
+      "voce_inizio": 0.05,
+      "si_vede": "folla di tessere sparse, «?» rosso"
+    },
+    {
+      "schermo": [
+        "Con Beaflow,",
+        "lo vedi."
+      ],
+      "voce": "Con Beaflow, lo vedi subito.",
+      "voce_inizio": 2.6,
+      "si_vede": "le tessere formano un grafico ad anello che si colora, «68% tornano»"
+    },
+    {
+      "schermo": [
+        "Clienti",
+        "di ritorno."
+      ],
+      "voce": "Chi ritorna, visita dopo visita.",
+      "voce_inizio": 5.0,
+      "si_vede": "lo spicchio dei clienti di ritorno si stacca e brilla"
+    },
+    {
+      "schermo": [
+        "Nuovi",
+        "clienti."
+      ],
+      "voce": "E chi arriva per la prima volta.",
+      "voce_inizio": 7.6,
+      "si_vede": "si accende lo spicchio dei nuovi, «32% nuovi»"
+    },
+    {
+      "schermo": [
+        "Sai dove",
+        "migliorare."
+      ],
+      "voce": "Così sai dove migliorare.",
+      "voce_inizio": 10.1,
+      "si_vede": "barre in crescita, «+12% di ritorni»"
+    }
+  ],
+  "dati": {}
+}

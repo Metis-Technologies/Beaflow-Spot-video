@@ -15,7 +15,8 @@ bash strumenti/prepara.sh        # Three.js, font, librerie Python, browser: una
 |---|---|---|
 | 1 · Cartella | `python3 strumenti/spot.py nuovo 41 sai-sempre-cosa-ce --titolo "Sai sempre cosa c'è" --ossatura A --da 40-chiusura-cassa-15s` | `41-sai-sempre-cosa-ce-15s/` con `spot.json`, `scena.js`, `effetti.py` (copiati dallo spot indicato con `--da`, o dallo scheletro) |
 | 2 · Copione | si scrive `spot.json`, poi `python3 strumenti/spot.py costruisci 41-…` | controlla le regole dei testi; genera `sorgente/index.html` e `testi.md` |
-| 3 · Voci | `python3 strumenti/spot.py voci 41-… 42-… 43-…` | le frasi da mandare a Higgsfield, già a gruppi di 4, con il file di destinazione |
+| 3 · Voci | `python3 strumenti/spot.py voci 41-… 42-… 43-…` | le frasi da mandare a Higgsfield, già a gruppi di 4, con il file di destinazione e il nome con cui scaricarle |
+| 3b · Clip | `python3 strumenti/spot.py scarica 41-… 1=<url> 2=<url>` oppure `python3 strumenti/spot.py importa-voci ~/Scaricati --sposta` | le clip in `audio/line1…5.mp3`, controllate una per una (vedi sotto) |
 | 4 · Scena | si scrive `scena.js`, poi `python3 strumenti/spot.py fotogrammi 41-…` | `sorgente/sheet.jpg`: 13 fotogrammi da guardare prima del render |
 | 5 · Render | `python3 strumenti/spot.py render 41-…` (una scena sola: `render 41-… s3`) | `sorgente/muto.mp4` |
 | 6 · Audio | si scrive `effetti.py`, poi `python3 strumenti/spot.py audio 41-…` | i due video in `export/` con i nomi della serie; stampa i tempi di ogni frase |
@@ -24,6 +25,15 @@ bash strumenti/prepara.sh        # Three.js, font, librerie Python, browser: una
 `python3 strumenti/spot.py tutto 41-…` fa i passi 5, 6 e 7 di fila.
 
 Tempi misurati (container a 2 core, senza scheda grafica): fotogrammi 11 s, render dei 15 s circa 3 minuti, audio e controlli meno di un minuto.
+
+## Portare le clip della voce in `audio/`
+
+I link delle clip generate da Higgsfield non si raggiungono dal container cloud delle sessioni. Due strade:
+
+- **Con un terminale sul computer** (rete libera): `spot.py scarica <spot> 1=<url> 2=<url> …` scrive direttamente `audio/line1.mp3`, `line2.mp3`… Nessun passaggio dalla cartella dei download.
+- **Senza terminale**: le clip si scaricano col browser integrato, con i nomi indicati da `spot.py voci` (`beaflow_<cartella-spot>_line<N>.mp3`). Poi `spot.py importa-voci <cartella dei download> --sposta` le mette al posto giusto e le toglie dai download. I file rimasti con nome temporaneo (`.org.chromium.Chromium.*`) vengono elencati con dimensione e durata, da sistemare a mano.
+
+In entrambi i casi un file che non è un audio valido (scaricamento incompleto) viene rifiutato.
 
 ## I tre file di uno spot
 
@@ -77,7 +87,7 @@ Non può controllare: pronuncia e volumi all'ascolto, funzioni mostrate, titoli 
 
 | File | A cosa serve |
 |---|---|
-| `spot.py` | comando unico (`nuovo`, `costruisci`, `voci`, `fotogrammi`, `render`, `audio`, `controlli`, `tutto`) |
+| `spot.py` | comando unico (`nuovo`, `costruisci`, `voci`, `scarica`, `importa-voci`, `fotogrammi`, `render`, `audio`, `controlli`, `tutto`) |
 | `controlli.py` | i controlli automatici |
 | `pronuncia.json` | parole difficili per la voce e rimedi: si aggiorna a ogni correzione di pronuncia |
 | `riferimento.json` | soglie dei controlli (volume della serie, fotogrammi vuoti) |
@@ -88,4 +98,4 @@ Non può controllare: pronuncia e volumi all'ascolto, funzioni mostrate, titoli 
 | `importa-spot-15s.sh` | vecchio script di importazione degli spot 02 e 03 |
 | `build.py`, `scaffold.py`, `settore25.py`, `scene/` | script usati per gli spot 34–40 e per le versioni di settore del 25: hanno percorsi legati al container di quella sessione e partono dallo spot 33. Restano come archivio: per gli spot nuovi si usa `spot.py`, che fa lo stesso lavoro (stessa divisione fra modello e scena) senza percorsi fissi |
 
-Una modifica a `motore/` vale per tutti gli spot costruiti dopo. Gli spot fino al 40 restano riproducibili dalla loro `sorgente/` (hanno la loro copia del motore); il 40 è anche convertito al nuovo formato e fa da esempio: ricostruito con questi strumenti dà la stessa pagina e lo stesso audio dell'originale.
+Una modifica a `motore/` vale per tutti gli spot costruiti dopo. Gli spot fino al 40 restano riproducibili dalla loro `sorgente/` (hanno la loro copia del motore); i 34, 35, 36, 39 e 40 sono anche convertiti al nuovo formato (`spot.json`, `scena.js`, `effetti.py`): ricostruiti con questi strumenti danno la stessa pagina e gli stessi effetti sonori degli originali, quindi possono fare da base per versioni di settore o da partenza per uno spot nuovo (`--da`).

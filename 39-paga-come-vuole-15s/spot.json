@@ -1,0 +1,62 @@
+{
+  "numero": 39,
+  "nome": "paga-come-vuole",
+  "titolo": "Paga come vuole",
+  "ossatura": "A",
+  "tema": "chiaro",
+  "versione": 1,
+  "seme": 391,
+  "funzione": "pagamenti online e in sede",
+  "note": "Importi dimostrativi. Da verificare: pagamento online alla prenotazione e registrazione degli incassi in sede in Beaflow.",
+  "scene": [
+    {
+      "schermo": [
+        "Chi ha pagato"
+      ],
+      "accento": [
+        "oggi?"
+      ],
+      "voce": "Chi ha pagato, oggi?",
+      "voce_inizio": 0.05,
+      "si_vede": "monete sparse in disordine, «?» rosso"
+    },
+    {
+      "schermo": [
+        "Con Beaflow,",
+        "tutto",
+        "tracciato."
+      ],
+      "voce": "Con Beaflow, è tutto tracciato.",
+      "voce_inizio": 2.6,
+      "si_vede": "le monete si mettono in righe ordinate; telefono e POS ai lati"
+    },
+    {
+      "schermo": [
+        "Online, alla",
+        "prenotazione."
+      ],
+      "voce": "Online, già alla prenotazione.",
+      "voce_inizio": 5.0,
+      "si_vede": "dal telefono («Pagato online € 45,00») le monete d'oro scendono nel cassetto"
+    },
+    {
+      "schermo": [
+        "Oppure",
+        "in sede."
+      ],
+      "voce": "Oppure in sede, al banco.",
+      "voce_inizio": 7.6,
+      "si_vede": "dal POS («€ 30,00 pagato») le monete scure vanno nell'altro scomparto"
+    },
+    {
+      "schermo": [
+        "Ogni incasso",
+        "al suo posto."
+      ],
+      "voce": "Ogni incasso, al suo posto.",
+      "voce_inizio": 10.1,
+      "si_vede": "le monete si sistemano nei due scomparti, il cassetto si chiude, «Tutto registrato»"
+    }
+  ],
+  "dati": {}
+}

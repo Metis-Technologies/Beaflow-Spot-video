@@ -4,7 +4,7 @@ Piano: `claude/PIANO-30-SPOT.md` (spot 25). Cambi scena a 0 · 2,5 · 5 · 7,5 �
 
 | Scena | Tempo | Cosa si vede | Testo a schermo | Voce (inizio) |
 |---|---|---|---|---|
-| 1 | 0 – 2,5 | settimana 3D (LUN–SAB) con poche prenotazioni nere e i buchi che pulsano in rosso | Buchi in agenda? | Hai dei buchi in agènda? (0,05) — v2, rigenerata per la pronuncia |
+| 1 | 0 – 2,5 | settimana 3D (LUN–SAB) con poche prenotazioni nere e i buchi che pulsano in rosso | Posti vuoti? (v3; prima «Buchi in agenda?») | Troppi posti vuoti? (0,05) — v3: «buchi» e «agenda» suonavano male |
 | 2 | 2,5 – 5 | i buchi diventano caselle vuote; le prenotazioni iniziano a piovere dall'alto e si incastrano con un lampo d'oro | Con Beaflow si riempie da sola. | Con Beaflow, si riempie da sola. (2,60) |
 | 3 | 5 – 7,5 | la camera sul lunedì, che si riempie dal basso e si accende d'oro | Lunedì. | Lunedì, un posto dopo l'altro. (5,00) |
 | 4 | 7,5 – 10 | la camera sul mercoledì, stessa pioggia | Mercoledì. | Mercoledì, anche il pomeriggio. (7,60) |

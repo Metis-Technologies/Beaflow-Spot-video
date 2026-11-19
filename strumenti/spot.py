@@ -117,8 +117,9 @@ def controlla_copione(s, d):
         ini = x.get("voce_inizio")
         if ini is None or not (GRIGLIA[i - 1] <= ini <= GRIGLIA[i - 1] + 0.6):
             err.append(f"scena {i}: voce_inizio {ini} fuori da {it(GRIGLIA[i-1])}–{it(GRIGLIA[i-1]+0.6)} s")
-        if "beaflow" in voce.lower() and not (i == 2 and voce.lower().startswith("con beaflow")):
-            err.append(f"scena {i}: la voce dice «Beaflow» solo in «Con Beaflow, …» (scena 2) e nella chiusura")
+        dove = (2,) if s.get("ossatura") == "A" else (2, 3)          # nelle ossature B e C «Con Beaflow» può arrivare a metà
+        if "beaflow" in voce.lower() and not (i in dove and voce.lower().startswith("con beaflow")):
+            err.append(f"scena {i}: la voce dice «Beaflow» solo in «Con Beaflow, …» (scena {' o '.join(map(str, dove))}) e nella chiusura")
         if re.search(r"\d", x.get("voce_tts", voce)): avv.append(f"scena {i}: numeri in cifre nella voce, scriverli in lettere: «{voce}»")
         basso = (testo + " " + voce).lower()
         for parola, r in lessico["parole"].items():
@@ -132,6 +133,7 @@ def controlla_copione(s, d):
         if not s.get("settore"):
             for m in MESTIERI:
                 if m in basso + " ": avv.append(f"scena {i}: nomina un solo mestiere («{m.strip()}»): gli spot generici valgono per tutte le attività")
+    if sum("beaflow" in x.get("voce", "").lower() for x in sc) > 1: err.append("la voce dice «Con Beaflow, …» una volta sola")
     if s["ossatura"] == "A" and not sc[0].get("accento"):
         avv.append("ossatura A: di solito il gancio ha una riga d'accento rossa (campo «accento» della scena 1)")
     if s["ossatura"] == "A" and not sc[1].get("voce", "").lower().startswith("con beaflow"):

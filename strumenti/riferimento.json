@@ -5,8 +5,8 @@
   "dettaglio_minimo_transizione": 2.0,
   "dettaglio_minimo_scena": 4.0,
   "audio": {
-    "_": "Profilo del mix, scelto da «profilo». «attuale» = come gli spot fino al lotto A (voce circa 7 dB sopra musica ed effetti). «chiaro» = musica ed effetti si abbassano mentre la voce parla (circa 13 dB), timbro della voce invariato: in uso dal 19/11 su richiesta dell'utente. «chiaro-brillante» = come chiaro, più filtri sulla voce (meno bassi, più presenza, compressione leggera): da usare solo se l'utente lo sceglie all'ascolto. Per una prova: audio.py <spot> --profilo=<nome>",
-    "profilo": "chiaro",
+    "_": "Profilo del mix, scelto da «profilo». In uso dal 19/11: «chiaro-brillante», scelto dall'utente all'ascolto fra tre prove dello spot 26 (musica ed effetti si abbassano mentre la voce parla, voce circa 13 dB sopra il resto, più filtri sulla voce: meno bassi, più presenza, compressione leggera). «chiaro» = uguale ma senza filtri sulla voce. «attuale» = come gli spot fino al lotto A (voce circa 7 dB sopra). Per una prova: audio.py <spot> --profilo=<nome>",
+    "profilo": "chiaro-brillante",
     "profili": {
       "attuale": {},
       "chiaro": {

@@ -1,0 +1,62 @@
+{
+  "numero": 22,
+  "nome": "passaparola",
+  "titolo": "Il passaparola, premiato",
+  "ossatura": "C",
+  "tema": "chiaro",
+  "versione": 1,
+  "seme": 321,
+  "funzione": "premio del passaparola a chi invita e a chi è invitato (confermato 19/11)",
+  "note": "Dati dimostrativi (orari, nomi, prezzi).",
+  "scene": [
+    {
+      "schermo": [
+        "Un invito."
+      ],
+      "accento": [
+        "Due premiati."
+      ],
+      "voce": "Un invito. Premiati in due.",
+      "voce_inizio": 0.05,
+      "si_vede": "due tessere-cliente gemelle già accese d'oro, con «+ punti»"
+    },
+    {
+      "schermo": [
+        "Un cliente",
+        "invita un amico."
+      ],
+      "voce": "Un cliente invita un amico.",
+      "voce_inizio": 2.6,
+      "si_vede": "si torna all'inizio: una tessera da sola si sdoppia"
+    },
+    {
+      "schermo": [
+        "Con Beaflow,",
+        "punti",
+        "a entrambi."
+      ],
+      "voce": "Con Beaflow, punti a tutti e due.",
+      "voce_inizio": 5.1,
+      "si_vede": "tutte e due si caricano di punti e si accendono d'oro"
+    },
+    {
+      "schermo": [
+        "Il passaparola",
+        "cresce."
+      ],
+      "voce": "E il passaparola cresce da solo.",
+      "voce_inizio": 7.6,
+      "si_vede": "rete a fiore che si apre dal centro, i nodi si accendono uno a uno"
+    },
+    {
+      "schermo": [
+        "Più clienti,",
+        "zero pubblicità."
+      ],
+      "voce": "Più clienti, senza pubblicità.",
+      "voce_inizio": 10.1,
+      "si_vede": "la rete si raccoglie in una pila di prenotazioni"
+    }
+  ],
+  "dati": {}
+}

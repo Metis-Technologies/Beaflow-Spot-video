@@ -1,0 +1,62 @@
+{
+  "numero": 26,
+  "nome": "doppie-prenotazioni",
+  "titolo": "Mai più doppie prenotazioni",
+  "ossatura": "A",
+  "tema": "chiaro",
+  "versione": 1,
+  "seme": 361,
+  "funzione": "blocco delle doppie prenotazioni, online e dal gestionale (confermato 19/11)",
+  "note": "Dati dimostrativi (orari, nomi, prezzi).",
+  "scene": [
+    {
+      "schermo": [
+        "Due clienti,"
+      ],
+      "accento": [
+        "stessa ora?"
+      ],
+      "voce": "Due clienti alla stessa ora?",
+      "voce_inizio": 0.05,
+      "si_vede": "due tessere puntano sulla stessa casella e si scontrano al rallentatore, luce rossa"
+    },
+    {
+      "schermo": [
+        "Con Beaflow,",
+        "non succede."
+      ],
+      "voce": "Con Beaflow, non succede più.",
+      "voce_inizio": 2.6,
+      "si_vede": "scudo di luce oro: la seconda tessera ci rimbalza contro"
+    },
+    {
+      "schermo": [
+        "L'orario",
+        "occupato",
+        "si blocca."
+      ],
+      "voce": "L'orario occupato si blocca da solo.",
+      "voce_inizio": 5.05,
+      "si_vede": "bordo oro sulla casella occupata, la tessera scivola sulla prima casella libera"
+    },
+    {
+      "schermo": [
+        "Online e",
+        "dal gestionale."
+      ],
+      "voce": "Sia online, sia dal gestionale.",
+      "voce_inizio": 7.5,
+      "si_vede": "due ingressi (telefono e banco): lo scudo devia entrambi"
+    },
+    {
+      "schermo": [
+        "Agenda",
+        "senza sorprese."
+      ],
+      "voce": "Un'agenda senza sorprese.",
+      "voce_inizio": 10.2,
+      "si_vede": "agenda ordinata, la camera sale lungo le colonne"
+    }
+  ],
+  "dati": {}
+}

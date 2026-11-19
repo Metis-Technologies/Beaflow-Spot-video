@@ -4,6 +4,10 @@
 //   V(x,y,z), qe(x,y,z), clamp, E.{enter,exit,inout,morph,spring,soft}, SP, SO, canvasTex(w,h,fn), LATE (funzioni da lanciare a font pronti)
 //   PUNTO e ALONE (formazioni della chiusura), CLOSE_CK (camera della chiusura), makeCam, tilesAt, commonFrame, draw
 // Da definire qui: F (formazioni delle tessere), TR (trasformazioni), camAt (camera), render3d(t).
+// Nomi già usati dal modello (non ridichiararli con const/let, la pagina va in errore «already declared»):
+//   TEMA SCURO DURATION SP SO E reg $ els ent tw stagger fx clamp val seek2d hidden titleIn outT popIn FL canvas renderer scene pm cam key rim warm
+//   seed rnd N C GY geo aGlow glowU goldU mixU emU mat tiles ground V Eu qe PN pp p0 pgeo dot pmat R PUNTO ALONE white black tmpC M4
+//   tilesAt makeCam CLOSE_CK composer bloom RED GOLD commonFrame draw canvasTex LATE seek bez spr
 // Regole: tutto è funzione di t (niente tempo reale, niente Math.random); cambi scena a 2,5 · 5 · 7,5 · 10 · 12,5;
 // oggetti importanti sotto i titoli e dentro le zone sicure; un solo protagonista per scena.
 

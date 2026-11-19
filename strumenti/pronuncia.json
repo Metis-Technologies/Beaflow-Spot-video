@@ -1,0 +1,17 @@
+{
+  "_": "Lessico di pronuncia della voce Harrison (Eleven v4). Si aggiorna a ogni correzione dell'utente, insieme alla tabella del §3 di claude/REGOLE-PROGETTO.md. «scrivi» = grafia da mandare alla voce (campo voce_tts), «prompt» = aiuto aggiunto al prompt.",
+  "parole": {
+    "ognuno": {
+      "scrivi": "Ognùno",
+      "prompt": "o-gnù-no, gn come in 'bagno'",
+      "nota": "Segnalata il 12/11 (spot 06) e il 19/11 (spot 31). Se suona male due volte: «Ciascuno» o «Ogni operatore»."
+    },
+    "agenda": {
+      "solo_gancio": true,
+      "nota": "Da sola in un gancio breve suona «azienda» (19/11, spot 25: «Buchi in agenda?» bocciata due volte). Meglio cambiare parole: «Troppi posti vuoti?»."
+    }
+  },
+  "evita": {
+    "nail artist": "studio unghie"
+  }
+}

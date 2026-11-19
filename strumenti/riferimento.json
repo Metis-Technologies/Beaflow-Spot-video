@@ -1,0 +1,7 @@
+{
+  "_": "Valori di riferimento per strumenti/controlli.py, misurati il 19/11/2026 sugli spot 33, 39 e 40 consegnati (con e senza musica: da -16,2 a -15,3 LUFS). Il dettaglio è la media dei contorni di un fotogramma ridotto: 0,7 = solo sfondo, 4-14 = scena normale.",
+  "lufs_serie": -15.6,
+  "lufs_tolleranza": 1.0,
+  "dettaglio_minimo_transizione": 2.0,
+  "dettaglio_minimo_scena": 4.0
+}

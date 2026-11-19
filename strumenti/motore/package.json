@@ -1,0 +1,9 @@
+{
+  "name": "beaflow-spot-motore",
+  "private": true,
+  "description": "Dipendenze comuni a tutti gli spot Premium 3D (font e Three.js). Si installano una volta sola con strumenti/prepara.sh.",
+  "dependencies": {
+    "@fontsource/inter": "5.3.0",
+    "three": "0.170.0"
+  }
+}

@@ -5,54 +5,50 @@ Archivio di lavoro degli spot motion design 9:16 per Beaflow: regole, testi, sor
 ## Struttura
 
 ```
-00-linee-guida/                 regole valide per tutti gli spot
-  STILE.md                      stile «Grafico» approvato
-  HANDOFF.md                    tecnologie e metodo di produzione
-  istruzioni-progetto.md        istruzioni del progetto Claude
-  brief-collaboratore-esplora.md
-01-gestionale-30s/              consegnato
-02-agenda-vuota-15s/            v2 con logo, da riapprovare
-  archivio-esplora-20s/         prima versione da 20 s, scartata
-03-online-in-5-minuti-15s/      v2 con logo, da riapprovare
-04-telefono-che-squilla-15s/    approvato (v5)
-05-tutto-in-un-app-15s/         v3 da approvare
-06-turni-team-15s/               approvato (v4)
-07-cassa-magazzino-15s/         v3 da approvare
-08-riprenditi-il-tempo-15s/     v2 da approvare
-09-falli-tornare-15s/            v1 da approvare
-10-addio-post-it-15s/            v1 da approvare
-11-scheda-cliente-15s/           v1 da approvare
-12-pagamenti-15s/                v1 da approvare
-13-lista-attesa-15s/             v1 da approvare
-14-report-15s/                   v1 da approvare
-15-recensioni-15s/               v1 da approvare
-comune/musica/                  base musicale della serie (120 BPM)
-comune/logo/                    logo Beaflow SVG (negativo e positivo)
-strumenti/                      script di servizio
+00-linee-guida/        documenti storici (stile «Grafico», primo metodo di produzione)
+01 … 15                spot 2D, stile «Grafico»
+16 … 40                spot Premium 3D (16 scuro, dal 17 variante chiara)
+25-agenda-piena-<settore>-15s/   versioni di settore di uno spot base
+comune/                musica della serie, logo, frase di chiusura della voce
+strumenti/             motore comune e script per creare, renderizzare e controllare gli spot
+consegne/              zip da inviare (fuori da git)
 ```
+
+Stato e prossimi spot: `claude/AVANZAMENTO-3D.md` nel progetto Claude. Regole: `claude/REGOLE-PROGETTO.md`.
 
 Ogni cartella di spot ha la stessa forma:
 
 | Cosa | Contenuto |
 |---|---|
-| `testi.md` | stato, tempi delle scene, testi a schermo, frasi della voce |
-| `sorgente/` | pagina HTML dell'animazione e script di render e audio |
+| `spot.json` | testi, voce, tempi, ossatura (spot nuovi: è la fonte di tutto) |
+| `scena.js`, `effetti.py` | parte 3D e effetti sonori dello spot (spot nuovi) |
+| `testi.md` | tempi delle scene, testi a schermo, frasi della voce (negli spot nuovi è generato da `spot.json`) |
+| `sorgente/` | pagina HTML dell'animazione (negli spot fino al 40 anche la loro copia degli script) |
 | `audio/` | clip della voce (`line1.mp3` …) |
 | `export/` | video finali |
 | `export/archivio/` | versioni superate |
 
 Nomi dei video: `beaflow_<spot>_<durata>_<variante>_v<numero>.mp4`
 
+## Produrre uno spot
+
+```bash
+bash strumenti/prepara.sh                                  # una volta per sessione
+python3 strumenti/spot.py nuovo 41 nome-spot --titolo "Titolo" --ossatura A --da 40-chiusura-cassa-15s
+python3 strumenti/spot.py costruisci 41-nome-spot-15s      # dopo aver scritto spot.json
+python3 strumenti/spot.py fotogrammi 41-nome-spot-15s      # dopo aver scritto scena.js
+python3 strumenti/spot.py tutto 41-nome-spot-15s           # render, audio, controlli, video in export/
+```
+
+Tutti i passi, i campi di `spot.json` e i controlli: `strumenti/README.md`.
+
 ## Prima volta sul computer
 
 ```bash
 git clone https://github.com/Metis-Technologies/beaflow-spot-video.git
 cd beaflow-spot-video
-bash strumenti/importa-spot-15s.sh     # sorgenti, audio e video dei due spot da 15 s
-git add -A && git commit -m "Aggiunge gli spot da 15 s" && git push
+bash strumenti/prepara.sh
 ```
-
-Su Windows lo script va lanciato da Git Bash.
 
 ## Uso di tutti i giorni
 
@@ -65,6 +61,6 @@ Quando Claude produce un nuovo spot dalla chat, carica i file su un ramo del rep
 
 ## Cosa non entra nel repository
 
-`node_modules/`, fotogrammi di controllo, clip intermedie, file `.wav` e video intermedi in `sorgente/` (vedi `.gitignore`). Per rifare un render: `npm install` dentro `sorgente/`, poi i comandi indicati in `00-linee-guida/HANDOFF.md`.
+`node_modules/`, fotogrammi di controllo, clip intermedie, file `.wav`, video intermedi in `sorgente/` e la cartella `consegne/` (vedi `.gitignore`). Per rifare il render di uno spot fino al 40: `npm install` dentro la sua `sorgente/`, poi i comandi indicati in `00-linee-guida/HANDOFF.md`.
 
 I video pesano pochi megabyte e stanno nel repository come file normali. GitHub avvisa sopra i 50 MB per file e blocca sopra i 100 MB: se un video supera queste soglie va gestito con Git LFS.

@@ -1,0 +1,45 @@
+{
+  "numero": 40,
+  "nome": "chiusura-cassa",
+  "titolo": "Chiusura cassa in un attimo",
+  "ossatura": "A",
+  "tema": "chiaro",
+  "versione": 1,
+  "seme": 401,
+  "funzione": "cassa (Pro)",
+  "note": "Importi dimostrativi. Da verificare: riepilogo incassi giornaliero con contanti e carte separati in Beaflow.",
+  "scene": [
+    {
+      "schermo": ["Chiudere", "la cassa?"],
+      "accento": ["Mezz'ora."],
+      "voce": "Chiudere la cassa? Mezz'ora.",
+      "voce_inizio": 0.05,
+      "si_vede": "scontrino lunghissimo che scende, orologio di tessere che si riempie di rosso fino a «30 min»"
+    },
+    {
+      "schermo": ["Con Beaflow,", "un attimo."],
+      "voce": "Con Beaflow, un attimo.",
+      "voce_inizio": 2.6,
+      "si_vede": "lo scontrino si riavvolge, l'orologio scatta a «1 min» d'oro"
+    },
+    {
+      "schermo": ["Incassi", "già sommati."],
+      "voce": "Gli incassi sono già sommati.",
+      "voce_inizio": 5.0,
+      "si_vede": "scheda «Totale di oggi € 1.240 · 32 incassi» su una pedana di tessere"
+    },
+    {
+      "schermo": ["Contanti", "e carte."],
+      "voce": "Contanti e carte, separati.",
+      "voce_inizio": 7.6,
+      "si_vede": "due pile: «Contanti € 380» (scura) e «Carte € 860» (oro)"
+    },
+    {
+      "schermo": ["Alle 19,", "sei fuori."],
+      "voce": "E alle sette sei fuori.",
+      "voce_inizio": 10.1,
+      "si_vede": "cornice di tessere a forma di porta, la porta si chiude, «19:00»"
+    }
+  ],
+  "dati": {}
+}

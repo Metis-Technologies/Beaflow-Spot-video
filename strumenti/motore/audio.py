@@ -9,7 +9,7 @@ Effetti: funzione effetti(s, a) in <spot>/effetti.py. Musica: comune/musica/beaf
 Parte da <spot>/sorgente/muto.mp4 e scrive le due versioni in <spot>/export/ con i nomi della serie.
 """
 import sys; sys.dont_write_bytecode = True      # niente __pycache__ nelle cartelle degli spot
-import importlib.util, json, shutil, subprocess, sys
+import importlib.util, json, re, shutil, subprocess, sys
 from pathlib import Path
 import numpy as np
 import soundfile as sf
@@ -144,6 +144,23 @@ def tempo_and_phase(x):
     score = [np.maximum(flux, 0)[np.abs(((t - ph + period / 2) % period) - period / 2) < 0.03].sum() for ph in phases]
     return bpm, float(phases[int(np.argmax(score))])
 
+def lufs(mix, tmpdir):
+    """Loudness integrata (LUFS) di un mix, misurata con ffmpeg ebur128 come fa controlli.py."""
+    wav = tmpdir / "_misura.wav"; sf.write(wav, np.stack([mix, mix], axis=1), SR)
+    err = subprocess.run(["ffmpeg", "-nostats", "-i", str(wav), "-af", "ebur128", "-f", "null", "-"], capture_output=True, text=True).stderr
+    wav.unlink(missing_ok=True)
+    m = re.findall(r"I:\s+(-?[\d.]+) LUFS", err)
+    return float(m[-1]) if m else None
+
+def alla_serie(mix, tmpdir, nome):
+    """Riporta il mix al volume della serie (riferimento.json) se se ne discosta di più di 0,5 LU; il picco resta sotto 0,97."""
+    rif = json.loads((REPO / "strumenti" / "riferimento.json").read_text(encoding="utf-8"))["lufs_serie"]
+    l = lufs(mix, tmpdir)
+    if l is None or abs(l - rif) <= 0.5: return mix
+    g = 10 ** ((rif - l) / 20); g = min(g, 0.97 / max(np.abs(mix).max(), 1e-9))
+    print(f"  volume {nome}: {l:.1f} LUFS -> {rif} (guadagno {20*np.log10(g):+.1f} dB)")
+    return mix * g
+
 def mux(d, wavname, mix, out):
     wav = d / "audio" / wavname
     sf.write(wav, np.stack([mix, mix], axis=1), SR)
@@ -168,7 +185,7 @@ def main():
     d = Path(args[0]).resolve(); s, catena = carica(d)
     if not (d / "sorgente" / "muto.mp4").exists(): sys.exit("ERRORE: manca sorgente/muto.mp4 (prima il render)")
     voice, sfx = build_voice(d), build_sfx(catena)
-    mux(d, "mix-senza-musica.wav", voice + sfx, "spot-senza-musica.mp4")
+    mux(d, "mix-senza-musica.wav", alla_serie(voice + sfx, d / "audio", "senza musica"), "spot-senza-musica.mp4")
     m = decode(REPO / "comune" / "musica" / "beaflow_musica_120bpm.mp3", d / "audio")
     bpm, phase = tempo_and_phase(m)
     print(f"musica: tempo stimato {bpm:.1f} BPM, primo battito a {phase:.3f} s")
@@ -179,7 +196,7 @@ def main():
     fade = int(0.6 * SR); mus[-fade:] *= np.linspace(1, 0, fade) ** 1.5; mus[: int(0.05 * SR)] *= np.linspace(0, 1, int(0.05 * SR))
     mix = voice + 0.8 * sfx + mus
     if np.abs(mix).max() > 0.97: mix *= 0.97 / np.abs(mix).max()
-    mux(d, "mix-musica.wav", mix, "spot-musica.mp4")
+    mux(d, "mix-musica.wav", alla_serie(mix, d / "audio", "musica"), "spot-musica.mp4")
     esporta(d, s, "--sovrascrivi" in sys.argv)
 
 if __name__ == "__main__":

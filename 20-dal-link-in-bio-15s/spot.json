@@ -1,0 +1,63 @@
+{
+  "numero": 20,
+  "nome": "dal-link-in-bio",
+  "titolo": "Dal link in bio",
+  "ossatura": "B",
+  "tema": "chiaro",
+  "versione": 1,
+  "seme": 301,
+  "funzione": "link diretto alla pagina di prenotazione, da mettere nella bio (confermato 19/11)",
+  "note": "Dati dimostrativi (orari, nomi, prezzi).",
+  "scene": [
+    {
+      "schermo": [
+        "Un link in bio."
+      ],
+      "accento": [
+        "Prenotato."
+      ],
+      "voce": "Un link nella bio. E prenotano.",
+      "voce_inizio": 0.05,
+      "si_vede": "catena caotica di fumetti-messaggio che si avvolge in un anello-link oro dentro un profilo stilizzato (avatar e bio)",
+      "pronuncia": "«link» e «bio» si pronunciano all'italiana, come parole italiane"
+    },
+    {
+      "schermo": [
+        "Toccano",
+        "il link."
+      ],
+      "voce": "Il cliente tocca il link.",
+      "voce_inizio": 2.6,
+      "si_vede": "la camera vola dentro l'anello: si apre la pagina di prenotazione del «Salone»",
+      "pronuncia": "«link» e «bio» si pronunciano all'italiana, come parole italiane"
+    },
+    {
+      "schermo": [
+        "Con Beaflow,",
+        "scelgono",
+        "il servizio."
+      ],
+      "voce": "Con Beaflow, sceglie il servizio.",
+      "voce_inizio": 5.1,
+      "si_vede": "tessere-servizio (Taglio 30 min, Manicure 45 min, Massaggio 50 min): una si accende d'oro"
+    },
+    {
+      "schermo": [
+        "Poi l'orario."
+      ],
+      "voce": "Poi l'orario che preferisce.",
+      "voce_inizio": 7.6,
+      "si_vede": "griglia di orari: «Ven 17:30» si alza e si illumina"
+    },
+    {
+      "schermo": [
+        "Confermata.",
+        "Zero messaggi."
+      ],
+      "voce": "Confermata. Senza un messaggio.",
+      "voce_inizio": 10.1,
+      "si_vede": "pillola «Confermata» ottone; i fumetti grigi sullo sfondo si dissolvono"
+    }
+  ],
+  "dati": {}
+}

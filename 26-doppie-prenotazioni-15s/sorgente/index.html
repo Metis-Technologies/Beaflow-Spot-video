@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>Beaflow · Mai più doppie prenotazioni · 15 s</title>
+<style>
+@font-face{font-family:'Inter';font-weight:400;src:url('node_modules/@fontsource/inter/files/inter-latin-400-normal.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-weight:500;src:url('node_modules/@fontsource/inter/files/inter-latin-500-normal.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-weight:600;src:url('node_modules/@fontsource/inter/files/inter-latin-600-normal.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-weight:700;src:url('node_modules/@fontsource/inter/files/inter-latin-700-normal.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-weight:800;src:url('node_modules/@fontsource/inter/files/inter-latin-800-normal.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-weight:600;src:url('node_modules/@fontsource/inter/files/inter-latin-ext-600-normal.woff2') format('woff2');unicode-range:U+20AC}
+:root{
+  --nero:#111111; --bianco:#FFFFFF; --crema:#FBF8F4; --crema2:#F3E8DC; --ottone:#775A18; --rosso:#FF5A4F; --oro:#C9B16C;
+  --grigio-chiaro:#B5B5B5; --grigio-scuro:#5F5F5F; --scheda-nero:#1E1E1E;
+  /* variante chiara (default) */
+  --fondo:linear-gradient(180deg,#FBF8F4 0%,#F7F0E7 55%,#F3E8DC 100%);
+  --testo:#111111; --testo2:#5F5F5F; --scheda:#FFFFFF; --ombra:0 24px 60px rgba(60,40,10,.14),0 4px 14px rgba(60,40,10,.08);
+  --velo:linear-gradient(rgba(251,248,244,.92),rgba(251,248,244,.7) 45%,rgba(251,248,244,0) 80%);
+  --btn:#111111; --btn-tx:#FFFFFF;
+}
+body.scuro{
+  --fondo:#111111; --testo:#FFFFFF; --testo2:#B5B5B5; --scheda:#1E1E1E; --ombra:none;
+  --velo:linear-gradient(rgba(17,17,17,.82),rgba(17,17,17,.55) 70%,rgba(17,17,17,0));
+  --btn:#FBF8F4; --btn-tx:#111111;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden}
+body{position:relative;background:var(--fondo);font-family:'Inter',sans-serif;color:var(--testo);font-variant-numeric:tabular-nums}
+#gl{position:absolute;inset:0;width:1080px;height:1920px;z-index:0}
+#vig{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 80% 65% at 50% 55%, rgba(0,0,0,0) 60%, rgba(120,90,40,.10) 100%)}
+body.scuro #vig{background:radial-gradient(ellipse 75% 60% at 50% 55%, rgba(0,0,0,0) 55%, rgba(0,0,0,.55) 100%)}
+#shade{position:absolute;left:0;right:0;top:0;height:900px;z-index:1;opacity:0;background:var(--velo)}
+#flash{position:absolute;inset:0;z-index:2;opacity:0;background:radial-gradient(circle at 50% 62%, #fff7e6, rgba(255,244,220,.55) 55%, rgba(255,244,220,0))}
+.ui{position:absolute;z-index:3;left:80px;width:880px}
+.w{display:inline-block}
+.logo{position:absolute;z-index:3}
+#logoS{left:80px;top:250px;width:240px;height:64px}
+#h1{top:380px}
+#t1{font-weight:800;font-size:112px;line-height:1.04;letter-spacing:-.04em}
+#t1b{margin-top:0;font-weight:800;font-size:112px;line-height:1.04;letter-spacing:-.04em;color:var(--rosso)}
+
+#voto{top:660px;display:flex;align-items:center;gap:18px;font-weight:700;font-size:48px;color:var(--testo2)}
+#voto b{font-weight:800;font-size:96px;color:var(--testo);letter-spacing:-.03em}
+.tt{top:400px;font-weight:800;font-size:112px;line-height:1.04;letter-spacing:-.04em}
+.card{background:var(--scheda);border-radius:12px;box-shadow:var(--ombra)}
+
+#scheda .r1{display:flex;justify-content:space-between;align-items:center}
+#scheda .nome{font-weight:600;font-size:56px;letter-spacing:-.02em}
+#scheda .voto{font-weight:700;font-size:40px;color:var(--ottone);display:flex;align-items:center;gap:8px}
+#scheda .ind{font-weight:500;font-size:40px;color:var(--testo2);margin-top:10px}
+#scheda .riga{display:flex;justify-content:space-between;font-weight:600;font-size:44px;padding:26px 0;border-top:2px solid rgba(17,17,17,.08)}
+body.scuro #scheda .riga{border-top-color:#3A3A3A}
+#scheda .riga:first-of-type{margin-top:26px}
+#scheda .prz{color:var(--testo)}
+#scheda .dur{font-weight:500;color:var(--testo2)}
+#scheda .pb{margin-top:18px;height:120px;border-radius:12px;background:var(--btn);color:var(--btn-tx);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:48px}
+#notif{top:430px;padding:52px 48px;display:flex;gap:36px;align-items:flex-start}
+#notif .ic{flex:0 0 104px;height:104px;border-radius:12px;background:var(--ottone);display:flex;align-items:center;justify-content:center}
+#notif .tx1{font-weight:600;font-size:48px;line-height:1.15}
+#notif .tx2{font-weight:500;font-size:40px;color:var(--testo2);margin-top:12px}
+.pill{display:inline-flex;align-items:center;gap:14px;margin-top:28px;background:var(--ottone);color:#fff;border-radius:12px;padding:14px 24px;font-weight:700;font-size:32px;letter-spacing:.12em;text-transform:uppercase}
+#logoB{left:180px;top:610px;width:720px}
+#btn{top:1000px;height:144px;border-radius:12px;background:var(--btn);color:var(--btn-tx);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:48px}
+#offer{top:1196px;text-align:center;font-weight:600;font-size:44px;color:var(--testo2)}
+#url{top:1272px;text-align:center;font-weight:600;font-size:40px}
+
+</style>
+<script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
+</head>
+<body>
+<canvas id="gl" width="1080" height="1920"></canvas>
+<div id="vig"></div>
+<div id="shade"></div>
+<div id="flash"></div>
+
+<img id="logoS" class="logo" src="logo-positivo.svg" alt="">
+
+<div id="h1" class="ui">
+  <div id="t1"><span class="w">Due</span> <span class="w">clienti,</span></div>
+  <div id="t1b"><span class="w">stessa</span> <span class="w">ora?</span></div>
+</div>
+<div id="t2" class="ui tt"><span class="w">Con</span> <span class="w">Beaflow,</span><br><span class="w">non</span> <span class="w">succede.</span></div>
+<div id="t3" class="ui tt"><span class="w">L'orario</span><br><span class="w">occupato</span><br><span class="w">si</span> <span class="w">blocca.</span></div>
+<div id="t4" class="ui tt"><span class="w">Online</span> <span class="w">e</span><br><span class="w">dal</span> <span class="w">gestionale.</span></div>
+<div id="t5" class="ui tt"><span class="w">Agenda</span><br><span class="w">senza</span> <span class="w">sorprese.</span></div>
+
+<img id="logoB" class="logo" src="logo-positivo.svg" alt="">
+<div id="btn" class="ui">Inizia gratis</div>
+<div id="offer" class="ui">Piano Free · 0 € per sempre</div>
+<div id="url" class="ui">beaflow.it</div>
+<script type="module">
+import * as THREE from 'three';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+// ?tema=chiaro (default) | ?tema=scuro
+const TEMA = new URLSearchParams(location.search).get('tema') || 'chiaro';
+const SCURO = TEMA === 'scuro';
+if (SCURO) { document.body.classList.add('scuro'); document.querySelectorAll('img.logo').forEach(i=>i.src='logo-negativo.svg'); }
+
+/* ───────── motore 2D (HANDOFF §7) ───────── */
+const DURATION = 15, SP = 0.8, SO = 0.9;
+function bez(x1,y1,x2,y2){ const cx=3*x1,bx=3*(x2-x1)-cx,ax=1-cx-bx,cy=3*y1,by=3*(y2-y1)-cy,ay=1-cy-by;
+  const fx=t=>((ax*t+bx)*t+cx)*t, fy=t=>((ay*t+by)*t+cy)*t, dx=t=>(3*ax*t+2*bx)*t+cx;
+  return p=>{ if(p<=0)return 0; if(p>=1)return 1; let t=p; for(let i=0;i<10;i++){ const e=fx(t)-p; if(Math.abs(e)<1e-6)break; const d=dx(t); if(Math.abs(d)<1e-6)break; t-=e/d; } return fy(Math.min(1,Math.max(0,t))); }; }
+function spr(k,c,dur){ const w0=Math.sqrt(k), z=c/(2*Math.sqrt(k)), wd=w0*Math.sqrt(1-z*z);
+  return p=>{ if(p>=1)return 1; const t=p*dur; return 1-Math.exp(-z*w0*t)*(Math.cos(wd*t)+(z*w0/wd)*Math.sin(wd*t)); }; }
+const E = { lin:p=>p, enter:bez(.22,1,.36,1), exit:bez(.4,0,1,1), inout:bez(.65,0,.35,1), morph:bez(.83,0,.17,1), spring:spr(420,26,SP), soft:spr(260,30,SO) };
+const reg = new Map();
+const $ = s=>[...document.querySelectorAll(s)];
+const els = t => typeof t==='string' ? $(t) : (t instanceof Element ? [t] : [...t]);
+const ent = el => { if(!reg.has(el)) reg.set(el,{p:{},fx:[]}); return reg.get(el); };
+function tw(target,s,d,props,e='enter'){ els(target).forEach(el=>{ const r=ent(el);
+  for(const k in props){ (r.p[k]??=[]).push({s,d,a:props[k][0],b:props[k][1],e}); r.p[k].sort((x,y)=>x.s-y.s);} }); }
+function stagger(target,s,gap,d,props,e){ els(target).forEach((el,i)=>tw(el,s+i*gap,d,props,e)); }
+function fx(target,fn){ els(target).forEach(el=>ent(el).fx.push(fn)); }
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+function val(list,t){ let cur=null; for(const k of list){ if(t>=k.s) cur=k; else break; }
+  if(!cur) return list[0].a; const p=cur.d<=0?1:clamp((t-cur.s)/cur.d); return cur.a+(cur.b-cur.a)*E[cur.e](p); }
+function seek2d(t){
+  reg.forEach((r,el)=>{
+    const v={}; for(const k in r.p) v[k]=val(r.p[k],t);
+    const has=k=>v[k]!==undefined;
+    if(has('x')||has('y')||has('scale')||has('rot'))
+      el.style.transform=`translate(${v.x??0}px,${v.y??0}px) rotate(${v.rot??0}deg) scale(${v.scale??1})`;
+    if(has('opacity')){ el.style.opacity=v.opacity; el.style.visibility=v.opacity<=0.001?'hidden':'visible'; }
+    if(has('blur')) el.style.filter=v.blur>0.05?`blur(${v.blur}px)`:'none';
+    for(const f of r.fx) f(el,t);
+  });
+}
+const hidden  = sel => tw(sel, 0, 0.01, {opacity:[0,0]});
+const titleIn = (sel,s) => { hidden(`${sel} .w`); stagger(`${sel} .w`, s, 0.05, 0.4, {opacity:[0,1], y:[24,0], blur:[8,0]}, 'enter'); };
+const outT    = (sel,s) => tw(sel, s, 0.3, {opacity:[1,0], y:[0,-24], blur:[0,8]}, 'exit');
+const popIn   = (sel,s,y=40) => { hidden(sel); tw(sel,s,0.12,{opacity:[0,1]},'lin'); tw(sel,s,SO,{y:[y,0],scale:[.9,1]},'soft'); };
+
+/* ───────── timeline UI ─────────
+   scene: 0 Due clienti, stessa ora? · 2,5 Con Beaflow, non succede. · 5 L'orario occupato si blocca. · 7,5 Online e dal gestionale. · 10 Agenda senza sorprese. · 12,5 chiusura */
+hidden('#logoS'); tw('#logoS',0.05,0.4,{opacity:[0,1]},'enter'); tw('#logoS',12.25,0.3,{opacity:[1,0]},'exit');
+tw('#shade',0,0.01,{opacity:[1,1]}); tw('#shade',12.4,0.4,{opacity:[1,0]},'exit');
+titleIn('#t1',0.1); hidden('#t1b .w'); stagger('#t1b .w',0.6,0.06,0.4,{opacity:[0,1],y:[24,0],blur:[8,0]},'enter');
+outT('#h1',2.2);
+titleIn('#t2',2.6); outT('#t2',4.65);
+titleIn('#t3',5.1); outT('#t3',7.15);
+titleIn('#t4',7.6); outT('#t4',9.65);
+titleIn('#t5',10.1); outT('#t5',12.15);
+hidden('#logoB'); tw('#logoB',13.05,0.12,{opacity:[0,1]},'lin'); tw('#logoB',13.05,SO,{scale:[.86,1],blur:[10,0]},'soft');
+popIn('#btn',13.3,40); tw('#btn',14.15,0.1,{scale:[1,.93]},'exit'); tw('#btn',14.25,SO,{scale:[.93,1]},'soft');
+hidden('#offer'); tw('#offer',13.5,0.4,{opacity:[0,1],y:[24,0]},'enter');
+hidden('#url'); tw('#url',13.6,0.4,{opacity:[0,1],y:[24,0]},'enter');
+
+const FL = SCURO ? [[2.5,.5],[12.85,.7]] : [[2.5,.35],[12.85,.55]];
+fx('#flash',(el,t)=>{ let o=0; for(const [c,a] of FL){ const d=t-c; if(d>-0.06&&d<0.5) o=Math.max(o, a*(d<0? (d+0.06)/0.06 : Math.exp(-d*9))); } el.style.opacity=o; });
+
+/* ───────── scena 3D ───────── */
+const canvas = document.getElementById('gl');
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:!SCURO, preserveDrawingBuffer:true});
+renderer.setPixelRatio(1); renderer.setSize(1080,1920,false);
+renderer.toneMapping = SCURO ? THREE.ACESFilmicToneMapping : THREE.NeutralToneMapping;
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+if(!SCURO) renderer.setClearColor(0x000000, 0);
+const scene = new THREE.Scene(); if (SCURO) scene.background = new THREE.Color(0x0e0e0e);
+const pm = new THREE.PMREMGenerator(renderer); scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture;
+scene.environmentIntensity = SCURO ? 0.55 : 0.45;
+const cam = new THREE.PerspectiveCamera(35, 1080/1920, 0.1, 100);
+
+scene.add(new THREE.AmbientLight(SCURO?0xffffff:0xfff6ea, SCURO?0.25:0.3));
+const key = new THREE.DirectionalLight(0xfff4e6, SCURO?2.2:2.9); key.position.set(5,8,4); scene.add(key); scene.add(key.target);
+key.castShadow = true; key.shadow.mapSize.set(2048,2048); key.shadow.radius = 6; key.shadow.bias = -0.0005;
+Object.assign(key.shadow.camera,{left:-6,right:6,top:6,bottom:-6,near:1,far:30});
+const rim = new THREE.PointLight(0xffffff, SCURO?40:12, 30, 2); rim.position.set(-4,3,-4); scene.add(rim);
+const warm = new THREE.PointLight(0xC9B16C, 0, 6, 2); scene.add(warm);
+
+let seed=361; const rnd=()=>{ seed|=0; seed=seed+0x6D2B79F5|0; let t=Math.imul(seed^seed>>>15,1|seed); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; };
+
+const N = 64, C = new THREE.Vector3(0,-1.15,0), GY = -3.1;
+const geo = new RoundedBoxGeometry(1,1,1,3,0.1);
+const aGlow = new THREE.InstancedBufferAttribute(new Float32Array(N),1); geo.setAttribute('aGlow',aGlow);
+const glowU = {value:new THREE.Color()}, goldU = {value:new THREE.Color(0xC9B16C)}, mixU = {value: SCURO?0:1}, emU = {value: SCURO?1:0.35};
+const mat = new THREE.MeshStandardMaterial({color:0xffffff, metalness:SCURO?0.7:0.05, roughness:SCURO?0.32:0.55});
+mat.onBeforeCompile = sh => {
+  Object.assign(sh.uniforms,{uGlowColor:glowU, uGold:goldU, uMix:mixU, uEm:emU});
+  sh.vertexShader = 'attribute float aGlow;\nvarying float vGlow;\n' + sh.vertexShader.replace('#include <begin_vertex>','#include <begin_vertex>\nvGlow = aGlow;');
+  sh.fragmentShader = 'uniform vec3 uGlowColor; uniform vec3 uGold; uniform float uMix; uniform float uEm;\nvarying float vGlow;\n' + sh.fragmentShader
+    .replace('#include <color_fragment>','#include <color_fragment>\ndiffuseColor.rgb = mix(diffuseColor.rgb, uGlowColor/max(max(uGlowColor.r,uGlowColor.g),0.001)*0.75, clamp(vGlow,0.0,1.0)*uMix);')
+    .replace('#include <emissivemap_fragment>','#include <emissivemap_fragment>\ntotalEmissiveRadiance += uGlowColor * vGlow * uEm;');
+};
+const tiles = new THREE.InstancedMesh(geo, mat, N);
+tiles.instanceColor = new THREE.InstancedBufferAttribute(new Float32Array(N*3),3);
+tiles.castShadow = true; tiles.receiveShadow = true; tiles.frustumCulled = false;
+scene.add(tiles);
+
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(40,40), new THREE.ShadowMaterial({opacity: SCURO?0.35:0.2}));
+ground.rotation.x = -Math.PI/2; ground.position.y = GY; ground.receiveShadow = true; scene.add(ground);
+const V=(x,y,z)=>new THREE.Vector3(x,y,z), Eu=new THREE.Euler();
+const qe=(x,y,z)=>new THREE.Quaternion().setFromEuler(Eu.set(x,y,z));
+
+
+// particelle
+const PN=420, pp=new Float32Array(PN*3), p0=[];
+for(let i=0;i<PN;i++) p0.push([rnd()*18-9, rnd()*24-12, rnd()*26-18, 0.08+rnd()*0.25]);
+const pgeo=new THREE.BufferGeometry(); pgeo.setAttribute('position',new THREE.BufferAttribute(pp,3));
+const dot=document.createElement('canvas'); dot.width=dot.height=64; { const g=dot.getContext('2d');
+  const gr=g.createRadialGradient(32,32,0,32,32,32); gr.addColorStop(0,'rgba(255,255,255,1)'); gr.addColorStop(.35,'rgba(255,255,255,.6)'); gr.addColorStop(1,'rgba(255,255,255,0)'); g.fillStyle=gr; g.fillRect(0,0,64,64); }
+const pmat=new THREE.PointsMaterial({size:SCURO?0.09:0.07, map:new THREE.CanvasTexture(dot), transparent:true, depthWrite:false, opacity:SCURO?1:0.55, blending:SCURO?THREE.AdditiveBlending:THREE.NormalBlending, color:0xC9B16C});
+scene.add(new THREE.Points(pgeo,pmat));
+const R = Array.from({length:N},()=>[rnd(),rnd(),rnd(),rnd(),rnd(),rnd(),rnd()]);
+const PUNTO = t => R.map(()=>({ p:C.clone(), q:new THREE.Quaternion(), s:V(0.02,0.02,0.02), g:SCURO?4:1, c:0 }));
+const ALONE = t => R.map((r,i)=>{ const a=i/N*Math.PI*2 + t*0.3; const tilt=qe(1.15,0,0.1);
+  const p=V(Math.cos(a)*3.4, Math.sin(a)*3.4, 0).applyQuaternion(tilt).add(V(0,1.0,-3.4));
+  return { p, q:tilt.clone().multiply(qe(0,0,a)), s:V(0.34,0.08,0.08), g:(i%2)?0.8:0.15, c:0 }; });
+const white = new THREE.Color(SCURO?0x3a3a3a:0xffffff), black = new THREE.Color(0x1a1a1a), tmpC=new THREE.Color();
+const M4=new THREE.Matrix4();
+function tilesAt(t, F, TR, first){
+  const cache={}; const get=n=>cache[n]??=F[n](t);
+  for(let i=0;i<N;i++){
+    let st=get(first)[i];
+    for(const [a,b,s,d] of TR){ const del=(i/N)*0.28; if(t<s+del) break;
+      const u=E.morph(clamp((t-s-del)/d)), A=get(a)[i], B=get(b)[i];
+      const p=A.p.clone().lerp(B.p,u); const arc=Math.sin(Math.PI*u);
+      p.add(V((R[i][0]-.5)*1.4*arc, (R[i][1]-.2)*1.4*arc, (R[i][2]-.2)*1.8*arc));
+      st={ p, q:A.q.clone().slerp(B.q,u), s:A.s.clone().lerp(B.s,u), g:A.g+(B.g-A.g)*u+arc*0.3, c:A.c+(B.c-A.c)*u };
+    }
+    M4.compose(st.p, st.q, st.s); tiles.setMatrixAt(i,M4);
+    aGlow.array[i]=st.g; tmpC.copy(white).lerp(black,st.c); tiles.setColorAt(i,tmpC);
+  }
+  tiles.instanceMatrix.needsUpdate=true; tiles.instanceColor.needsUpdate=true; aGlow.needsUpdate=true;
+}
+function makeCam(CK){ const posC=new THREE.CatmullRomCurve3(CK.map(k=>k[1]),false,'centripetal'), tgtC=new THREE.CatmullRomCurve3(CK.map(k=>k[2]),false,'centripetal');
+  return t=>{ let i=0; while(i<CK.length-2 && t>=CK[i+1][0]) i++; const a=CK[i], b=CK[i+1], f=clamp((t-a[0])/(b[0]-a[0])), u=(i+f)/(CK.length-1);
+    cam.position.copy(posC.getPoint(u)); cam.lookAt(tgtC.getPoint(u)); cam.rotateZ(THREE.MathUtils.degToRad(a[3]+(b[3]-a[3])*E.inout(f))); }; }
+const CLOSE_CK = [[12.0, V(0,0.3,11.0), V(0,-0.2,0), 0],[12.75,V(0,-0.6,4.2),V(0,-0.8,0),6],[13.3,V(0,0.6,13.2),V(0,0.4,0),0],[15.0,V(0,0.5,14.6),V(0,0.4,0),0]];
+let composer=null, bloom=null;
+if (SCURO) { composer = new EffectComposer(renderer); composer.addPass(new RenderPass(scene,cam));
+  bloom = new UnrealBloomPass(new THREE.Vector2(540,960), 0.8, 0.5, 0.7); composer.addPass(bloom); composer.addPass(new OutputPass()); }
+const RED=new THREE.Color(0xFF5A4F), GOLD=new THREE.Color(0xC9B16C);
+function commonFrame(t){
+  const k=E.inout(clamp((t-2.35)/0.3)); const col=RED.clone().lerp(GOLD,k);
+  glowU.value.copy(col).multiplyScalar(SCURO?1.5:1.0); rim.color.copy(col);
+  for(let i=0;i<PN;i++){ const q=p0[i]; pp[i*3]=q[0]+Math.sin(t*0.4+i)*0.2; pp[i*3+1]=((q[1]+t*q[3]+12)%24+24)%24-12; pp[i*3+2]=q[2]; }
+  pgeo.attributes.position.needsUpdate=true;
+  if (bloom) { let pulse=0; for(const b of [2.5,5,7.5,10,12.5,13]) { const dd=t-b; if(dd>-0.05&&dd<0.4) pulse=Math.max(pulse,Math.exp(-Math.max(dd,0)*8)); } bloom.strength = 0.78 + 0.7*pulse; }
+}
+function draw(){ if (composer) composer.render(); else renderer.render(scene, cam); }
+function canvasTex(w,h,fn){ const c=document.createElement('canvas'); c.width=w; c.height=h; const g=c.getContext('2d'); fn(g,w,h); const tx=new THREE.CanvasTexture(c); tx.colorSpace=THREE.SRGBColorSpace; tx.anisotropy=4; return tx; }
+const LATE=[];  // funzioni da chiamare quando i font sono pronti
+// 26 · Mai più doppie prenotazioni (ossatura A): due appuntamenti sulla stessa casella → scudo d'oro, il secondo rimbalza → casella occupata bloccata, scivola sulla prima libera → online e gestionale deviati → agenda piena e ordinata
+document.fonts.load('600 40px Inter','€');
+function label(txt, pw, ph, bg='#775A18', fg='#FFFFFF', fs=0.4){ const m=new THREE.Mesh(new THREE.PlaneGeometry(pw,ph), new THREE.MeshBasicMaterial({transparent:true, toneMapped:false})); scene.add(m);
+  LATE.push(()=>{ m.material.map=canvasTex(Math.round(pw*400),Math.round(ph*400),(g,w,h)=>{ if(bg){ g.fillStyle=bg; g.beginPath(); g.roundRect(0,0,w,h,h*0.2); g.fill(); }
+    g.fillStyle=fg; g.font=`700 ${Math.round(h*fs)}px Inter`; g.textAlign='center'; g.textBaseline='middle'; g.fillText(txt,w/2,h/2+3); }); m.material.needsUpdate=true; }); return m; }
+
+// agenda: 7 giorni × 8 orari; T = casella contesa, F1–F3 = caselle libere
+const T=[3,3], F1=[3,4], F2=[1,2], F3=[5,5];
+const same=(c,r,s)=>c===s[0]&&r===s[1];
+const busy=(c,r)=>!same(c,r,T)&&!same(c,r,F1)&&!same(c,r,F2)&&!same(c,r,F3)&&((c*5+r*3)%4===0||(c+r*2)%7===1);
+const AY = C.y-0.35;
+const slot=(c,r,sc=1,cy=AY)=>V((c-3)*0.3*sc, cy+(3.5-r)*0.24*sc, 0);
+const LAY = t => t<7.35 ? [1,AY] : [0.8, C.y-0.72];          // nella scena 4 l'agenda scende per far posto ai due ingressi
+function agenda(t, sc, cy, glowBusy=0.35){ const out=[];
+  for(let i=0;i<56;i++){ const c=i%7, r=Math.floor(i/7), b=busy(c,r);
+    out.push({ p:slot(c,r,sc,cy), q:new THREE.Quaternion(), s:V(0.27,0.205,0.06).multiplyScalar(sc), g:b?glowBusy:0.02, c:(b&&(c+r)%3===0)?1:0 }); }
+  return out; }
+const blk=(O,q,sc=1,z=0.08)=>O.clone().add(V(((q%2)-.5)*0.14*sc, (Math.floor(q/2)-.5)*0.105*sc, z));
+const bt=(p,q,g,sc=1)=>({ p, q:q||new THREE.Quaternion(), s:V(0.135,0.1,0.12).multiplyScalar(sc), g, c:0 });
+const TP = slot(...T), HOV = TP.clone().add(V(0.42,0.55,0.75));
+const bez3=(a,b,c,u)=>a.clone().multiplyScalar((1-u)*(1-u)).add(b.clone().multiplyScalar(2*u*(1-u))).add(c.clone().multiplyScalar(u*u));
+
+// scudo di luce e contorno della casella bloccata
+const shield = new THREE.Group(); scene.add(shield);
+const shDisc = new THREE.Mesh(new THREE.CircleGeometry(0.42,48), new THREE.MeshBasicMaterial({color:0xC9B16C, transparent:true, opacity:0.28, depthWrite:false, toneMapped:false})); shield.add(shDisc);
+const shRing = new THREE.Mesh(new THREE.TorusGeometry(0.42,0.025,10,64), new THREE.MeshStandardMaterial({color:0xC9B16C, emissive:0xC9B16C, emissiveIntensity:0.6, metalness:0.6, roughness:0.3})); shield.add(shRing);
+const lock = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(0.34,0.27,0.16)), new THREE.LineBasicMaterial({color:0x775A18, transparent:true})); scene.add(lock);
+const lOcc = label('Occupato', 1.05, 0.32, '#111111');
+const lLib = label('Libero', 0.8, 0.3);
+const lOn = label('Online', 0.95, 0.32), lGest = label('Gestionale', 1.25, 0.32, '#111111');
+// ingressi della scena 4: telefono a sinistra, banco (schermo) a destra
+const SRC_L = V(-0.85, C.y+0.5, 0.3), SRC_R = V(0.8, C.y+0.5, 0.3);
+const devMat = new THREE.MeshStandardMaterial({color:0xffffff, roughness:0.4}), scrMat = new THREE.MeshStandardMaterial({color:0x111111, roughness:0.3, metalness:0.2});
+const phone = new THREE.Group(); scene.add(phone); { const b=new THREE.Mesh(new RoundedBoxGeometry(0.42,0.78,0.06,4,0.06), devMat); b.castShadow=true; phone.add(b); const s=new THREE.Mesh(new RoundedBoxGeometry(0.36,0.66,0.01,3,0.04), scrMat); s.position.z=0.032; phone.add(s); }
+const desk = new THREE.Group(); scene.add(desk); { const b=new THREE.Mesh(new RoundedBoxGeometry(0.95,0.6,0.06,4,0.04), devMat); b.castShadow=true; desk.add(b); const s=new THREE.Mesh(new RoundedBoxGeometry(0.87,0.5,0.01,3,0.03), scrMat); s.position.z=0.032; desk.add(s);
+  const st=new THREE.Mesh(new RoundedBoxGeometry(0.08,0.22,0.06,2,0.02), devMat); st.position.y=-0.4; desk.add(st); const ba=new THREE.Mesh(new RoundedBoxGeometry(0.4,0.04,0.2,2,0.02), devMat); ba.position.y=-0.52; desk.add(ba); }
+
+const F = {
+  // scena 1 · due appuntamenti puntano sulla stessa casella e si scontrano
+  scontro(t){ const out=agenda(t,1,AY,0.12);
+    const a=E.inout(clamp((t-0.15)/1.15)), b=E.enter(clamp((t-0.35)/1.3)); const jit=t>1.55?0.025*Math.sin(t*38):0;
+    const A0=V(-1.2,AY+1.1,1.3), B0=V(1.3,AY+1.2,1.5), Bt=TP.clone().add(V(0.06+jit,0.04,0.1));
+    for(let q=0;q<4;q++) out.push(bt(blk(A0.clone().lerp(TP,a),q), qe(0,0,(1-a)*0.6), 0.95));
+    for(let q=0;q<4;q++) out.push(bt(blk(B0.clone().lerp(Bt,b),q), qe(0,0,-(1-b)*0.7+jit*2), 0.95));
+    return out; },
+  // scena 2 · lo scudo respinge il secondo, che resta sospeso
+  scudo(t){ const out=agenda(t,1,AY); const u=E.enter(clamp((t-2.6)/0.6));
+    const Bp=bez3(TP.clone().add(V(0.06,0.04,0.1)), TP.clone().add(V(0.15,0.55,0.9)), HOV, u).add(V(0,0.04*Math.sin(t*2.2),0));
+    for(let q=0;q<4;q++) out.push(bt(blk(TP,q), null, 0.85));
+    for(let q=0;q<4;q++) out.push(bt(blk(Bp,q), qe(0.2*Math.sin(t*1.7)*u, 0, -0.25*u+0.6*Math.sin(Math.PI*u)), 0.55));
+    return out; },
+  // scena 3 · casella bloccata, il secondo scivola sulla prima libera
+  blocca(t){ const out=agenda(t,1,AY); const u=E.inout(clamp((t-5.6)/0.7)); const F1P=slot(...F1);
+    const Bp=bez3(HOV, F1P.clone().add(V(0.5,0.1,0.6)), F1P, u);
+    for(let q=0;q<4;q++) out.push(bt(blk(TP,q), null, 0.6+0.3*Math.sin(t*5)));
+    for(let q=0;q<4;q++) out.push(bt(blk(Bp,q), qe(0,0,(1-u)*-0.25), 0.55+0.4*u));
+    return out; },
+  // scena 4 · da online e dal gestionale: tutti e due deviati sulle caselle libere
+  ingressi(t){ const [sc,cy]=LAY(t); const out=agenda(t,sc,cy); const Tp=slot(...T,sc,cy), F1P=slot(...F1,sc,cy), F2P=slot(...F2,sc,cy), F3P=slot(...F3,sc,cy);
+    for(let q=0;q<4;q++) out.push(bt(blk(Tp,q,sc), null, 0.85, sc));
+    out[F1[1]*7+F1[0]].g=0.75;                                // casella presa nella scena 3
+    const run=(S,hit,end,t0)=>{ const a=E.inout(clamp((t-t0)/0.55)), b=E.inout(clamp((t-t0-0.6)/0.6));
+      const H=Tp.clone().add(V(0,0,0.45)); return b>0 ? bez3(H, H.clone().lerp(end,0.5).add(V(0,0.35,0.4)), end, b) : S.clone().lerp(H,a); };
+    const L=run(SRC_L.clone().add(V(0,-0.1,0.1)), Tp, F2P, 7.75), Rr=run(SRC_R.clone().add(V(0,-0.1,0.1)), Tp, F3P, 8.05);
+    out.push(bt(blk(L,0,sc), null, 0.9, sc), bt(blk(L,1,sc), null, 0.9, sc));
+    out.push(bt(blk(Rr,0,sc), null, 0.9, sc), bt(blk(Rr,1,sc), null, 0.9, sc));
+    return out; },
+  // scena 5 · agenda piena, colonne ordinate con un'onda d'oro
+  piena(t){ return R.map((r,i)=>{ const c=i%8, rw=Math.floor(i/8); const w=Math.max(0,Math.sin(Math.PI*clamp((t-10.1-c*0.08-rw*0.03)/0.5)));
+      return { p:V((c-3.5)*0.28, C.y+0.2-rw*0.23+w*0.05, w*0.18), q:new THREE.Quaternion(), s:V(0.25,0.19,0.08), g:((c+rw)%3===0?0.75:0.12)+w*0.4, c:((c*3+rw)%5===0)?1:0 }; }); },
+  punto:PUNTO, alone:ALONE,
+};
+const TR = [['scontro','scudo',2.35,0.3],['scudo','blocca',4.95,0.3],['blocca','ingressi',7.35,0.6],['ingressi','piena',9.75,0.8],['piena','punto',12.1,0.7],['punto','alone',12.86,0.9]];
+
+const camAt = makeCam([
+ [0.0,  V(-1.2,0.9,10.6), V(0,-0.75,0), 3],
+ [1.6,  V(-0.2,0.5,8.6),  V(0,-0.8,0), 1],
+ [2.3,  V(0.1,0.5,8.9),   V(0,-0.8,0), 0],
+ [2.9,  V(1.3,0.9,10.2),  V(0.1,-0.75,0), -2],
+ [4.9,  V(0.7,0.7,9.8),   V(0.1,-0.75,0), -1],
+ [5.4,  V(-1.3,1.3,9.8),  V(0,-0.8,0), 3],
+ [7.3,  V(-0.7,1.1,9.6),  V(0,-0.8,0), 1],
+ [7.9,  V(1.0,1.0,10.6),  V(0,-0.7,0), -2],
+ [9.6,  V(0.5,0.9,10.2),  V(0,-0.7,0), -1],
+ [10.2, V(-1.4,-0.4,10.2),V(0,-0.9,0), 2],
+ [11.8, V(-0.4,1.6,10.0), V(0,-0.9,0), 0],
+ ...CLOSE_CK,
+]);
+
+function render3d(t){
+  commonFrame(t);
+  const face = m => m.quaternion.copy(cam.quaternion);
+  const show = (m,on,s0=1) => { const s=Math.max(0.0001,on*s0); m.scale.setScalar(s); m.visible=s>0.002; };
+  const [sc,cy]=LAY(t); const Tp=slot(...T,sc,cy);
+  // scudo: scena 2 (sul rimbalzo) e scena 4 (sui due ingressi)
+  { const a=E.spring(clamp((t-2.55)/SP))*(1-E.exit(clamp((t-4.8)/0.25))), b=E.spring(clamp((t-8.1)/SP))*(1-E.exit(clamp((t-9.65)/0.25)));
+    const hit=Math.exp(-Math.max(0,t-2.62)*6)*(t>2.6?1:0)+Math.exp(-Math.max(0,t-8.3)*6)*(t>8.3?1:0)+Math.exp(-Math.max(0,t-8.6)*6)*(t>8.6?1:0);
+    shield.position.copy(Tp).add(V(0,0,0.32)); face(shield); show(shield, Math.max(a,b), sc*(1+0.15*hit)); shDisc.material.opacity=0.22+0.3*hit; }
+  { const on=E.enter(clamp((t-5.15)/0.3)), off=E.exit(clamp((t-7.3)/0.2)); lock.position.copy(TP).add(V(0,0,0.08)); lock.material.opacity=on*(1-off); lock.visible=lock.material.opacity>0.01; lock.scale.setScalar(1+0.06*Math.sin(t*5)); }
+  { const on=E.spring(clamp((t-5.25)/SP)), off=E.exit(clamp((t-7.3)/0.25)); lOcc.position.copy(TP).add(V(-0.55,0.42,0.6)); face(lOcc); lOcc.rotateZ(0.04); show(lOcc,on*(1-off)); }
+  { const on=E.spring(clamp((t-5.4)/SP)), off=E.exit(clamp((t-6.05)/0.2)); lLib.position.copy(slot(...F1)).add(V(0.15,-0.35,0.6)); face(lLib); show(lLib,on*(1-off)); }
+  // scena 4 · ingressi
+  [[phone,SRC_L,lOn,7.5],[desk,SRC_R,lGest,7.65]].forEach(([g,P,l,s0])=>{ const on=E.soft(clamp((t-s0)/SO)), off=E.exit(clamp((t-9.65)/0.3));
+    g.position.copy(P).add(V(0,0.03*Math.sin(t*1.4+s0),0)); g.rotation.set(0.05, (P.x<0?0.25:-0.25)+0.05*Math.sin(t*0.8), 0); show(g,on*(1-off));
+    const lo=E.spring(clamp((t-s0-0.2)/SP)); l.position.copy(P).add(V(0,0.62,0.4)); face(l); show(l,lo*(1-off)); });
+  camAt(t); tilesAt(t, F, TR, 'scontro'); draw();
+}
+
+function seek(t){ seek2d(t); render3d(t); }
+window.seek = seek;
+window.ready = document.fonts.load('800 64px Inter').then(()=>document.fonts.load('700 52px Inter')).then(()=>document.fonts.load('600 40px Inter')).then(()=>document.fonts.ready)
+  .then(()=>Promise.all([...document.images].map(im=>im.decode().catch(()=>{})))).then(()=>{ LATE.forEach(f=>f()); seek(0); return true; });
+if(location.search.includes('play')){ window.ready.then(()=>{ const t0=performance.now();
+  (function loop(){ seek(((performance.now()-t0)/1000)%DURATION); requestAnimationFrame(loop); })(); }); }
+</script>
+</body>
+</html>

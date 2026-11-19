@@ -1,0 +1,63 @@
+{
+  "numero": 27,
+  "nome": "sposti-con-un-tocco",
+  "titolo": "Sposti con un tocco",
+  "ossatura": "B",
+  "tema": "chiaro",
+  "versione": 1,
+  "seme": 371,
+  "funzione": "spostare un appuntamento trascinandolo in agenda (confermato 19/11)",
+  "note": "Dati dimostrativi (orari, nomi, prezzi).",
+  "scene": [
+    {
+      "schermo": [
+        "Un tocco."
+      ],
+      "accento": [
+        "Spostato."
+      ],
+      "voce": "Un tocco, ed è spostato.",
+      "voce_inizio": 0.05,
+      "si_vede": "tessera-appuntamento già in volo con scia oro"
+    },
+    {
+      "schermo": [
+        "Lo trascini",
+        "dove vuoi."
+      ],
+      "voce": "Lo trascini dove vuoi.",
+      "voce_inizio": 2.6,
+      "si_vede": "la tessera atterra in un'altra casella dell'agenda"
+    },
+    {
+      "schermo": [
+        "Con Beaflow,",
+        "l'agenda",
+        "si riassesta."
+      ],
+      "voce": "Con Beaflow, l'agenda si aggiorna.",
+      "voce_inizio": 5.0,
+      "si_vede": "le altre tessere si spostano a onda per farle posto"
+    },
+    {
+      "schermo": [
+        "Niente gomma,",
+        "niente",
+        "cancellature."
+      ],
+      "voce": "Niente gomma, niente cancellature.",
+      "voce_inizio": 7.65,
+      "si_vede": "foglio di carta con i segni di gomma che si sbriciola in tessere pulite"
+    },
+    {
+      "schermo": [
+        "Tutto",
+        "in ordine."
+      ],
+      "voce": "E tutto torna in ordine.",
+      "voce_inizio": 10.2,
+      "si_vede": "agenda allineata con un riflesso oro"
+    }
+  ],
+  "dati": {}
+}

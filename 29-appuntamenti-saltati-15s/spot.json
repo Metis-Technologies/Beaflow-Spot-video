@@ -1,0 +1,63 @@
+{
+  "numero": 29,
+  "nome": "appuntamenti-saltati",
+  "titolo": "Basta appuntamenti saltati",
+  "ossatura": "A",
+  "tema": "chiaro",
+  "versione": 1,
+  "seme": 391,
+  "funzione": "promemoria automatici, caparra o pagamento anticipato, regole di cancellazione (confermati 19/11)",
+  "note": "Dati dimostrativi (orari, nomi, prezzi).",
+  "scene": [
+    {
+      "schermo": [
+        "Clienti che"
+      ],
+      "accento": [
+        "non si",
+        "presentano?"
+      ],
+      "voce": "Clienti che non si presentano?",
+      "voce_inizio": 0.05,
+      "si_vede": "sedia di tessere, vuota, che sfuma in rosso"
+    },
+    {
+      "schermo": [
+        "Con Beaflow,",
+        "li riduci."
+      ],
+      "voce": "Con Beaflow, li riduci.",
+      "voce_inizio": 2.6,
+      "si_vede": "la luce vira all'oro"
+    },
+    {
+      "schermo": [
+        "Promemoria",
+        "automatico."
+      ],
+      "voce": "Parte il promemoria automatico.",
+      "voce_inizio": 5.1,
+      "si_vede": "campanella-promemoria che suona e manda onde"
+    },
+    {
+      "schermo": [
+        "Caparra alla",
+        "prenotazione."
+      ],
+      "voce": "Una caparra quando prenotano.",
+      "voce_inizio": 7.6,
+      "si_vede": "gettone-caparra che si incastra nella tessera-prenotazione"
+    },
+    {
+      "schermo": [
+        "Regole di",
+        "cancellazione",
+        "chiare."
+      ],
+      "voce": "E regole chiare per le disdette.",
+      "voce_inizio": 10.1,
+      "si_vede": "scheda di regole che si posa; la sedia si riempie d'oro"
+    }
+  ],
+  "dati": {}
+}

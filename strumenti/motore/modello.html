@@ -61,6 +61,8 @@ body.scuro #scheda .riga{border-top-color:#3A3A3A}
 #notif .tx2{font-weight:500;font-size:40px;color:var(--testo2);margin-top:12px}
 .pill{display:inline-flex;align-items:center;gap:14px;margin-top:28px;background:var(--ottone);color:#fff;border-radius:12px;padding:14px 24px;font-weight:700;font-size:32px;letter-spacing:.12em;text-transform:uppercase}
 #logoB{left:180px;top:610px;width:720px}
+#aloneC{position:absolute;z-index:2;left:60px;top:400px;width:960px;height:620px;opacity:0;pointer-events:none;background:radial-gradient(ellipse 50% 50% at 50% 50%, rgba(201,177,108,.42), rgba(201,177,108,.16) 45%, rgba(201,177,108,0) 72%)}
+#lineaC{position:absolute;z-index:3;left:540px;top:868px;height:5px;width:0;border-radius:3px;background:var(--oro);transform:translateX(-50%)}
 #btn{top:1000px;height:144px;border-radius:12px;background:var(--btn);color:var(--btn-tx);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:48px}
 #offer{top:1196px;text-align:center;font-weight:600;font-size:44px;color:var(--testo2)}
 #url{top:1272px;text-align:center;font-weight:600;font-size:40px}
@@ -78,7 +80,9 @@ body.scuro #scheda .riga{border-top-color:#3A3A3A}
 
 {{TITOLI}}
 {{HTML_SCENA}}
+<div id="aloneC"></div>
 <img id="logoB" class="logo" src="logo-positivo.svg" alt="">
+<div id="lineaC"></div>
 <div id="btn" class="ui">Inizia gratis</div>
 <div id="offer" class="ui">Piano Free · 0 € per sempre</div>
 <div id="url" class="ui">beaflow.it</div>
@@ -135,6 +139,10 @@ const popIn   = (sel,s,y=40) => { hidden(sel); tw(sel,s,0.12,{opacity:[0,1]},'li
 
 const FL = SCURO ? [[2.5,.5],[12.85,.7]] : [[2.5,.35],[12.85,.55]];
 fx('#flash',(el,t)=>{ let o=0; for(const [c,a] of FL){ const d=t-c; if(d>-0.06&&d<0.5) o=Math.max(o, a*(d<0? (d+0.06)/0.06 : Math.exp(-d*9))); } el.style.opacity=o; });
+// chiusura attorno al logo: 'pulita' (solo logo) · 'linea' (filo oro sotto il logo) · 'tessere' (nove tessere oro in fila sotto il logo) · 'alone' (luce calda dietro il logo) · 'anello' (anello di tessere, fino al lotto A)
+const CHIUSURA = new URLSearchParams(location.search).get('chiusura') || '{{CHIUSURA}}';
+fx('#lineaC',(el,t)=>{ el.style.width = (CHIUSURA==='linea' ? 260*E.enter(clamp((t-13.3)/0.6)) : 0)+'px'; });
+fx('#aloneC',(el,t)=>{ el.style.opacity = CHIUSURA==='alone' ? E.inout(clamp((t-13.0)/0.7)) : 0; });
 
 /* ───────── scena 3D ───────── */
 const canvas = document.getElementById('gl');
@@ -190,7 +198,11 @@ const pmat=new THREE.PointsMaterial({size:SCURO?0.09:0.07, map:new THREE.CanvasT
 scene.add(new THREE.Points(pgeo,pmat));
 const R = Array.from({length:N},()=>[rnd(),rnd(),rnd(),rnd(),rnd(),rnd(),rnd()]);
 const PUNTO = t => R.map(()=>({ p:C.clone(), q:new THREE.Quaternion(), s:V(0.02,0.02,0.02), g:SCURO?4:1, c:0 }));
-const ALONE = t => R.map((r,i)=>{ const a=i/N*Math.PI*2 + t*0.3; const tilt=qe(1.15,0,0.1);
+// formazione finale delle tessere, secondo CHIUSURA: anello attorno al logo, nove tessere in fila sotto il logo, oppure nulla (spariscono nel punto dell'implosione)
+const NASCOSTA = () => ({ p:C.clone(), q:new THREE.Quaternion(), s:V(0.0001,0.0001,0.0001), g:0, c:0 });
+const ALONE = CHIUSURA==='tessere' ? (t => R.map((r,i)=> i<9 ? { p:V((i-4)*0.17, 0.78, 0), q:new THREE.Quaternion(), s:V(0.11,0.045,0.045), g:0.9, c:0 } : NASCOSTA()))
+  : CHIUSURA!=='anello' ? (t => R.map(NASCOSTA))
+  : t => R.map((r,i)=>{ const a=i/N*Math.PI*2 + t*0.3; const tilt=qe(1.15,0,0.1);
   const p=V(Math.cos(a)*3.4, Math.sin(a)*3.4, 0).applyQuaternion(tilt).add(V(0,1.0,-3.4));
   return { p, q:tilt.clone().multiply(qe(0,0,a)), s:V(0.34,0.08,0.08), g:(i%2)?0.8:0.15, c:0 }; });
 const white = new THREE.Color(SCURO?0x3a3a3a:0xffffff), black = new THREE.Color(0x1a1a1a), tmpC=new THREE.Color();
@@ -199,9 +211,9 @@ function tilesAt(t, F, TR, first){
   const cache={}; const get=n=>cache[n]??=F[n](t);
   for(let i=0;i<N;i++){
     let st=get(first)[i];
-    for(const [a,b,s,d] of TR){ const del=(i/N)*0.28; if(t<s+del) break;
+    for(const [a,b,s,d,o] of TR){ const del=(i/N)*0.28; if(t<s+del) break;
       const u=E.morph(clamp((t-s-del)/d)), A=get(a)[i], B=get(b)[i];
-      const p=A.p.clone().lerp(B.p,u); const arc=Math.sin(Math.PI*u);
+      const p=A.p.clone().lerp(B.p,u); const arc=Math.sin(Math.PI*u)*(o?.arco??1)*(B.s.x<0.001?0:1);
       p.add(V((R[i][0]-.5)*1.4*arc, (R[i][1]-.2)*1.4*arc, (R[i][2]-.2)*1.8*arc));
       st={ p, q:A.q.clone().slerp(B.q,u), s:A.s.clone().lerp(B.s,u), g:A.g+(B.g-A.g)*u+arc*0.3, c:A.c+(B.c-A.c)*u };
     }
@@ -219,6 +231,7 @@ if (SCURO) { composer = new EffectComposer(renderer); composer.addPass(new Rende
   bloom = new UnrealBloomPass(new THREE.Vector2(540,960), 0.8, 0.5, 0.7); composer.addPass(bloom); composer.addPass(new OutputPass()); }
 const RED=new THREE.Color(0xFF5A4F), GOLD=new THREE.Color(0xC9B16C);
 function commonFrame(t){
+  ground.visible = !(CHIUSURA==='tessere' && t>12.9);      // niente ombra a terra sotto la fila di tessere della chiusura
   const k={{K_GANCIO}}; const col=RED.clone().lerp(GOLD,k);
   glowU.value.copy(col).multiplyScalar(SCURO?1.5:1.0); rim.color.copy(col);
   for(let i=0;i<PN;i++){ const q=p0[i]; pp[i*3]=q[0]+Math.sin(t*0.4+i)*0.2; pp[i*3+1]=((q[1]+t*q[3]+12)%24+24)%24-12; pp[i*3+2]=q[2]; }

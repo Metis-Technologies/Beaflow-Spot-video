@@ -179,22 +179,61 @@ def esporta(d, s, sovrascrivi):
             continue
         shutil.copy(d / "sorgente" / f"spot-{variante}.mp4", dst); print("  export/" + dst.name)
 
+# ───────── voce più chiara: voce in primo piano, musica ed effetti che si abbassano mentre parla ─────────
+def profilo_audio():
+    """Impostazioni del mix da strumenti/riferimento.json («audio»); --profilo attuale|chiaro le forza per una prova."""
+    rif = json.loads((REPO / "strumenti" / "riferimento.json").read_text(encoding="utf-8")).get("audio", {})
+    nome = next((a.split("=", 1)[1] for a in sys.argv if a.startswith("--profilo=")), rif.get("profilo", "attuale"))
+    if nome not in rif.get("profili", {}): return nome, {}
+    return nome, rif["profili"][nome]
+
+def presenza(v, anticipo=0.06, attacco=0.03, rilascio=0.30):
+    """Da 0 a 1: quanto la voce sta parlando, con salita rapida, discesa morbida e un piccolo anticipo."""
+    win = int(0.03 * SR); rms = np.sqrt(np.convolve(v * v, np.ones(win) / win, "same"))
+    on = (rms > 0.03 * np.abs(v).max()).astype(float)
+    k = int(anticipo * SR); on = np.maximum(on, np.concatenate([on[k:], np.zeros(k)]))
+    passo = 48; x = on[::passo]; y = np.zeros(len(x)); a = np.exp(-passo / (attacco * SR)); r = np.exp(-passo / (rilascio * SR)); z = 0.0
+    for i, t in enumerate(x):
+        c = a if t > z else r; z = c * z + (1 - c) * t; y[i] = z
+    return np.interp(np.arange(len(v)), np.arange(len(x)) * passo, y)
+
+def voce_chiara(v, filtri, tmpdir):
+    """Filtri di ffmpeg sulla traccia della voce (taglio dei bassi, presenza, compressione leggera), poi stesso picco di prima."""
+    a, b = tmpdir / "_voce_in.wav", tmpdir / "_voce_out.wav"; sf.write(a, v, SR)
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(a), "-af", filtri, "-ar", str(SR), "-ac", "1", str(b)], check=True)
+    x, _ = sf.read(b, dtype="float64"); a.unlink(); b.unlink()
+    x = np.pad(x, (0, max(0, len(v) - len(x))))[: len(v)]
+    return x * (np.abs(v).max() / max(np.abs(x).max(), 1e-9))
+
+def rapporto(voice, fondo, p):
+    """Di quanti dB la voce sta sopra musica ed effetti mentre parla."""
+    m = p > 0.5; rv = np.sqrt(np.mean(voice[m] ** 2)); rf = np.sqrt(np.mean(fondo[m] ** 2)) + 1e-12
+    return 20 * np.log10(rv / rf)
+
+
 def main():
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     if not args: sys.exit(__doc__)
     d = Path(args[0]).resolve(); s, catena = carica(d)
     if not (d / "sorgente" / "muto.mp4").exists(): sys.exit("ERRORE: manca sorgente/muto.mp4 (prima il render)")
     voice, sfx = build_voice(d), build_sfx(catena)
-    mux(d, "mix-senza-musica.wav", alla_serie(voice + sfx, d / "audio", "senza musica"), "spot-senza-musica.mp4")
+    nome_p, P = profilo_audio(); p = presenza(voice)
+    if P.get("voce_filtri"): voice = voce_chiara(voice, P["voce_filtri"], d / "audio")
+    giu = lambda db: 10 ** (-db * p / 20)                 # abbassa di «db» mentre la voce parla
+    sfx_m = sfx * giu(P.get("effetti_sotto_voce_db", 0))
+    print(f"profilo audio: {nome_p}")
+    mux(d, "mix-senza-musica.wav", alla_serie(voice + sfx_m, d / "audio", "senza musica"), "spot-senza-musica.mp4")
     m = decode(REPO / "comune" / "musica" / "beaflow_musica_120bpm.mp3", d / "audio")
     bpm, phase = tempo_and_phase(m)
     print(f"musica: tempo stimato {bpm:.1f} BPM, primo battito a {phase:.3f} s")
     if 117 <= bpm <= 123 and phase > 0.02:          # allinea i battiti ai cambi di scena
         m = m[int(phase * SR):]
     mus = np.zeros(int(DUR * SR)); n = min(len(m), len(mus)); mus[:n] = m[:n]
-    mus *= 0.24 / np.abs(mus).max()
+    mus *= P.get("musica_picco", 0.24) / np.abs(mus).max()
     fade = int(0.6 * SR); mus[-fade:] *= np.linspace(1, 0, fade) ** 1.5; mus[: int(0.05 * SR)] *= np.linspace(0, 1, int(0.05 * SR))
-    mix = voice + 0.8 * sfx + mus
+    mus = mus * giu(P.get("musica_sotto_voce_db", 0))
+    print(f"  voce sopra musica ed effetti, mentre parla: {rapporto(voice, 0.8 * sfx_m + mus, p):+.1f} dB")
+    mix = voice + 0.8 * sfx_m + mus
     if np.abs(mix).max() > 0.97: mix *= 0.97 / np.abs(mix).max()
     mux(d, "mix-musica.wav", alla_serie(mix, d / "audio", "musica"), "spot-musica.mp4")
     esporta(d, s, "--sovrascrivi" in sys.argv)

@@ -17,6 +17,7 @@ bash strumenti/prepara.sh        # Three.js, font, librerie Python, browser: una
 | 2 · Copione | si scrive `spot.json`, poi `python3 strumenti/spot.py costruisci 41-…` | controlla le regole dei testi; genera `sorgente/index.html` e `testi.md` |
 | 3 · Voci | `python3 strumenti/spot.py voci 41-… 42-… 43-…` | le frasi da mandare a Higgsfield, già a gruppi di 4, con il file di destinazione e il nome con cui scaricarle |
 | 3b · Clip | `python3 strumenti/spot.py scarica 41-… 1=<url> 2=<url>` oppure `python3 strumenti/spot.py importa-voci ~/Scaricati --sposta` | le clip in `audio/line1…5.mp3`, controllate una per una (vedi sotto) |
+| 3c · Tempi | `python3 strumenti/spot.py tempi 41-…` | inizio e fine reali di ogni frase, senza render: chi sfora la scena si vede subito (parte da solo dopo `scarica` e `importa-voci`) |
 | 4 · Scena | si scrive `scena.js`, poi `python3 strumenti/spot.py fotogrammi 41-…` | `sorgente/sheet.jpg`: 13 fotogrammi da guardare prima del render |
 | 5 · Render | `python3 strumenti/spot.py render 41-…` (una scena sola: `render 41-… s3`) | `sorgente/muto.mp4` |
 | 6 · Audio | si scrive `effetti.py`, poi `python3 strumenti/spot.py audio 41-…` | i due video in `export/` con i nomi della serie; stampa i tempi di ogni frase |
@@ -58,9 +59,14 @@ In entrambi i casi un file che non è un audio valido (scaricamento incompleto) 
 - `versione`: per una correzione si alza il numero; il video precedente si sposta in `export/archivio/`. Lo script non sovrascrive mai un video già in `export/` (serve `--sovrascrivi`).
 - `dati`: valori liberi che `scena.js` legge come `SPOT.dati` (etichette, prezzi dimostrativi): utile per le versioni di settore.
 
-**`scena.js`** — solo la parte 3D dello spot: formazioni delle tessere (`F`), trasformazioni (`TR`), camera (`camAt`), oggetti extra e `render3d(t)`. Lo scheletro commentato è `motore/scena-base.js`. Se servono, `scena.css`, `scena.html` e `timeline.js` aggiungono stile, elementi e animazioni 2D alla pagina.
+**`scena.js`** — solo la parte 3D dello spot: formazioni delle tessere (`F`), trasformazioni (`TR`), camera (`camAt`), oggetti extra e `render3d(t)`. Lo scheletro commentato è `motore/scena-base.js`. In `TR` un quinto elemento `{arco:0}` toglie l'arco alle tessere di quella trasformazione. Se servono, `scena.css`, `scena.html` e `timeline.js` aggiungono stile, elementi e animazioni 2D alla pagina.
 
 **`effetti.py`** — gli effetti sonori, uno per ogni evento visivo: `def effetti(s, a)`. Lo scheletro è `motore/effetti-base.py`.
+
+## Chiusura e mix audio
+
+- **Chiusura senza anello** (dal 19/11): le tessere spariscono nel punto dell'implosione e il logo resta da solo. Per riavere l'anello attorno al logo: `"anello": true` in `spot.json`.
+- **Profilo del mix** in `riferimento.json` → `audio.profilo`: `chiaro` (in uso: musica ed effetti si abbassano mentre la voce parla), `attuale` (come gli spot fino al lotto A), `chiaro-brillante` (chiaro più filtri sulla voce). `audio` stampa di quanti dB la voce sta sopra il resto. Prova senza cambiare l'impostazione: `python3 strumenti/motore/audio.py <spot> --profilo=attuale`.
 
 ## Versioni di settore e ganci alternativi
 
@@ -69,6 +75,12 @@ python3 strumenti/spot.py nuovo --variante-di 41-sai-sempre-cosa-ce-15s --settor
 ```
 
 Crea `41-sai-sempre-cosa-ce-barbieri-15s/` con un `spot.json` che contiene solo ciò che cambia (di solito la scena 1 e qualche valore in `dati`). Scena, effetti e le voci non cambiate si ereditano dallo spot base: si genera una sola frase nuova. Lo stesso comando con `--settore gancio-b` serve per provare un secondo gancio nelle sponsorizzate.
+
+## Controlli già al momento di `costruisci`
+
+- **Copione**: le stesse regole dei testi di `controlli`, più una stima della durata di ogni frase (circa 16 caratteri al secondo, più 0,3 s per ogni pausa): avvisa se rischia di sforare la scena, prima ancora di generare la voce.
+- **Sintassi della pagina**: se `scena.js` ha un errore o ridichiara un nome già usato dal modello, `costruisci` si ferma e indica la riga di `scena.js`.
+- **Spot già consegnati con la loro `sorgente/`** (fino al 40): `costruisci`, `fotogrammi` e `render` non riscrivono più la loro pagina né `testi.md`. Per rifarli dal modello attuale serve `costruisci --rigenera`.
 
 ## Cosa controlla `controlli`
 
@@ -87,7 +99,7 @@ Non può controllare: pronuncia e volumi all'ascolto, funzioni mostrate, titoli 
 
 | File | A cosa serve |
 |---|---|
-| `spot.py` | comando unico (`nuovo`, `costruisci`, `voci`, `scarica`, `importa-voci`, `fotogrammi`, `render`, `audio`, `controlli`, `tutto`) |
+| `spot.py` | comando unico (`nuovo`, `costruisci`, `voci`, `scarica`, `importa-voci`, `tempi`, `fotogrammi`, `render`, `audio`, `controlli`, `tutto`) |
 | `controlli.py` | i controlli automatici |
 | `pronuncia.json` | parole difficili per la voce e rimedi: si aggiorna a ogni correzione di pronuncia |
 | `riferimento.json` | soglie dei controlli (volume della serie, fotogrammi vuoti) |

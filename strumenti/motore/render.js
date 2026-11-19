@@ -82,7 +82,7 @@ function serve(root) {
   p.on('pageerror', e => { errori.push(e.message); console.error('pagina:', e.message); });
   p.on('requestfailed', r => { errori.push('non caricato: ' + r.url()); console.error('non caricato:', r.url()); });
   p.on('response', r => { if (r.status() >= 400) { errori.push(`${r.status()} ${r.url()}`); console.error(r.status(), r.url()); } });
-  await p.goto(`http://localhost:${srv.address().port}/index.html?tema=${process.env.TEMA || 'chiaro'}`); await p.evaluate('window.ready');
+  await p.goto(`http://localhost:${srv.address().port}/index.html?tema=${process.env.TEMA || 'chiaro'}&chiusura=${process.env.CHIUSURA || ''}`); await p.evaluate('window.ready');
   if (errori.length) { console.error('La pagina ha errori: render interrotto.'); process.exit(1); }
 
   if (mode === 'stills') {

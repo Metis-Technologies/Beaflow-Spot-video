@@ -3,5 +3,24 @@
   "lufs_serie": -15.6,
   "lufs_tolleranza": 1.0,
   "dettaglio_minimo_transizione": 2.0,
-  "dettaglio_minimo_scena": 4.0
+  "dettaglio_minimo_scena": 4.0,
+  "audio": {
+    "_": "Profilo del mix, scelto da «profilo». «attuale» = come gli spot fino al lotto A (voce circa 7 dB sopra musica ed effetti). «chiaro» = musica ed effetti si abbassano mentre la voce parla (circa 13 dB), timbro della voce invariato: in uso dal 19/11 su richiesta dell'utente. «chiaro-brillante» = come chiaro, più filtri sulla voce (meno bassi, più presenza, compressione leggera): da usare solo se l'utente lo sceglie all'ascolto. Per una prova: audio.py <spot> --profilo=<nome>",
+    "profilo": "chiaro",
+    "profili": {
+      "attuale": {},
+      "chiaro": {
+        "musica_picco": 0.24,
+        "musica_sotto_voce_db": 8,
+        "effetti_sotto_voce_db": 5
+      },
+      "chiaro-brillante": {
+        "musica_picco": 0.24,
+        "musica_sotto_voce_db": 8,
+        "effetti_sotto_voce_db": 5,
+        "voce_filtri": "highpass=f=90,equalizer=f=250:t=q:w=1:g=-2,equalizer=f=3200:t=q:w=1.2:g=3.5,acompressor=threshold=0.125:ratio=2.5:attack=5:release=80:makeup=1.5"
+      }
+    }
+  },
+  "chiusura": "pulita"
 }

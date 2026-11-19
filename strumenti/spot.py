@@ -8,6 +8,7 @@ Dalla cartella principale del repo:
   python3 strumenti/spot.py voci 41-... 42-...                        # frasi da generare, a gruppi di 4
   python3 strumenti/spot.py scarica 41-... 1=<url> 2=<url>            # clip dritte in audio/ (dove la rete lo permette)
   python3 strumenti/spot.py importa-voci ~/Scaricati --sposta         # clip scaricate col browser -> audio/, download puliti
+  python3 strumenti/spot.py tempi 41-...                              # tempi reali delle frasi, prima del render
   python3 strumenti/spot.py fotogrammi 41-...  [tempi]                # fotogrammi di controllo + foglio
   python3 strumenti/spot.py render 41-...  [s3 ...]                   # scene -> muto.mp4
   python3 strumenti/spot.py audio 41-...                              # voce + effetti + musica -> export/
@@ -120,6 +121,11 @@ def controlla_copione(s, d):
         dove = (2,) if s.get("ossatura") == "A" else (2, 3)          # nelle ossature B e C «Con Beaflow» può arrivare a metà
         if "beaflow" in voce.lower() and not (i in dove and voce.lower().startswith("con beaflow")):
             err.append(f"scena {i}: la voce dice «Beaflow» solo in «Con Beaflow, …» (scena {' o '.join(map(str, dove))}) e nella chiusura")
+        if voce and ini is not None:
+            fine_utile = (sc[i]["voce_inizio"] if i < 5 and sc[i].get("voce_inizio") is not None else CHIUSURA["voce_inizio"]) - ini
+            stima = durata_stimata(voce)
+            if stima > fine_utile - 0.25:
+                avv.append(f"scena {i}: frase forse troppo lunga per la sua scena (stima {stima:.1f} s su {fine_utile:.2f} disponibili): accorciarla o verificare con  spot.py tempi  appena arriva la clip: «{voce}»")
         if re.search(r"\d", x.get("voce_tts", voce)): avv.append(f"scena {i}: numeri in cifre nella voce, scriverli in lettere: «{voce}»")
         basso = (testo + " " + voce).lower()
         for parola, r in lessico["parole"].items():
@@ -152,7 +158,33 @@ def righe_html(righe):
     return "<br>".join(parole(r) for r in righe)
 
 
-def costruisci(d, quiet=False):
+def propria(d):
+    """True per gli spot fino al 40: hanno in sorgente/ la loro copia del motore e una pagina già consegnata, da non riscrivere."""
+    return (d / "sorgente" / "render.js").exists()
+
+
+def sintassi(pagina, scena_js, d):
+    """Controlla la sintassi della pagina generata (es. un nome di scena.js già usato dal modello) senza aprire il browser."""
+    import tempfile
+    m = re.search(r'<script type="module">\n(.*?)</script>', pagina, re.S)
+    if not m: return None
+    with tempfile.NamedTemporaryFile("w", suffix=".mjs", delete=False, encoding="utf-8") as f: f.write(m.group(1)); tmp = f.name
+    r = subprocess.run(["node", "--check", tmp], capture_output=True, text=True); Path(tmp).unlink()
+    if r.returncode == 0: return None
+    riga = re.search(r"\.mjs:(\d+)", r.stderr); msg = next((l for l in r.stderr.splitlines() if "Error" in l), r.stderr.strip()[:200])
+    dove = ""
+    if riga:
+        inizio = m.group(1).find(scena_js); n0 = m.group(1)[:inizio].count("\n") + 1 if inizio >= 0 else None
+        n = int(riga.group(1))
+        if n0 and n0 <= n < n0 + scena_js.count("\n") + 1: dove = f" (scena.js, riga {n - n0 + 1})"
+    return msg + dove
+
+
+def durata_stimata(frase):                   # tarata sulle clip degli spot 26 e 40: circa 16 caratteri al secondo più 0,3 s per ogni pausa interna
+    return len(frase) / 16 + 0.3 * len(re.findall(r"[,;:.?](?=\s)", frase.strip()))
+
+
+def costruisci(d, quiet=False, rigenera=False):
     s, base = carica(d)
     err, avv = controlla_copione(s, d)
     for a in avv: print("  ATTENZIONE ·", a)
@@ -190,10 +222,18 @@ def costruisci(d, quiet=False):
         "TIMELINE": "\n".join(tl), "SEME": str(s.get("seme", 100 + 10 * int(s["numero"]) + 1)),
         "K_GANCIO": "E.inout(clamp((t-2.35)/0.3))" if rosso else "1", "SCENA": scena_js,
     }
+    chiusura = "anello" if s.get("anello") else s.get("chiusura") or json.loads((QUI / "riferimento.json").read_text(encoding="utf-8")).get("chiusura", "pulita")
+    if chiusura not in ("pulita", "linea", "tessere", "alone", "anello"): sys.exit("ERRORE: chiusura deve essere pulita, linea, tessere, alone o anello")
+    pezzi["CHIUSURA"] = chiusura
     pagina = (MOTORE / "modello.html").read_text(encoding="utf-8")
     for k, v in pezzi.items():
         pagina = pagina.replace("{{" + k + "}}", v)
     if "{{" in pagina: sys.exit("ERRORE: segnaposto non sostituito nel modello")
+    if propria(d) and not rigenera:
+        if not quiet: print(f"ok {d.name}: copione valido. Spot già consegnato con la sua sorgente/: pagina e testi.md non riscritti (--rigenera per rifarli dal modello attuale).")
+        return s
+    guasto = sintassi(pagina, scena_js, d)
+    if guasto: sys.exit(f"ERRORE nella pagina: {guasto}\n  Se dice «has already been declared»: quel nome è già usato dal modello, cambiarlo in scena.js.")
     (d / "sorgente").mkdir(exist_ok=True)
     (d / "sorgente" / "index.html").write_text(pagina, encoding="utf-8")
     (d / "testi.md").write_text(testi_md(s), encoding="utf-8")
@@ -276,6 +316,21 @@ def durata_mp3(f):
     except ValueError: return None
 
 
+def tempi(d, quiet=False):
+    """Tempi reali delle frasi (clip già in audio/), senza render: da lanciare appena arrivano le voci."""
+    sys.path.insert(0, str(MOTORE)); import audio as A
+    fr = A.frasi(d); g = GRIGLIA; guai = 0
+    for k, (clip, ini, fine, x) in enumerate(fr):
+        if x is None: print(f"  {clip}: clip mancante"); continue
+        limite = fr[k + 1][1] if k + 1 < len(fr) else 15.0
+        nota = ""
+        if fine > limite: nota = f"  ERRORE: finisce dopo l'inizio della frase successiva ({limite:.2f})"; guai += 1
+        elif fine > g[k + 1] + 0.05: nota = f"  ATTENZIONE: oltre il cambio scena ({it(g[k+1])} s) di {fine - g[k+1]:.2f} s: anticipare voce_inizio o accorciare"; guai += 1
+        print(f"  {clip} {ini:5.2f} -> {fine:5.2f}{nota}")
+    if not quiet: print(f"{d.name}: " + ("tempi a posto." if not guai else f"{guai} frasi da sistemare prima del render."))
+    return guai
+
+
 def scarica(a):
     """Scarica le clip direttamente in <spot>/audio/ (serve una rete che raggiunge i link di Higgsfield: il PC sì, il container cloud no)."""
     import urllib.request
@@ -292,13 +347,14 @@ def scarica(a):
         if not sec: tmp.unlink(); guai += 1; print(f"  NON valida line{m.group(1)}: il file scaricato non è un audio"); continue
         tmp.replace(dst); print(f"  ok {d.name}/audio/{dst.name}  ({sec:.2f} s)")
     if guai: sys.exit("Da qui i link non si raggiungono o non sono validi: scaricare col browser e usare  spot.py importa-voci")
+    tempi(d)
 
 
 def importa_voci(a):
     """Porta in <spot>/audio/lineN.mp3 le clip scaricate col browser con i nomi beaflow_<cartella-spot>_lineN.mp3 (campo «scarica_come» di spot.py voci)."""
     src = Path(a.cartella).expanduser()
     if not src.is_dir(): sys.exit(f"ERRORE: {src} non è una cartella")
-    fatti, altri = 0, []
+    fatti, altri, toccati = 0, [], []
     for f in sorted(src.iterdir()):
         m = re.match(r"^beaflow_(.+-15s)_line([1-5])(?: ?\(\d+\))?\.mp3$", f.name)
         if not m:
@@ -310,12 +366,15 @@ def importa_voci(a):
         if not sec: print(f"  saltata {f.name}: non è un audio valido (scaricamento incompleto?)"); continue
         (d / "audio").mkdir(exist_ok=True); dst = d / "audio" / f"line{m.group(2)}.mp3"
         shutil.copy(f, dst); fatti += 1
+        if d not in toccati: toccati.append(d)
         if a.sposta: f.unlink()
         print(f"  ok {m.group(1)}/audio/{dst.name}  ({sec:.2f} s)" + ("  · tolta dai download" if a.sposta else ""))
     for f in altri:
         sec = durata_mp3(f)
         print(f"  DA SISTEMARE A MANO: {f.name}  ({f.stat().st_size} byte" + (f", audio di {sec:.2f} s" if sec else ", non è un audio") + "): nome non riconosciuto")
     print(f"{fatti} clip importate." + ("" if a.sposta or not fatti else "  Con --sposta le clip vengono anche tolte dalla cartella dei download."))
+    for d in toccati:
+        if all((d / "audio" / f"line{k}.mp3").exists() for k in range(1, 6)): print(f"Tempi di {d.name}:"); tempi(d)
 
 
 # ───────── comandi che usano il motore ─────────
@@ -355,8 +414,9 @@ def main():
     n = sub.add_parser("nuovo"); n.add_argument("numero", nargs="?", type=int); n.add_argument("nome", nargs="?")
     n.add_argument("--titolo"); n.add_argument("--ossatura", default="A", choices=list(OSSATURE)); n.add_argument("--da", help="spot da cui copiare scena.js ed effetti.py")
     n.add_argument("--variante-di", help="spot base: crea una versione di settore o con un altro gancio"); n.add_argument("--settore")
-    for c in ("costruisci", "audio", "controlli", "tutto"):
+    for c in ("costruisci", "audio", "controlli", "tutto", "tempi"):
         x = sub.add_parser(c); x.add_argument("spot"); x.add_argument("--sovrascrivi", action="store_true", help="sostituisce un video già presente in export/")
+        x.add_argument("--rigenera", action="store_true", help="riscrive pagina e testi.md anche per uno spot già consegnato con la sua sorgente/")
     v = sub.add_parser("voci"); v.add_argument("spot", nargs="+"); v.add_argument("--tutte", action="store_true")
     sc = sub.add_parser("scarica"); sc.add_argument("spot"); sc.add_argument("clip", nargs="+", help="numero=url, es. 1=https://…")
     iv = sub.add_parser("importa-voci"); iv.add_argument("cartella"); iv.add_argument("--sposta", action="store_true", help="toglie le clip dalla cartella dei download dopo averle copiate")
@@ -369,7 +429,8 @@ def main():
     if a.cmd == "importa-voci": return importa_voci(a)
     d = cartella(a.spot)
     extra = ["--sovrascrivi"] if getattr(a, "sovrascrivi", False) else []
-    if a.cmd == "costruisci": costruisci(d)
+    if a.cmd == "costruisci": costruisci(d, rigenera=a.rigenera)
+    elif a.cmd == "tempi": sys.exit(1 if tempi(d) else 0)
     elif a.cmd == "fotogrammi": fotogrammi(d, a.tempi)
     elif a.cmd == "render": render(d, a.scene)
     elif a.cmd == "audio": lancia([sys.executable, MOTORE / "audio.py", d, *extra])

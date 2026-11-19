@@ -35,6 +35,7 @@ const F = {
   punto:PUNTO, alone:ALONE,       // chiusura comune: non cambiare
 };
 // Trasformazioni: [da, a, inizio, durata]. A cavallo del cambio scena; le ultime due sono la chiusura comune.
+// Quinto elemento facoltativo {arco:0}: le tessere vanno dritte alla nuova posizione, senza l'arco (utile se la forma deve restare ferma fra due scene).
 const TR = [['caos','griglia',2.3,0.8],['griglia','colonne',4.95,0.6],['colonne','anello',7.4,0.7],['anello','pannello',9.75,0.8],['pannello','punto',12.1,0.7],['punto','alone',12.86,0.9]];
 
 // Camera: [tempo, posizione, punto guardato, rollio in gradi]. Mai ferma; lenta mentre si legge, veloce sui cambi scena.

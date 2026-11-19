@@ -65,7 +65,7 @@ In entrambi i casi un file che non è un audio valido (scaricamento incompleto) 
 
 ## Chiusura e mix audio
 
-- **Chiusura senza anello** (dal 19/11): le tessere spariscono nel punto dell'implosione e il logo resta da solo. Per riavere l'anello attorno al logo: `"anello": true` in `spot.json`.
+- **Chiusura** (scelta dall'utente il 19/11): niente anello di tessere; le tessere spariscono nel punto dell'implosione e sotto il logo si disegna un filo oro. È il valore `"chiusura": "linea"` di `riferimento.json`. Altri valori, anche per un solo spot con `"chiusura"` in `spot.json`: `pulita` (solo il logo), `tessere` (nove tessere oro in fila), `alone` (luce calda dietro il logo), `anello` (com'era fino al lotto A). Prova rapida senza cambiare nulla: `CHIUSURA=tessere node strumenti/motore/render.js <spot> stills 14.6`.
 - **Profilo del mix** in `riferimento.json` → `audio.profilo`: `chiaro` (in uso: musica ed effetti si abbassano mentre la voce parla), `attuale` (come gli spot fino al lotto A), `chiaro-brillante` (chiaro più filtri sulla voce). `audio` stampa di quanti dB la voce sta sopra il resto. Prova senza cambiare l'impostazione: `python3 strumenti/motore/audio.py <spot> --profilo=attuale`.
 
 ## Versioni di settore e ganci alternativi

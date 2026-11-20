@@ -1,0 +1,61 @@
+{
+  "numero": 46,
+  "nome": "gratis-per-sempre",
+  "titolo": "Gratis, per sempre",
+  "ossatura": "C",
+  "tema": "chiaro",
+  "versione": 1,
+  "seme": 465,
+  "funzione": "piano Free: una sede, due operatori, 0 € per sempre",
+  "note": "Dati dimostrativi (orari, nomi, prezzi).",
+  "scene": [
+    {
+      "schermo": [
+        "Zero euro."
+      ],
+      "accento": [
+        "Per sempre."
+      ],
+      "voce": "Zero euro. Per sempre.",
+      "voce_inizio": 0.05,
+      "si_vede": "cartellino del prezzo 3D fermo su «0 €»"
+    },
+    {
+      "schermo": [
+        "Ti iscrivi",
+        "in pochi minuti."
+      ],
+      "voce": "Ti iscrivi in pochi minuti.",
+      "voce_inizio": 2.52,
+      "si_vede": "si torna indietro: le cifre del cartellino scorrono verso il basso"
+    },
+    {
+      "schermo": [
+        "Con Beaflow,",
+        "parti gratis."
+      ],
+      "voce": "Con Beaflow, parti gratis.",
+      "voce_inizio": 5.02,
+      "si_vede": "il cartellino arriva a «0 €» con uno scatto"
+    },
+    {
+      "schermo": [
+        "Una sede,",
+        "due operatori."
+      ],
+      "voce": "Una sede e due operatori.",
+      "voce_inizio": 7.52,
+      "si_vede": "una tessera-sede e due tessere-operatore"
+    },
+    {
+      "schermo": [
+        "Cresci",
+        "quando vuoi."
+      ],
+      "voce": "E cresci quando vuoi.",
+      "voce_inizio": 10.02,
+      "si_vede": "le tessere salgono a gradini oro"
+    }
+  ],
+  "dati": {}
+}

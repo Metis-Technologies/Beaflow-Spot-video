@@ -1,0 +1,63 @@
+{
+  "numero": 41,
+  "nome": "sai-sempre-cosa-ce",
+  "titolo": "Sai sempre cosa c'è",
+  "ossatura": "A",
+  "tema": "chiaro",
+  "versione": 2,
+  "seme": 417,
+  "funzione": "magazzino (Pro): scarico della giacenza alla vendita e avviso di scorta bassa (dati per buoni dall'utente il 19/11)",
+  "note": "Dati dimostrativi (orari, nomi, prezzi).",
+  "scene": [
+    {
+      "schermo": [
+        "Prodotti"
+      ],
+      "accento": [
+        "finiti",
+        "all'improvviso?"
+      ],
+      "voce": "Prodotti finiti all'improvviso?",
+      "voce_inizio": 0.05,
+      "si_vede": "scaffale di flaconi-tessera con un vuoto rosso"
+    },
+    {
+      "schermo": [
+        "Con Beaflow,",
+        "lo sai prima."
+      ],
+      "voce": "Con Beaflow, lo sai prima.",
+      "voce_inizio": 2.52,
+      "si_vede": "luce oro, lo scaffale si accende"
+    },
+    {
+      "schermo": [
+        "Vendi,",
+        "la giacenza",
+        "scende."
+      ],
+      "voce": "Vendi, e la giacenza scende.",
+      "voce_inizio": 5.02,
+      "si_vede": "a ogni vendita scende un flacone, contatore 12 → 11 → 10"
+    },
+    {
+      "schermo": [
+        "Avviso quando",
+        "sta finendo."
+      ],
+      "voce": "Ti avvisa quando sta finendo.",
+      "voce_inizio": 7.52,
+      "si_vede": "l'ultimo flacone si accende d'oro, etichetta «Scorta bassa»"
+    },
+    {
+      "schermo": [
+        "Scaffali",
+        "sempre pronti."
+      ],
+      "voce": "E gli scaffali sono sempre pronti.",
+      "voce_inizio": 10.02,
+      "si_vede": "lo scaffale si riempie a cascata"
+    }
+  ],
+  "dati": {}
+}

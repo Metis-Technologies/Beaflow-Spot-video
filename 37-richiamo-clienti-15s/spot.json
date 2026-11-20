@@ -1,0 +1,62 @@
+{
+  "numero": 37,
+  "nome": "richiamo-clienti",
+  "titolo": "Torna a trovarti",
+  "ossatura": "A",
+  "tema": "chiaro",
+  "versione": 2,
+  "seme": 373,
+  "funzione": "solo richiamo automatico di chi non viene da un po', niente compleanno (confermato 19/11)",
+  "note": "Dati dimostrativi (orari, nomi, prezzi).",
+  "scene": [
+    {
+      "schermo": [
+        "Non lo vedi"
+      ],
+      "accento": [
+        "da mesi?"
+      ],
+      "voce": "Un cliente non viene da un po'?",
+      "voce_inizio": 0.05,
+      "si_vede": "una tessera-cliente si allontana e sbiadisce in rosso"
+    },
+    {
+      "schermo": [
+        "Con Beaflow,",
+        "lo richiami."
+      ],
+      "voce": "Con Beaflow, lo richiami.",
+      "voce_inizio": 2.52,
+      "si_vede": "la luce passa all'oro, la tessera si ferma"
+    },
+    {
+      "schermo": [
+        "Passa un po'?",
+        "Parte",
+        "il messaggio."
+      ],
+      "voce": "Dopo un po', parte un messaggio.",
+      "voce_inizio": 5.02,
+      "si_vede": "una busta oro si stacca dal calendario"
+    },
+    {
+      "schermo": [
+        "Al momento",
+        "giusto."
+      ],
+      "voce": "Arriva al momento giusto.",
+      "voce_inizio": 7.52,
+      "si_vede": "la busta raggiunge un telefono stilizzato, che si accende"
+    },
+    {
+      "schermo": [
+        "E torna",
+        "a trovarti."
+      ],
+      "voce": "E il cliente torna a trovarti.",
+      "voce_inizio": 10.02,
+      "si_vede": "la busta torna come prenotazione oro e si posa in agenda"
+    }
+  ],
+  "dati": {}
+}

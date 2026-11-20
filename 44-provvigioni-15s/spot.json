@@ -1,0 +1,61 @@
+{
+  "numero": 44,
+  "nome": "provvigioni",
+  "titolo": "Provvigioni senza calcoli",
+  "ossatura": "A",
+  "tema": "chiaro",
+  "versione": 1,
+  "seme": 443,
+  "funzione": "provvigioni (Pro): quota per servizio, riepilogo a fine mese (dati per buoni dall'utente il 19/11)",
+  "note": "Dati dimostrativi (orari, nomi, prezzi).",
+  "scene": [
+    {
+      "schermo": [
+        "Provvigioni?"
+      ],
+      "accento": [
+        "Fatte a mano?"
+      ],
+      "voce": "Provvigioni fatte a mano?",
+      "voce_inizio": 0.05,
+      "si_vede": "calcolatrice di tessere in rosso, fogli che volano"
+    },
+    {
+      "schermo": [
+        "Con Beaflow,",
+        "automatiche."
+      ],
+      "voce": "Con Beaflow, sono automatiche.",
+      "voce_inizio": 2.52,
+      "si_vede": "la calcolatrice si scompone, luce oro"
+    },
+    {
+      "schermo": [
+        "Ogni servizio,",
+        "la sua quota."
+      ],
+      "voce": "Ogni servizio ha la sua quota.",
+      "voce_inizio": 5.02,
+      "si_vede": "i tasti si dispongono in colonne per operatore (Giulia, Marco, Sara)"
+    },
+    {
+      "schermo": [
+        "A fine mese,",
+        "già pronte."
+      ],
+      "voce": "A fine mese sono già pronte.",
+      "voce_inizio": 7.52,
+      "si_vede": "ogni colonna accende il suo totale (dimostrativo)"
+    },
+    {
+      "schermo": [
+        "Conti chiari,",
+        "team sereno."
+      ],
+      "voce": "Conti chiari, e tutti sereni.",
+      "voce_inizio": 10.02,
+      "si_vede": "le colonne si allineano in un riepilogo unico"
+    }
+  ],
+  "dati": {}
+}

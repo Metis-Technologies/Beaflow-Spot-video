@@ -1,0 +1,62 @@
+{
+  "numero": 42,
+  "nome": "i-numeri-parlano",
+  "titolo": "I numeri parlano",
+  "ossatura": "B",
+  "tema": "chiaro",
+  "versione": 2,
+  "seme": 421,
+  "funzione": "report (Pro): Ricavi nel Tempo, Scontrino Medio, Prenotazioni Totali vs periodo precedente",
+  "note": "Dati dimostrativi (orari, nomi, prezzi).",
+  "scene": [
+    {
+      "schermo": [
+        "Apri il report."
+      ],
+      "accento": [
+        "Tutto chiaro."
+      ],
+      "voce": "Apri i numeri. Tutto chiaro.",
+      "voce_inizio": 0.05,
+      "si_vede": "barre 3D che crescono come una città, la camera già in volo"
+    },
+    {
+      "schermo": [
+        "Ricavi",
+        "nel Tempo."
+      ],
+      "voce": "Vedi i ricavi nel tempo.",
+      "voce_inizio": 2.52,
+      "si_vede": "volo tra le barre, pannello «Ricavi nel Tempo»"
+    },
+    {
+      "schermo": [
+        "Con Beaflow,",
+        "lo Scontrino",
+        "Medio."
+      ],
+      "voce": "Con Beaflow, lo scontrino medio.",
+      "voce_inizio": 5.02,
+      "si_vede": "tessera «Scontrino Medio · 38 €» che si alza"
+    },
+    {
+      "schermo": [
+        "Confronti",
+        "col mese prima."
+      ],
+      "voce": "E lo confronti con il mese prima.",
+      "voce_inizio": 7.52,
+      "si_vede": "«Prenotazioni Totali +12% vs periodo precedente»"
+    },
+    {
+      "schermo": [
+        "Decidi",
+        "con i numeri."
+      ],
+      "voce": "Così decidi con i numeri.",
+      "voce_inizio": 10.02,
+      "si_vede": "le barre si fondono in una linea di crescita oro"
+    }
+  ],
+  "dati": {}
+}

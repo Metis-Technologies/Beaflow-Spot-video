@@ -178,6 +178,12 @@ def esporta(d, s, sovrascrivi):
             print(f"  NON copiato: {dst.name} esiste già. Per una correzione alzare «versione» in spot.json (la precedente va in export/archivio/); --sovrascrivi solo se il video non è stato ancora consegnato.")
             continue
         shutil.copy(d / "sorgente" / f"spot-{variante}.mp4", dst); print("  export/" + dst.name)
+        v = s.get('versione', 1)                     # 20/11: le versioni precedenti vanno da sole in export/archivio/
+        for vecchio in sorted((d / "export").glob(f"beaflow_{s['nome']}_15s_{variante}_v*.mp4")):
+            m = re.search(r"_v(\d+)\.mp4$", vecchio.name)
+            if m and int(m.group(1)) < v:
+                (d / "export" / "archivio").mkdir(exist_ok=True); shutil.move(str(vecchio), d / "export" / "archivio" / vecchio.name)
+                print("  in archivio: " + vecchio.name)
 
 # ───────── voce più chiara: voce in primo piano, musica ed effetti che si abbassano mentre parla ─────────
 def profilo_audio():

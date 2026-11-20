@@ -1,0 +1,62 @@
+{
+  "numero": 38,
+  "nome": "salone-in-tasca",
+  "titolo": "Il salone in tasca",
+  "ossatura": "C",
+  "tema": "chiaro",
+  "versione": 2,
+  "seme": 384,
+  "funzione": "gestionale dal telefono, come PWA installabile dal browser; niente store (confermato 19/11)",
+  "note": "Dati dimostrativi (orari, nomi, prezzi).",
+  "scene": [
+    {
+      "schermo": [
+        "Tutto il salone."
+      ],
+      "accento": [
+        "In tasca."
+      ],
+      "voce": "Tutto il salone, in tasca.",
+      "voce_inizio": 0.05,
+      "si_vede": "telefono di tessere già pieno, con l'agenda"
+    },
+    {
+      "schermo": [
+        "Apri il sito",
+        "dal telefono."
+      ],
+      "voce": "Apri il sito dal telefono.",
+      "voce_inizio": 2.52,
+      "si_vede": "si torna al grande pannello da scrivania"
+    },
+    {
+      "schermo": [
+        "Con Beaflow,",
+        "diventa",
+        "un'icona."
+      ],
+      "voce": "Con Beaflow, diventa un'icona.",
+      "voce_inizio": 5.02,
+      "si_vede": "il pannello si ripiega a fisarmonica in un'icona sulla schermata"
+    },
+    {
+      "schermo": [
+        "Un tocco,",
+        "ed è aperto."
+      ],
+      "voce": "Un tocco, ed è già aperto.",
+      "voce_inizio": 7.52,
+      "si_vede": "tocco sull'icona, si apre l'agenda"
+    },
+    {
+      "schermo": [
+        "L'agenda",
+        "ti segue."
+      ],
+      "voce": "E l'agenda ti segue ovunque.",
+      "voce_inizio": 10.02,
+      "si_vede": "il telefono entra in una tasca stilizzata, arriva «Nuova prenotazione»"
+    }
+  ],
+  "dati": {}
+}

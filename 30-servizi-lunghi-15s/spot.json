@@ -1,0 +1,63 @@
+{
+  "numero": 30,
+  "nome": "servizi-lunghi",
+  "titolo": "Servizi lunghi, zero incastri",
+  "ossatura": "B",
+  "tema": "chiaro",
+  "versione": 2,
+  "seme": 303,
+  "funzione": "durata per servizio, pause dentro il servizio, pacchetti di servizi (confermati 19/11)",
+  "note": "Dati dimostrativi (orari, nomi, prezzi).",
+  "scene": [
+    {
+      "schermo": [
+        "Tre ore",
+        "di servizio."
+      ],
+      "accento": [
+        "Incastrato."
+      ],
+      "voce": "Tre ore di servizio. Incastrato.",
+      "voce_inizio": 0.05,
+      "si_vede": "barre di tessere di lunghezze diverse che scattano in una colonna d'agenda"
+    },
+    {
+      "schermo": [
+        "Ogni servizio,",
+        "la sua durata."
+      ],
+      "voce": "Ogni servizio ha la sua durata.",
+      "voce_inizio": 2.52,
+      "si_vede": "tessere allungate: Taglio 30 min, Trattamento viso 60 min, Massaggio 90 min"
+    },
+    {
+      "schermo": [
+        "Con Beaflow,",
+        "pause",
+        "comprese."
+      ],
+      "voce": "Con Beaflow, pause comprese.",
+      "voce_inizio": 5.02,
+      "si_vede": "dentro la barra lunga si apre uno spazio luminoso: la pausa"
+    },
+    {
+      "schermo": [
+        "Pacchetti",
+        "in un tocco."
+      ],
+      "voce": "I pacchetti, in un tocco.",
+      "voce_inizio": 7.52,
+      "si_vede": "tre tessere si fondono in una tessera-pacchetto"
+    },
+    {
+      "schermo": [
+        "Agenda",
+        "senza incastri."
+      ],
+      "voce": "E l'agenda torna in ordine.",
+      "voce_inizio": 10.02,
+      "si_vede": "colonna d'agenda completa, la camera si allontana"
+    }
+  ],
+  "dati": {}
+}

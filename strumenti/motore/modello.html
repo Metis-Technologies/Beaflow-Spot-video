@@ -207,11 +207,14 @@ const ALONE = CHIUSURA==='tessere' ? (t => R.map((r,i)=> i<9 ? { p:V((i-4)*0.17,
   return { p, q:tilt.clone().multiply(qe(0,0,a)), s:V(0.34,0.08,0.08), g:(i%2)?0.8:0.15, c:0 }; });
 const white = new THREE.Color(SCURO?0x3a3a3a:0xffffff), black = new THREE.Color(0x1a1a1a), tmpC=new THREE.Color();
 const M4=new THREE.Matrix4();
+const RITMO = new URLSearchParams(location.search).get('ritmo') || '{{RITMO}}';
+// ritmo «rapido» (20/11): le trasformazioni fra le scene durano al massimo 0,42 s e le tessere partono più insieme; la chiusura non cambia
+const TRR = TR => RITMO!=='rapido' ? TR : TR.map((x,k)=> k>=TR.length-2 ? x : [x[0],x[1],x[2]+0.05,Math.min(x[3],0.42),x[4]]);
 function tilesAt(t, F, TR, first){
-  const cache={}; const get=n=>cache[n]??=F[n](t);
+  const cache={}; const get=n=>cache[n]??=F[n](t); const spread=RITMO==='rapido'?0.12:0.28; TR=TRR(TR);
   for(let i=0;i<N;i++){
     let st=get(first)[i];
-    for(const [a,b,s,d,o] of TR){ const del=(i/N)*0.28; if(t<s+del) break;
+    for(const [a,b,s,d,o] of TR){ const del=(i/N)*spread; if(t<s+del) break;
       const u=E.morph(clamp((t-s-del)/d)), A=get(a)[i], B=get(b)[i];
       const p=A.p.clone().lerp(B.p,u); const arc=Math.sin(Math.PI*u)*(o?.arco??1)*(B.s.x<0.001?0:1);
       p.add(V((R[i][0]-.5)*1.4*arc, (R[i][1]-.2)*1.4*arc, (R[i][2]-.2)*1.8*arc));

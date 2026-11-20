@@ -180,6 +180,12 @@ def sintassi(pagina, scena_js, d):
     return msg + dove
 
 
+def ritmo(s):                                 # «classico» (fino al lotto C) o «rapido» (dal 20/11): da spot.json, altrimenti da riferimento.json
+    r = s.get("ritmo") or json.loads((QUI / "riferimento.json").read_text(encoding="utf-8")).get("ritmo", "classico")
+    if r not in ("classico", "rapido"): sys.exit("ERRORE: ritmo deve essere classico o rapido")
+    return r
+
+
 def durata_stimata(frase):                   # tarata sulle clip degli spot 26 e 40: circa 16 caratteri al secondo più 0,3 s per ogni pausa interna
     return len(frase) / 16 + 0.3 * len(re.findall(r"[,;:.?](?=\s)", frase.strip()))
 
@@ -202,7 +208,12 @@ def costruisci(d, quiet=False, rigenera=False):
           "tw('#shade',0,0.01,{opacity:[1,1]}); tw('#shade',12.4,0.4,{opacity:[1,0]},'exit');",
           "titleIn('#t1',0.1); hidden('#t1b .w'); stagger('#t1b .w',0.6,0.06,0.4,{opacity:[0,1],y:[24,0],blur:[8,0]},'enter');",
           f"outT('#h1',{g[1]-0.3:g});"]
-    tl += [f"titleIn('#t{i}',{g[i-1]+0.1:g}); outT('#t{i}',{g[i]-0.35:g});" for i in range(2, 6)]
+    if ritmo(s) == "rapido":                 # 20/11: cambi scena più serrati (titoli fuori a −0,22 s, dentro sul taglio, parole più rapide)
+        tl[-1] = f"tw('#h1',{g[1]-0.22:g},0.22,{{opacity:[1,0],y:[0,-24],blur:[0,8]}},'exit');"
+        tl += [f"hidden('#t{i} .w'); stagger('#t{i} .w',{g[i-1]:g},0.035,0.28,{{opacity:[0,1],y:[24,0],blur:[8,0]}},'enter'); "
+               f"tw('#t{i}',{g[i]-0.22:g},0.22,{{opacity:[1,0],y:[0,-24],blur:[0,8]}},'exit');" for i in range(2, 6)]
+    else:
+        tl += [f"titleIn('#t{i}',{g[i-1]+0.1:g}); outT('#t{i}',{g[i]-0.35:g});" for i in range(2, 6)]
     tl += ["hidden('#logoB'); tw('#logoB',13.05,0.12,{opacity:[0,1]},'lin'); tw('#logoB',13.05,SO,{scale:[.86,1],blur:[10,0]},'soft');",
            "popIn('#btn',13.3,40); tw('#btn',14.15,0.1,{scale:[1,.93]},'exit'); tw('#btn',14.25,SO,{scale:[.93,1]},'soft');",
            "hidden('#offer'); tw('#offer',13.5,0.4,{opacity:[0,1],y:[24,0]},'enter');",
@@ -225,6 +236,7 @@ def costruisci(d, quiet=False, rigenera=False):
     chiusura = "anello" if s.get("anello") else s.get("chiusura") or json.loads((QUI / "riferimento.json").read_text(encoding="utf-8")).get("chiusura", "pulita")
     if chiusura not in ("pulita", "linea", "tessere", "alone", "anello"): sys.exit("ERRORE: chiusura deve essere pulita, linea, tessere, alone o anello")
     pezzi["CHIUSURA"] = chiusura
+    pezzi["RITMO"] = ritmo(s)
     pagina = (MOTORE / "modello.html").read_text(encoding="utf-8")
     for k, v in pezzi.items():
         pagina = pagina.replace("{{" + k + "}}", v)

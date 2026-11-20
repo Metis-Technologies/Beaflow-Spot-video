@@ -56,7 +56,7 @@ In entrambi i casi un file che non è un audio valido (scaricamento incompleto) 
 - `scene`: sempre 5 (la sesta è la chiusura comune). `schermo` è una riga per elemento: gli a capo si decidono qui. `accento` è la riga colorata del gancio. Solo nella scena 1, `gancio_px` e `accento_px` (da 96 a 112) rimpiccioliscono un gancio lungo, come nelle versioni di settore.
 - `ossatura`: `A` problema → soluzione (accento e luce rossi fino a 2,5 s, poi oro) · `B` dimostrazione · `C` numero o risultato (per B e C niente rosso: luce oro dall'inizio, accento ottone).
 - `voce_tts` (facoltativo): grafia da mandare alla voce quando è diversa da quella da leggere (es. «Ognùno»); `pronuncia`: aiuto aggiunto al prompt.
-- `versione`: per una correzione si alza il numero; il video precedente si sposta in `export/archivio/`. Lo script non sovrascrive mai un video già in `export/` (serve `--sovrascrivi`).
+- `versione`: per una correzione si alza il numero; `audio` sposta da solo i video delle versioni precedenti in `export/archivio/` (dal 20/11). Lo script non sovrascrive mai un video già in `export/` (serve `--sovrascrivi`).
 - `dati`: valori liberi che `scena.js` legge come `SPOT.dati` (etichette, prezzi dimostrativi): utile per le versioni di settore.
 
 **`scena.js`** — solo la parte 3D dello spot: formazioni delle tessere (`F`), trasformazioni (`TR`), camera (`camAt`), oggetti extra e `render3d(t)`. Lo scheletro commentato è `motore/scena-base.js`. In `TR` un quinto elemento `{arco:0}` toglie l'arco alle tessere di quella trasformazione. Se servono, `scena.css`, `scena.html` e `timeline.js` aggiungono stile, elementi e animazioni 2D alla pagina.
@@ -67,6 +67,12 @@ In entrambi i casi un file che non è un audio valido (scaricamento incompleto) 
 
 - **Chiusura** (scelta dall'utente il 19/11): niente anello di tessere; le tessere spariscono nel punto dell'implosione e sotto il logo si disegna un filo oro. È il valore `"chiusura": "linea"` di `riferimento.json`. Altri valori, anche per un solo spot con `"chiusura"` in `spot.json`: `pulita` (solo il logo), `tessere` (nove tessere oro in fila), `alone` (luce calda dietro il logo), `anello` (com'era fino al lotto A). Prova rapida senza cambiare nulla: `CHIUSURA=tessere node strumenti/motore/render.js <spot> stills 14.6`.
 - **Profilo del mix** in `riferimento.json` → `audio.profilo`: `chiaro-brillante` (in uso, scelto dall'utente all'ascolto il 19/11: musica ed effetti si abbassano mentre la voce parla, e la voce è filtrata per essere più nitida), `chiaro` (uguale, senza filtri sulla voce), `attuale` (come gli spot fino al lotto A). `audio` stampa di quanti dB la voce sta sopra il resto. Prova senza cambiare l'impostazione: `python3 strumenti/motore/audio.py <spot> --profilo=attuale`.
+
+## Ritmo dei cambi scena
+
+- **`"ritmo": "rapido"`** in `riferimento.json` (scelto dall'utente il 20/11 dopo il lotto B: «troppo tempo fra una scena e l'altra»). A ogni taglio il titolo esce 0,22 s prima (era 0,35), il nuovo entra sul taglio con le parole più rapide, le trasformazioni delle tessere durano al massimo 0,42 s (erano 0,6–0,8) e partono più insieme. La chiusura non cambia. La voce delle scene 2–5 parte a +0,02 s dal taglio (`voce_inizio` 2,52 · 5,02 · 7,52 · 10,02).
+- `"ritmo": "classico"` (anche per un solo spot, in `spot.json`) = com'era fino al lotto C v1. Prova senza ricostruire: `?ritmo=classico` nell'indirizzo della pagina.
+- Le animazioni interne di una scena (etichette, oggetti) restano in `scena.js`: farle partire entro 0,3–0,5 s dal taglio, così la scena non resta ferma.
 
 ## Versioni di settore e ganci alternativi
 

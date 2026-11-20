@@ -1,0 +1,63 @@
+{
+  "numero": 45,
+  "nome": "riprenditi-il-tempo-3d",
+  "titolo": "Riprenditi il tuo tempo",
+  "ossatura": "B",
+  "tema": "chiaro",
+  "versione": 1,
+  "seme": 454,
+  "funzione": "prenotazioni online, promemoria automatici, pagamento alla prenotazione (confermati)",
+  "note": "Dati dimostrativi (orari, nomi, prezzi).",
+  "scene": [
+    {
+      "schermo": [
+        "Tu stacchi."
+      ],
+      "accento": [
+        "Le prenotazioni",
+        "no."
+      ],
+      "voce": "Tu stacchi. Le prenotazioni no.",
+      "voce_inizio": 0.05,
+      "si_vede": "clessidra di tessere, la sabbia oro scorre verso l'alto"
+    },
+    {
+      "schermo": [
+        "Arrivano",
+        "da sole."
+      ],
+      "voce": "Arrivano da sole, anche la sera.",
+      "voce_inizio": 2.52,
+      "si_vede": "tessere-prenotazione riempiono la parte alta"
+    },
+    {
+      "schermo": [
+        "Con Beaflow,",
+        "promemoria",
+        "automatici."
+      ],
+      "voce": "Con Beaflow, i promemoria partono.",
+      "voce_inizio": 5.02,
+      "si_vede": "campanella oro che manda onde"
+    },
+    {
+      "schermo": [
+        "Si paga",
+        "già online."
+      ],
+      "voce": "Si può pagare già prenotando.",
+      "voce_inizio": 7.52,
+      "si_vede": "moneta-tessera che si incastra nella prenotazione"
+    },
+    {
+      "schermo": [
+        "E tu",
+        "chiudi prima."
+      ],
+      "voce": "E tu chiudi prima.",
+      "voce_inizio": 10.02,
+      "si_vede": "la clessidra si capovolge e diventa la porta del salone che si chiude su un tramonto"
+    }
+  ],
+  "dati": {}
+}

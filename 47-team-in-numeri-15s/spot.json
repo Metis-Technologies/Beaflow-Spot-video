@@ -1,0 +1,62 @@
+{
+  "numero": 47,
+  "nome": "team-in-numeri",
+  "titolo": "Il team, in numeri",
+  "ossatura": "A",
+  "tema": "chiaro",
+  "versione": 1,
+  "seme": 476,
+  "funzione": "report (Pro): Performance Operatori, prenotazioni e fatturato per operatore (dati per buoni dall'utente il 19/11)",
+  "note": "Dati dimostrativi (orari, nomi, prezzi).",
+  "scene": [
+    {
+      "schermo": [
+        "Il team?"
+      ],
+      "accento": [
+        "A occhio?"
+      ],
+      "voce": "La squadra, la valuti a occhio?",
+      "voce_inizio": 0.05,
+      "si_vede": "tessere-persona in penombra rossa, senza numeri"
+    },
+    {
+      "schermo": [
+        "Con Beaflow,",
+        "i numeri",
+        "del team."
+      ],
+      "voce": "Con Beaflow, hai i numeri.",
+      "voce_inizio": 2.52,
+      "si_vede": "luce oro, pannello «Performance Operatori»"
+    },
+    {
+      "schermo": [
+        "Prenotazioni",
+        "per operatore."
+      ],
+      "voce": "Prenotazioni per ogni operatore.",
+      "voce_inizio": 5.02,
+      "si_vede": "colonne-operatore che salgono"
+    },
+    {
+      "schermo": [
+        "Fatturato",
+        "per operatore."
+      ],
+      "voce": "E quanto fattura ciascuno.",
+      "voce_inizio": 7.52,
+      "si_vede": "ogni colonna accende il suo importo"
+    },
+    {
+      "schermo": [
+        "Fai crescere",
+        "il team."
+      ],
+      "voce": "Così fai crescere la squadra.",
+      "voce_inizio": 10.02,
+      "si_vede": "le colonne salgono insieme in una linea oro"
+    }
+  ],
+  "dati": {}
+}

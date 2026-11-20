@@ -1,0 +1,62 @@
+{
+  "numero": 43,
+  "nome": "ore-di-punta",
+  "titolo": "Le tue ore di punta",
+  "ossatura": "C",
+  "tema": "chiaro",
+  "versione": 1,
+  "seme": 432,
+  "funzione": "report (Pro): Ore di Punta, Servizi Più Richiesti",
+  "note": "Dati dimostrativi (orari, nomi, prezzi).",
+  "scene": [
+    {
+      "schermo": [
+        "Sabato alle 11."
+      ],
+      "accento": [
+        "Il picco."
+      ],
+      "voce": "Sabato alle undici. Il picco.",
+      "voce_inizio": 0.05,
+      "si_vede": "mappa di calore già in rilievo, montagna oro su sab 11:00"
+    },
+    {
+      "schermo": [
+        "Ore di Punta,",
+        "ogni giorno."
+      ],
+      "voce": "Le ore di punta, ogni giorno.",
+      "voce_inizio": 2.52,
+      "si_vede": "la mappa torna piatta (giorni × ore) e si solleva"
+    },
+    {
+      "schermo": [
+        "Con Beaflow,",
+        "i Servizi",
+        "Più Richiesti."
+      ],
+      "voce": "Con Beaflow, i più richiesti.",
+      "voce_inizio": 5.02,
+      "si_vede": "sorvolo, tre tessere-servizio in classifica"
+    },
+    {
+      "schermo": [
+        "Il team giusto,",
+        "all'ora giusta."
+      ],
+      "voce": "Le persone giuste, all'ora giusta.",
+      "voce_inizio": 7.52,
+      "si_vede": "tessere-persona si posano sulle montagne"
+    },
+    {
+      "schermo": [
+        "Meno attese,",
+        "più clienti."
+      ],
+      "voce": "Meno attese, più clienti.",
+      "voce_inizio": 10.02,
+      "si_vede": "la mappa si ricompone in un'agenda piena oro"
+    }
+  ],
+  "dati": {}
+}

@@ -29,7 +29,7 @@ CHIUSURA = {"schermo": "Inizia gratis · Piano Free · 0 € per sempre · beafl
 VOCE = {"model": "elevenlabs_v4", "voice_type": "preset", "voice_id": "573e5163-59b3-4926-aab1-951ef2985f81",
         "prompt": "voce maschile calma e precisa, pronuncia italiana naturale, nessun accento inglese"}
 MESTIERI = ["barbier", "parrucchier", "estetist", "unghie", "nail", "tattoo", "tatuator", "massaggiat", "spa "]
-OSSATURE = {"A": "Problema → soluzione", "B": "Dimostrazione", "C": "Numero o risultato"}
+OSSATURE = {"A": "Problema → soluzione", "B": "Dimostrazione", "C": "Numero o risultato", "D": "Per chi è"}   # D dal 21/11: chi sei → il tuo problema → cos'è Beaflow → cosa cambia → invito
 
 
 def it(x):                                   # 2.5 -> «2,5»
@@ -92,7 +92,7 @@ def nome_file(s, variante):
 def controlla_copione(s, d):
     err, avv = [], []
     lessico = json.loads((QUI / "pronuncia.json").read_text(encoding="utf-8"))
-    if s.get("ossatura") not in OSSATURE: err.append("ossatura: deve essere A, B o C")
+    if s.get("ossatura") not in OSSATURE: err.append("ossatura: deve essere A, B, C o D")
     if s.get("tema", "chiaro") not in ("chiaro", "scuro"): err.append("tema: chiaro o scuro")
     sc = s.get("scene", [])
     if len(sc) != 5:
@@ -106,10 +106,10 @@ def controlla_copione(s, d):
         if len(parole) > 6: err.append(f"scena {i}: {len(parole)} parole a schermo (massimo 6): «{testo}»")
         for r in x.get("schermo", []):
             px = x.get("gancio_px", 112) if i == 1 else 112
-            if len(r) > 16 * 112 / px: avv.append(f"scena {i}: riga lunga ({len(r)} caratteri, a {px} px ne stanno circa {int(16 * 112 / px)}): «{r}»")
+            if len(r) > 15 * 112 / px: avv.append(f"scena {i}: riga lunga ({len(r)} caratteri, a {px} px ne stanno circa {int(15 * 112 / px)}): «{r}»")
         for r in x.get("accento", []):
             px = x.get("accento_px", 112) if i == 1 else 112
-            if len(r) > 16 * 112 / px: avv.append(f"scena {i}: riga lunga ({len(r)} caratteri, a {px} px ne stanno circa {int(16 * 112 / px)}): «{r}»")
+            if len(r) > 15 * 112 / px: avv.append(f"scena {i}: riga lunga ({len(r)} caratteri, a {px} px ne stanno circa {int(15 * 112 / px)}): «{r}»")
         for k in ("gancio_px", "accento_px"):
             if k in x and not (i == 1 and 96 <= x[k] <= 112): err.append(f"scena {i}: {k} vale solo per la scena 1, fra 96 e 112 px")
         voce = x.get("voce", "")
@@ -118,7 +118,7 @@ def controlla_copione(s, d):
         ini = x.get("voce_inizio")
         if ini is None or not (GRIGLIA[i - 1] <= ini <= GRIGLIA[i - 1] + 0.6):
             err.append(f"scena {i}: voce_inizio {ini} fuori da {it(GRIGLIA[i-1])}–{it(GRIGLIA[i-1]+0.6)} s")
-        dove = (2,) if s.get("ossatura") == "A" else (2, 3)          # nelle ossature B e C «Con Beaflow» può arrivare a metà
+        dove = (2,) if s.get("ossatura") == "A" else (3, 4) if s.get("ossatura") == "D" else (2, 3)   # B e C: a metà; D: scena 3, o 4 se il gancio prende due scene
         if "beaflow" in voce.lower() and not (i in dove and voce.lower().startswith("con beaflow")):
             err.append(f"scena {i}: la voce dice «Beaflow» solo in «Con Beaflow, …» (scena {' o '.join(map(str, dove))}) e nella chiusura")
         if voce and ini is not None:
@@ -137,8 +137,8 @@ def controlla_copione(s, d):
         for parola, alt in lessico["evita"].items():
             if parola in basso: avv.append(f"scena {i}: evitare «{parola}» nella voce, meglio «{alt}»")
         if not s.get("settore"):
-            for m in MESTIERI:
-                if m in basso + " ": avv.append(f"scena {i}: nomina un solo mestiere («{m.strip()}»): gli spot generici valgono per tutte le attività")
+            trovati = [m.strip() for m in MESTIERI if m in basso + " "]      # 21/11: più mestieri insieme (es. ossatura D, «chi sei») vanno bene
+            if len(trovati) == 1: avv.append(f"scena {i}: nomina un solo mestiere («{trovati[0]}»): gli spot generici valgono per tutte le attività")
     if sum("beaflow" in x.get("voce", "").lower() for x in sc) > 1: err.append("la voce dice «Con Beaflow, …» una volta sola")
     if s["ossatura"] == "A" and not sc[0].get("accento"):
         avv.append("ossatura A: di solito il gancio ha una riga d'accento rossa (campo «accento» della scena 1)")
@@ -386,7 +386,9 @@ def importa_voci(a):
         print(f"  DA SISTEMARE A MANO: {f.name}  ({f.stat().st_size} byte" + (f", audio di {sec:.2f} s" if sec else ", non è un audio") + "): nome non riconosciuto")
     print(f"{fatti} clip importate." + ("" if a.sposta or not fatti else "  Con --sposta le clip vengono anche tolte dalla cartella dei download."))
     for d in toccati:
-        if all((d / "audio" / f"line{k}.mp3").exists() for k in range(1, 6)): print(f"Tempi di {d.name}:"); tempi(d)
+        if all((d / "audio" / f"line{k}.mp3").exists() for k in range(1, 6)):
+            try: print(f"Tempi di {d.name}:"); tempi(d)
+            except ImportError as e: print(f"  (tempi saltati: manca {e.name} su questo computer; li controlla Claude)")
 
 
 # ───────── comandi che usano il motore ─────────

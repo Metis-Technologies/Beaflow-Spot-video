@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="it">
+<!-- Made with the Bang Motion skill (Bang Tutorial, MIT, https://github.com/bangtutorial/bang-motion) -->
+<head>
+<meta charset="utf-8">
+<title>Beaflow · Spot 52 «Stanchi del telefono» v1</title>
+<!--
+  STYLE BRIEF (26/11): stile Motion causa → effetto (claude/STILE-MOTION.md), spot 15 s, ossatura E «Annuncio»
+  Catena : il cartello «Cerchiamo» appeso → il telefono sotto squilla, a ogni squillo il cartello trema
+           → la camera entra nel telefono: chiamata in arrivo → persa → tre «Chiamata persa», il telefono vibra
+           → il dito tocca Beaflow → onda d'oro → la pagina di prenotazione del cliente (23:40): sceglie le 10:30, «Prenota»
+           → la conferma sale dal bottone → cade nell'agenda di domani: «10:30 · Sara · Taglio», prenotato alle 23:40
+           → «Confermato ✓» → la spunta diventa il punto d'oro → chiusura degli spot
+  Voce   : 0,05 · 2,95 · 6,30 · 9,80 · chiusura 12,90 (spot.json)
+  Formato: 1080×1920, 15 s, 30 fps; testi a 130 px dai lati (regole degli spot)
+-->
+<style>
+@font-face{font-family:"Fraunces";src:url(assets/fraunces.woff2) format("woff2");font-weight:100 900;font-display:block}
+@font-face{font-family:"InterV";src:url(assets/inter.woff2) format("woff2");font-weight:100 900;font-display:block}
+:root{--oro:#C9B16C;--ottone:#775A18;--crema:#F6F0E4;--crema2:#EBDFC8;--nero:#111111;--porc:#FFFDF8;--rosso:#9A3B2E}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;background:#E9DFCB;overflow:hidden}
+#stage{position:fixed;left:50%;top:50%;width:1080px;height:1920px;transform:translate(-50%,-50%);overflow:hidden;background:var(--crema)}
+.scene{position:absolute;inset:0;overflow:hidden;visibility:hidden}
+#S1{visibility:visible}
+.bgc{position:absolute;inset:0;background:linear-gradient(175deg,#FAF6EE 0%,var(--crema) 45%,var(--crema2) 100%)}
+.bg2{background:linear-gradient(185deg,#F3EADA 0%,#EFE3CC 50%,#E6D6B8 100%)}
+.bg3{background:linear-gradient(165deg,#FBF8F1 0%,#F5EEE0 55%,#ECE1CB 100%)}
+.glow{position:absolute;border-radius:50%;pointer-events:none}
+.gw{width:1300px;height:1300px;background:radial-gradient(circle,rgba(201,177,108,.32) 0%,rgba(201,177,108,.1) 40%,transparent 68%)}
+.gl{width:1000px;height:1000px;background:radial-gradient(circle,rgba(255,250,240,.85) 0%,transparent 65%)}
+.persp{position:absolute;inset:0;perspective:2200px;perspective-origin:50% 45%}
+.rig{position:absolute;inset:0;transform-style:preserve-3d;will-change:transform}
+.pocket{position:absolute;left:0;right:0;top:0;height:640px;pointer-events:none;background:linear-gradient(180deg,#FAF6EE 0%,rgba(250,246,238,.96) 55%,rgba(248,243,233,.7) 75%,rgba(246,240,228,0) 100%)}
+.shadow{box-shadow:0 40px 80px -24px rgba(70,50,15,.35),0 10px 22px -8px rgba(70,50,15,.2)}
+#grain{position:absolute;inset:0;width:100%;height:100%;opacity:.1;mix-blend-mode:multiply;pointer-events:none}
+.bok{position:absolute;border-radius:50%;pointer-events:none;filter:blur(18px)}
+
+/* S1 · il cartello */
+#card{position:absolute;left:130px;top:300px;width:820px;height:730px;border-radius:40px;background:var(--porc);transform-origin:50% 30px;font-family:"InterV",system-ui,sans-serif;transform-style:flat}
+#pin{position:absolute;left:50%;top:-14px;width:44px;height:44px;margin-left:-22px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#F3E2B0 0%,#C9B16C 45%,#8C7230 100%);box-shadow:0 6px 10px rgba(70,50,15,.35)}
+#ic{position:absolute;left:60px;top:70px;width:110px;height:110px;border-radius:50%;border:6px solid var(--rosso);display:flex;align-items:center;justify-content:center}
+#lab{position:absolute;left:196px;top:104px;font-size:34px;font-weight:700;letter-spacing:.22em;color:var(--ottone)}
+.cl{position:absolute;left:60px;font-family:"Fraunces",Georgia,serif;font-weight:500;font-size:96px;line-height:1;color:var(--nero);letter-spacing:-.015em;white-space:nowrap;font-variation-settings:"opsz" 144,"SOFT" 50}
+#c1{top:240px}#c2{top:346px}
+#rule{position:absolute;left:60px;right:60px;top:500px;height:3px;background:var(--crema2)}
+#cat{position:absolute;left:60px;right:60px;top:536px;font-size:28px;line-height:1.45;color:#7A705E;text-align:left}
+#ph1{position:absolute;left:400px;top:1150px;width:280px;height:560px;border-radius:46px;background:#151515;padding:10px}
+#ph1 .screen{border-radius:38px}
+.rw{position:absolute;left:540px;top:1430px;width:300px;height:300px;margin:-150px 0 0 -150px;border-radius:50%;border:5px solid var(--oro);opacity:0}
+#call1{position:absolute;inset:0;background:linear-gradient(170deg,#2A2218,#121010);display:flex;flex-direction:column;align-items:center;padding-top:90px;color:#F6F0E4}
+#call1 .av{width:110px;height:110px;border-radius:50%;background:#4A4234;color:#F6F0E4;font-size:52px;font-weight:600;display:flex;align-items:center;justify-content:center}
+#call1 .nm{margin-top:24px;font-size:40px;font-weight:600}
+#call1 .sb{margin-top:8px;font-size:20px;color:#CFC4AC}
+
+/* S2 · telefono */
+.phone{position:absolute;width:460px;height:920px;border-radius:72px;background:#151515;padding:16px}
+#ph2{left:310px;top:660px}
+.screen{position:relative;width:100%;height:100%;border-radius:58px;overflow:hidden;font-family:"InterV",system-ui,sans-serif;background:#0B0A09}
+.notch{position:absolute;left:50%;top:18px;width:120px;height:30px;margin-left:-60px;border-radius:15px;background:#151515;z-index:3}
+#call2{position:absolute;inset:0;background:linear-gradient(170deg,#2A2218,#121010);color:#F6F0E4;text-align:center}
+#call2 .sb{position:absolute;left:0;right:0;top:120px;font-size:28px;color:#CFC4AC}
+#call2 .av{position:absolute;left:50%;top:190px;width:170px;height:170px;margin-left:-85px;border-radius:50%;background:#4A4234;font-size:80px;font-weight:600;display:flex;align-items:center;justify-content:center}
+#call2 .nm{position:absolute;left:0;right:0;top:390px;font-size:60px;font-weight:600}
+.cb{position:absolute;bottom:110px;width:120px;height:120px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+#cbR{left:70px;background:#B23A2E}#cbG{right:70px;background:#3E8E5A}
+#lock{position:absolute;inset:0;background:linear-gradient(170deg,#2A2218,#121010);opacity:0}
+#lock-t{position:absolute;left:0;right:0;top:110px;text-align:center;font-size:112px;font-weight:300;color:#F6F0E4;letter-spacing:-.02em}
+#lock-d{position:absolute;left:0;right:0;top:240px;text-align:center;font-size:28px;color:#CFC4AC}
+#unread{position:absolute;left:50%;top:330px;transform:translateX(-50%);padding:14px 26px;border-radius:30px;background:rgba(178,58,46,.35);color:#F6F0E4;font-size:26px;font-weight:600;white-space:nowrap;opacity:0}
+#dock{position:absolute;left:24px;right:24px;bottom:28px;height:150px;border-radius:44px;background:rgba(255,253,248,.12);display:flex;align-items:center;justify-content:space-around;padding:0 18px}
+.app{width:100px;height:100px;border-radius:28px;background:rgba(255,253,248,.22)}
+#bapp{width:116px;height:116px;border-radius:32px;background:#111;border:2px solid rgba(201,177,108,.7);display:flex;align-items:center;justify-content:center;font-family:"Fraunces",Georgia,serif;font-size:76px;font-weight:600;color:var(--oro);line-height:1;padding-bottom:8px}
+.finger{position:absolute;width:62px;height:62px;margin:-31px 0 0 -31px;border-radius:50%;background:rgba(255,253,248,.35);border:3px solid rgba(255,253,248,.4);opacity:0;z-index:4}
+.tap{position:absolute;width:150px;height:150px;margin:-75px 0 0 -75px;border-radius:50%;border:5px solid var(--oro);opacity:0;z-index:4}
+
+/* fumetti delle chiamate perse */
+.bub{position:absolute;left:0;top:0;width:420px;height:112px;margin:-56px 0 0 -210px;border-radius:34px;background:var(--porc);display:flex;align-items:center;gap:18px;padding:0 22px;
+  font-family:"InterV",system-ui,sans-serif;box-shadow:0 26px 50px -18px rgba(70,50,15,.4),0 6px 14px -6px rgba(70,50,15,.2);opacity:0;will-change:transform}
+.bub .av,.lrow .av{width:64px;height:64px;border-radius:50%;background:var(--crema2);color:#4A4234;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:700;flex:none}
+.bub b{display:block;font-size:26px;font-weight:650;color:var(--nero);white-space:nowrap}
+.bub span{display:block;font-size:25px;color:var(--rosso);white-space:nowrap;margin-top:2px}
+
+/* S3 · la pagina di prenotazione del cliente */
+#bk{position:absolute;left:150px;top:600px;width:780px;height:960px;border-radius:52px;background:var(--porc);font-family:"InterV",system-ui,sans-serif;color:var(--nero);transform-style:flat}
+#bk-st{position:absolute;left:44px;top:30px;font-size:26px;font-weight:650;color:#4A4234;font-variant-numeric:tabular-nums}
+#bk-mo{position:absolute;right:44px;top:28px;width:32px;height:32px}
+#bk-h{position:absolute;left:44px;top:92px;font-size:46px;font-weight:650;letter-spacing:-.01em}
+#bk-s{position:absolute;left:44px;top:150px;font-size:27px;color:#7A705E}
+#svc{position:absolute;left:44px;right:44px;top:220px;height:104px;border-radius:26px;background:#F4EEE2;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-size:30px;font-weight:600}
+#svc span{font-size:26px;color:#7A705E;font-weight:500}
+.dch{position:absolute;top:356px;height:64px;padding:0 26px;border-radius:32px;font-size:27px;font-weight:600;display:flex;align-items:center;background:#F4EEE2;color:#4A4234}
+#dch2{background:var(--nero);color:#fff}
+#bk-o{position:absolute;left:44px;top:450px;font-size:26px;color:#7A705E}
+.slot{position:absolute;width:212px;height:84px;border-radius:24px;background:#F4EEE2;font-size:30px;font-weight:650;color:#4A4234;display:flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums}
+#go{position:absolute;left:44px;right:44px;bottom:44px;height:120px;border-radius:60px;background:var(--nero);color:#fff;font-size:40px;font-weight:600;display:flex;align-items:center;justify-content:center}
+#go .ok{position:absolute;opacity:0}
+
+/* S4 · l'agenda di domani */
+#panel{position:absolute;left:150px;top:620px;width:780px;height:900px;border-radius:52px;background:var(--porc);font-family:"InterV",system-ui,sans-serif;color:var(--nero);transform-style:flat}
+#p-h{position:absolute;left:44px;top:40px;font-size:46px;font-weight:650;letter-spacing:-.01em}
+#p-d{position:absolute;right:44px;top:54px;font-size:28px;color:#7A705E}
+.lrow{position:absolute;left:30px;right:30px;height:104px;border-radius:26px;background:#F4EEE2;display:flex;align-items:center;gap:20px;padding:0 22px}
+.lrow .h{width:96px;font-size:28px;font-weight:650;color:#4A4234;font-variant-numeric:tabular-nums;flex:none}
+.lrow .nm{font-size:29px;font-weight:600;color:var(--nero);white-space:nowrap}
+.lrow .sv{font-size:26px;color:#7A705E;white-space:nowrap;margin-left:6px}
+#free{position:absolute;left:30px;right:30px;height:104px;border-radius:26px;border:3px dashed #D9CBAE;display:flex;align-items:center;gap:20px;padding:0 22px;font-size:28px;color:#A89A7E}
+#free .h{width:96px;font-weight:650;font-variant-numeric:tabular-nums}
+#rowN{opacity:0;background:var(--ottone)}
+#rowN .h,#rowN .nm{color:#fff}#rowN .sv{color:rgba(255,255,255,.85)}
+#rowN .av{background:var(--oro);color:var(--nero)}
+#rowN .pill{margin-left:auto;padding:8px 16px;border-radius:20px;background:rgba(255,253,248,.2);color:#fff;font-size:21px;font-weight:600;white-space:nowrap}
+#chk{width:56px;height:56px;border-radius:50%;background:rgba(255,253,248,.2);display:flex;align-items:center;justify-content:center;flex:none}
+#chk path{stroke-dasharray:40;stroke-dashoffset:40}
+#ringN{position:absolute;left:18px;right:18px;height:128px;border-radius:34px;border:4px solid var(--oro);opacity:0}
+
+/* conferma condivisa S3 → S4 */
+#nb{position:absolute;left:0;top:0;width:660px;height:136px;margin:-68px 0 0 -330px;border-radius:38px;background:#151311;color:#fff;font-family:"InterV",system-ui,sans-serif;
+  display:flex;align-items:center;gap:22px;padding:0 26px;box-shadow:0 30px 60px -20px rgba(40,25,5,.55);opacity:0;will-change:transform}
+#nb .ic{width:80px;height:80px;border-radius:24px;background:#2A2218;display:flex;align-items:center;justify-content:center;flex:none}
+#nb b{display:block;font-size:29px;font-weight:650;white-space:nowrap}
+#nb span{display:block;font-size:26px;color:#D9CEB6;white-space:nowrap;margin-top:3px}
+
+/* titoli */
+.ttl{position:absolute;left:130px;font-family:"Fraunces",Georgia,serif;font-weight:500;color:var(--nero);letter-spacing:-.015em;line-height:1.03;white-space:nowrap;font-variation-settings:"opsz" 144,"SOFT" 50;font-size:100px}
+.ttl .w,.cl .w{display:inline-block}
+.ttl .ch,.cl .ch{display:inline-block;opacity:0;will-change:transform,opacity,filter}
+.k{color:var(--ottone)}
+#t2,#t3,#t4{top:300px}
+
+/* chiusura come negli spot */
+#close{position:absolute;inset:0;visibility:hidden}
+#dot{position:absolute;left:0;top:0;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;background:radial-gradient(circle,#FFF6DA 0%,#C9B16C 45%,rgba(201,177,108,0) 72%);opacity:0}
+#flash{position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(255,246,218,.95),rgba(201,177,108,.25) 45%,transparent 75%);opacity:0}
+#halo{position:absolute;left:540px;top:600px;width:1100px;height:1100px;margin:-550px 0 0 -550px;border-radius:50%;background:radial-gradient(circle,rgba(201,177,108,.35),transparent 65%);opacity:0}
+#logoB{position:absolute;left:180px;top:490px;width:720px;transform-origin:50% 50%;opacity:0}
+#lineC{position:absolute;left:340px;top:748px;overflow:visible}
+#btnC{position:absolute;left:280px;top:880px;width:520px;height:144px;border-radius:72px;background:var(--nero);color:#fff;font-family:"InterV",system-ui,sans-serif;font-size:50px;font-weight:600;display:flex;align-items:center;justify-content:center;opacity:0}
+#offer{position:absolute;left:0;right:0;top:1076px;text-align:center;font-family:"InterV",system-ui,sans-serif;font-size:40px;font-weight:500;color:#4A4234;opacity:0}
+#url{position:absolute;left:0;right:0;top:1152px;text-align:center;font-family:"InterV",system-ui,sans-serif;font-size:40px;font-weight:600;color:var(--ottone);opacity:0}
+#filters{position:absolute;width:0;height:0}
+#ui{display:none}
+#wave{position:absolute;left:0;top:0;width:200px;height:200px;margin:-100px 0 0 -100px;border-radius:50%;
+  background:radial-gradient(circle,#FBF1D6 0%,#EED9A4 55%,#D9BC78 80%,rgba(201,177,108,.0) 100%);opacity:0;pointer-events:none;will-change:transform}
+</style>
+</head>
+<body>
+<svg id="filters"><defs></defs></svg>
+<div id="stage">
+
+  <!-- S1 · il cartello; sotto, il telefono che squilla -->
+  <div class="scene" id="S1"><div class="bgc"></div><div class="glow gw" id="g1a"></div><div class="glow gl" id="g1b"></div>
+    <div class="persp"><div class="rig" id="r1">
+      <div class="rw" id="rw1"></div><div class="rw" id="rw2"></div><div class="rw" id="rw3"></div>
+      <div class="phone shadow" id="ph1"><div class="screen"><div class="notch" style="width:80px;height:22px;margin-left:-40px;top:12px"></div>
+        <div id="call1"><div class="av">S</div><div class="nm">Sara</div><div class="sb">chiamata in arrivo</div></div></div></div>
+      <div id="card" class="shadow">
+        <div id="ic"><svg width="60" height="60" viewBox="0 0 40 40"><path d="M11 6h6l3 8-4 3c2 4 5 7 9 9l3-4 8 3v6c0 2-2 4-4 4C17 35 5 23 7 10c0-2 2-4 4-4z" fill="none" stroke="#9A3B2E" stroke-width="3" stroke-linejoin="round"/></svg></div>
+        <div id="lab">CERCHIAMO</div>
+        <div class="cl" id="c1">Saloni stanchi</div>
+        <div class="cl" id="c2">del <span class="k">telefono</span></div>
+        <div id="rule"></div>
+        <div id="cat">Saloni · Barbieri · Estetica · Unghie<br>Spa · Massaggi · Tatuaggi</div>
+        <div id="pin"></div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- S2 · dentro il telefono: chiamata, poi chiamate perse -->
+  <div class="scene" id="S2"><div class="bgc bg2"></div><div class="glow gw" id="g2a"></div><div class="glow gl" id="g2b"></div>
+    <div class="persp"><div class="rig" id="r2">
+      <div class="phone shadow" id="ph2"><div class="screen">
+        <div class="notch"></div>
+        <div id="lock"><div id="lock-t">11:15</div><div id="lock-d">martedì</div><div id="unread">3 chiamate perse</div>
+          <div id="dock"><div class="app"></div><div class="app"></div><div id="bapp">b</div><div class="app"></div></div></div>
+        <div id="call2"><div class="sb">chiamata in arrivo</div><div class="av">S</div><div class="nm">Sara</div>
+          <div class="cb" id="cbR"><svg width="54" height="54" viewBox="0 0 40 40"><path d="M6 22c8-7 20-7 28 0l-3 5-6-2v-4c-3-1-7-1-10 0v4l-6 2z" fill="#fff"/></svg></div>
+          <div class="cb" id="cbG"><svg width="54" height="54" viewBox="0 0 40 40"><path d="M11 6h6l3 8-4 3c2 4 5 7 9 9l3-4 8 3v6c0 2-2 4-4 4C17 35 5 23 7 10c0-2 2-4 4-4z" fill="#fff"/></svg></div></div>
+        <div class="finger" id="f2"></div><div class="tap" id="tp2"></div>
+      </div></div>
+    </div></div>
+    <div class="pocket"></div>
+    <h1 class="ttl" id="t2">Squilla.<br><span class="k">Ancora.</span></h1>
+  </div>
+
+  <!-- S3 · la pagina di prenotazione, alle 23:40 -->
+  <div class="scene" id="S3"><div class="bgc bg3"></div><div class="glow gw" id="g3a"></div><div class="glow gl" id="g3b"></div>
+    <div class="persp"><div class="rig" id="r3">
+      <div id="bk" class="shadow">
+        <div id="bk-st">23:40</div>
+        <svg id="bk-mo" viewBox="0 0 32 32"><path d="M21 4a12 12 0 1 0 7 19A10 10 0 0 1 21 4z" fill="#C9B16C"/></svg>
+        <div id="bk-h">Prenota</div><div id="bk-s">Studio Aurora</div>
+        <div id="svc">Taglio<span>45 min</span></div>
+        <div class="dch" id="dch1" style="left:44px">Oggi</div><div class="dch" id="dch2" style="left:170px">Domani</div>
+        <div id="bk-o">Orari liberi</div>
+        <div id="slots"></div>
+        <div id="go"><span class="t">Prenota</span><span class="ok">Prenotato ✓</span></div>
+        <div class="finger" id="f3" style="background:rgba(17,17,17,.18);border-color:rgba(17,17,17,.25)"></div><div class="tap" id="tp3"></div>
+      </div>
+    </div></div>
+    <div class="pocket"></div>
+    <h1 class="ttl" id="t3">Prenotano<br><span class="k">da soli</span></h1>
+  </div>
+
+  <!-- S4 · l'agenda di domani -->
+  <div class="scene" id="S4"><div class="bgc bg3"></div><div class="glow gw" id="g4a"></div><div class="glow gl" id="g4b"></div>
+    <div class="persp"><div class="rig" id="r4">
+      <div id="panel" class="shadow"><div id="p-h">Domani</div><div id="p-d">mercoledì</div><div id="rows"></div></div>
+    </div></div>
+    <div class="pocket"></div>
+    <h1 class="ttl" id="t4">Anche a<br><span class="k">negozio chiuso</span></h1>
+  </div>
+
+  <div id="wave"></div>
+  <div id="bubs"></div>
+  <div id="nb"><div class="ic"><svg width="44" height="44" viewBox="0 0 40 40"><path d="M10 21l7 7 14-15" fill="none" stroke="#C9B16C" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><b>Nuova prenotazione</b><span>Sara · Taglio · domani 10:30</span></div></div>
+  <div id="bokeh"></div>
+
+  <div id="close"><div class="bgc"></div><div id="halo"></div>
+    <img id="logoB" src="assets/logo.svg" alt="Beaflow">
+    <svg id="lineC" width="400" height="10" viewBox="0 0 400 10"><path id="lc" d="M5 5H395" stroke="#C9B16C" stroke-width="5" stroke-linecap="round" fill="none"/></svg>
+    <div id="btnC">Inizia gratis</div>
+    <div id="offer">Piano Free · 0 € per sempre</div>
+    <div id="url">beaflow.it</div>
+  </div>
+  <div id="dot"></div><div id="flash"></div>
+
+  <svg id="grain" viewBox="0 0 1080 1920" preserveAspectRatio="none"><filter id="gr"><feTurbulence id="turb" type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="1"/><feColorMatrix type="saturate" values="0"/></filter><rect width="1080" height="1920" filter="url(#gr)"/></svg>
+</div>
+<div id="ui"></div>
+
+<script src="assets/gsap.min.js"></script>
+<script>
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const W=1080,H=1920,DURATION=15.0;
+const Q=new URLSearchParams(location.search);
+
+/* ---- dati dimostrativi ---- */
+const SLOTS=[['9:30',0,0],['10:00',1,0],['10:30',2,0],['11:00',0,1],['15:00',1,1],['16:30',2,1]];
+SLOTS.forEach((s,k)=>{const d=document.createElement('div');d.className='slot';d.id='sl'+k;d.textContent=s[0];d.style.left=(44+s[1]*234)+'px';d.style.top=(500+s[2]*106)+'px';$('#slots').appendChild(d);});
+const ROWS=[['9:00','G','Giulia','Piega'],['9:30','M','Marco','Barba'],null,['11:30','E','Elena','Manicure'],['15:00','A','Anna','Pulizia viso']];
+ROWS.forEach((r,k)=>{const top=(130+k*124)+'px';
+  if(!r){const f=document.createElement('div');f.id='free';f.style.top=top;f.innerHTML='<div class="h">10:30</div><div>libero</div>';$('#rows').appendChild(f);
+    const g=document.createElement('div');g.id='ringN';g.style.top=(130+k*124-12)+'px';$('#rows').appendChild(g);
+    const n=document.createElement('div');n.className='lrow';n.id='rowN';n.style.top=top;
+    n.innerHTML=`<div class="h">10:30</div><div class="av">S</div><div><span class="nm">Sara</span><span class="sv">· Taglio</span></div><div class="pill">alle 23:40</div><div id="chk"><svg width="32" height="32" viewBox="0 0 34 34"><path d="M8 18l6 6 12-13" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>`;
+    $('#rows').appendChild(n);return;}
+  const d=document.createElement('div');d.className='lrow';d.id='row'+k;d.style.top=top;
+  d.innerHTML=`<div class="h">${r[0]}</div><div class="av">${r[1]}</div><div><span class="nm">${r[2]}</span><span class="sv">· ${r[3]}</span></div>`;$('#rows').appendChild(d);});
+//          iniziale, nome, testo, x, y, istante
+const BUBS=[['S','Sara','Chiamata persa',345,640+180,4.0],['L','Luca','Chiamata persa',735,640+330,4.3],['?','Numero sconosciuto','Chiamata persa',345,640+480,4.6]];
+BUBS.forEach(b=>{const d=document.createElement('div');d.className='bub';d.innerHTML=`<div class="av">${b[0]}</div><div><b>${b[1]}</b><span>${b[2]}</span></div>`;$('#bubs').appendChild(d);});
+const bubEls=$$('#bubs .bub');
+
+/* ---- bokeh ---- */
+const BOK=[[120,520,150,.5],[930,700,110,.7],[180,1500,190,.35],[880,1380,140,.55],[540,1720,120,.6],[60,980,90,.8],[1010,300,100,.45]];
+BOK.forEach(b=>{const d=document.createElement('div');d.className='bok';d.style.width=d.style.height=b[2]+'px';$('#bokeh').appendChild(d);});
+const bokEls=$$('#bokeh .bok');
+
+/* ---- split + blur direzionale ---- */
+const defs=$('#filters defs');let fc=0;
+function makeBlur(){const NS='http://www.w3.org/2000/svg',id='mb'+(fc++),f=document.createElementNS(NS,'filter');f.id=id;
+  f.setAttribute('x','-70%');f.setAttribute('y','-70%');f.setAttribute('width','240%');f.setAttribute('height','240%');
+  const g=document.createElementNS(NS,'feGaussianBlur');g.setAttribute('stdDeviation','0 0');f.appendChild(g);defs.appendChild(f);return{url:`url(#${id})`,node:g};}
+function blurTween(tl,el,at,from,to,dur,{ease='power3.out',ax=1,ay=.08}={}){const b=makeBlur(),o={v:from};
+  tl.set(el,{filter:b.url},at);tl.to(o,{v:to,duration:dur,ease,onUpdate(){b.node.setAttribute('stdDeviation',`${(o.v*ax).toFixed(2)} ${(o.v*ay).toFixed(2)}`);}},at);
+  tl.set(el,{filter:'none'},at+dur);}
+function split(el){const out=[];const walk=(node)=>{[...node.childNodes].forEach(n=>{
+    if(n.nodeType===3){const frag=document.createDocumentFragment();n.textContent.split(/(\s+)/).forEach(tok=>{if(!tok)return;
+        if(/^\s+$/.test(tok)){const s=document.createElement('span');s.className='ch';s.innerHTML='&nbsp;';frag.appendChild(s);out.push(s);return;}
+        const w=document.createElement('span');w.className='w';for(const c of tok){const s=document.createElement('span');s.className='ch';s.textContent=c;w.appendChild(s);out.push(s);}frag.appendChild(w);});
+      n.replaceWith(frag);} else if(n.nodeType===1){walk(n);} });};walk(el);return out;}
+
+const tl=gsap.timeline({paused:true});
+const VERT={ax:.1,ay:1};
+const inUp=(ch,el,at,{dur=.6,st=.018}={})=>{tl.fromTo(ch,{opacity:0,yPercent:60,scaleY:1.4},{opacity:1,yPercent:0,scaleY:1,duration:dur,ease:'power4.out',stagger:st,immediateRender:false},at);blurTween(tl,el,at,28,0,dur,VERT);};
+const inLeft=(ch,el,at,{dur=.6,st=.02}={})=>{tl.fromTo(ch,{opacity:0,xPercent:-50},{opacity:1,xPercent:0,duration:dur,ease:'power4.out',stagger:st,immediateRender:false},at);blurTween(tl,el,at,48,0,dur,{ease:'power4.out'});};
+const inDepth=(ch,el,at,{dur=.7,st=.016}={})=>{tl.fromTo(ch,{opacity:0,scale:2.3},{opacity:1,scale:1,duration:dur,ease:'expo.out',stagger:{each:st,from:'center'},immediateRender:false},at);blurTween(tl,el,at,22,0,dur,{ease:'expo.out',ax:1,ay:1});};
+const outUp=(ch,el,at,{dur=.26,st=.005}={})=>{tl.to(ch,{opacity:0,yPercent:-70,duration:dur,ease:'power2.in',stagger:st},at);blurTween(tl,el,at,0,40,dur+.1,{ease:'power2.in',...VERT});};
+const outRight=(ch,el,at,{dur=.26,st=.005}={})=>{tl.to(ch,{opacity:0,xPercent:60,duration:dur,ease:'power2.in',stagger:{each:st,from:'end'}},at);blurTween(tl,el,at,0,50,dur+.1,{ease:'power2.in'});};
+const sceneOn=(id,from,to)=>{tl.set(id,{visibility:'visible'},from);if(to!=null)tl.set(id,{visibility:'hidden'},to);};
+const cub=(u,a,b,c,d)=>{const v=1-u;return v*v*v*a+3*v*v*u*b+3*v*u*u*c+u*u*u*d;};
+
+const cc1=split($('#c1')),cc2=split($('#c2')),c2=split($('#t2')),c3=split($('#t3')),c4=split($('#t4'));
+
+/* ================= SCALETTA · causa → effetto (15 s) =================
+   S1 0,00–2,85  il cartello appeso «Cerchiamo saloni stanchi del telefono»; il telefono sotto squilla, a ogni squillo il cartello trema
+                 → la camera si tuffa nel telefono
+   S2 2,85–6,10  chiamata in arrivo → persa → tre «Chiamata persa», vibra → il dito tocca Beaflow → onda d'oro
+   S3 6,10–9,50  dall'onda la pagina di prenotazione del cliente, alle 23:40: tocca le 10:30, poi «Prenota» → sale la conferma
+   S4 9,50–12,85 l'agenda di domani: la conferma CADE nello spazio libero delle 10:30 → «Sara · Taglio», alle 23:40 → «Confermato ✓»
+   CH 12,85–15   la spunta diventa il punto d'oro che risucchia tutto → zoom in sul logo → filo → Inizia gratis → offerta → sito
+   ===================================================================== */
+const S2T=2.85,S3T=6.1,S4T=9.5,CL=12.85;
+
+/* S1 */
+sceneOn('#S1',0,S2T);
+tl.fromTo('#r1',{rotationX:5,rotationY:-7,z:-40},{rotationX:2,rotationY:5,z:0,duration:2.4,ease:'sine.inOut',immediateRender:false},0);
+tl.fromTo('#card',{y:-30,rotation:-2},{y:0,rotation:0,duration:.6,ease:'back.out(1.6)',immediateRender:false},0);
+tl.fromTo('#lab',{opacity:0,x:-20},{opacity:1,x:0,duration:.35,ease:'power3.out',immediateRender:false},.08);
+inUp(cc1,$('#c1'),.15);inUp(cc2,$('#c2'),.6);
+tl.fromTo('#cat',{opacity:0,y:14},{opacity:1,y:0,duration:.4,ease:'power3.out',immediateRender:false},.95);
+tl.fromTo('#rule',{scaleX:0,transformOrigin:'0 50%'},{scaleX:1,duration:.4,ease:'power2.out',immediateRender:false},.85);
+// causa: il telefono squilla; effetto: il cartello trema a ogni squillo
+const RING=[0.55,1.25,1.95];
+RING.forEach((t,i)=>{
+  tl.to('#ph1',{rotation:i%2?-3:3,duration:.05,yoyo:true,repeat:5,ease:'sine.inOut'},t);
+  tl.fromTo('#rw'+(i+1),{opacity:.9,scale:.7},{opacity:0,scale:1.9,duration:.7,ease:'power2.out',immediateRender:false},t);
+  tl.to('#card',{rotation:i%2?-1.6:1.6,duration:.07,yoyo:true,repeat:3,ease:'sine.inOut'},t+.04);
+  tl.to('#ic',{scale:1.12,duration:.08,yoyo:true,repeat:1},t);});
+tl.to('#ph1',{rotation:2.5,duration:.04,yoyo:true,repeat:7,ease:'sine.inOut'},2.3);
+// la camera si tuffa nel telefono
+tl.set('#r1',{transformOrigin:'540px 1430px'},2.35);
+tl.to('#r1',{scale:3.2,duration:.5,ease:'power3.in'},2.35);
+blurTween(tl,$('#r1'),2.45,0,14,.4,{ease:'power2.in',ax:.3,ay:1});
+
+/* S2 */
+sceneOn('#S2',S2T,S3T);
+tl.fromTo('#r2',{scale:1.12},{scale:1,duration:.5,ease:'expo.out',immediateRender:false},S2T);
+tl.fromTo('#ph2',{rotationY:12,rotationX:5,z:-60},{rotationY:-4,rotationX:3,z:0,duration:3.2,ease:'sine.inOut',immediateRender:false},S2T);
+tl.to('#ph2',{rotationZ:1.3,duration:.045,yoyo:true,repeat:13,ease:'sine.inOut'},S2T+.05);
+tl.to('#cbG',{scale:1.1,duration:.25,yoyo:true,repeat:3,ease:'sine.inOut'},S2T);
+inLeft(c2,$('#t2'),2.95);
+// nessuno risponde: la chiamata diventa persa
+tl.to('#call2',{opacity:0,duration:.25,ease:'power2.in'},3.75);
+tl.fromTo('#lock',{opacity:0},{opacity:1,duration:.25,immediateRender:false},3.8);
+const pops=BUBS.map(()=>({p:0}));
+BUBS.forEach((b,k)=>{tl.to(pops[k],{p:1,duration:.4,ease:'back.out(1.8)'},b[5]);
+  tl.to('#ph2',{rotationZ:k%2?-1.2:1.2,duration:.045,yoyo:true,repeat:3,ease:'sine.inOut'},b[5]);});
+tl.fromTo('#unread',{opacity:0,y:-20},{opacity:1,y:0,duration:.35,ease:'back.out(1.6)',immediateRender:false},4.85);
+// causa: il dito tocca l'icona Beaflow
+const _ba=$('#bapp'),_dk=$('#dock');
+const ICON={x:_dk.offsetLeft+_ba.offsetLeft+_ba.offsetWidth/2,y:_dk.offsetTop+_ba.offsetTop+_ba.offsetHeight/2};
+const ICS={x:310+16+ICON.x,y:660+16+ICON.y};
+tl.fromTo('#f2',{opacity:0,left:360,top:900,scale:1.4},{opacity:1,left:ICON.x,top:ICON.y,scale:1,duration:.4,ease:'power3.out',immediateRender:false},5.0);
+tl.to('#f2',{scale:.78,duration:.09,yoyo:true,repeat:1},5.42);
+tl.to('#bapp',{scale:.88,duration:.09,yoyo:true,repeat:1},5.42);
+tl.set('#tp2',{left:ICON.x,top:ICON.y},5.42);tl.fromTo('#tp2',{opacity:.95,scale:.3},{opacity:0,scale:1.7,duration:.45,ease:'power2.out',immediateRender:false},5.42);
+tl.to('#f2',{opacity:0,duration:.15},5.55);
+outRight(c2,$('#t2'),5.4);
+tl.set('#r2',{transformOrigin:`${ICS.x}px ${ICS.y}px`},5.45);
+tl.to('#r2',{scale:1.18,duration:.6,ease:'power2.in'},5.45);
+tl.set('#wave',{left:ICS.x,top:ICS.y},5.5);
+tl.fromTo('#wave',{opacity:1,scale:.1},{scale:19,duration:.62,ease:'power2.in',immediateRender:false},5.5);
+
+/* S3 */
+sceneOn('#S3',S3T,S4T);
+tl.to('#wave',{opacity:0,duration:.45,ease:'power2.out'},S3T);
+tl.fromTo('#bk',{scale:.9,rotationX:10,rotationY:-8,z:-120},{scale:1,rotationX:5,rotationY:4,z:0,duration:.9,ease:'expo.out',immediateRender:false},S3T);
+tl.to('#bk',{rotationX:3,rotationY:-3,duration:2.5,ease:'sine.inOut'},S3T+.9);
+SLOTS.forEach((s,k)=>tl.fromTo('#sl'+k,{opacity:0,y:20},{opacity:1,y:0,duration:.3,ease:'back.out(1.8)',immediateRender:false},S3T+.25+k*.05));
+inUp(c3,$('#t3'),6.3);
+// il cliente sceglie le 10:30
+const SL={x:44+2*234+106,y:500+42},GO={x:390,y:960-44-60};
+tl.fromTo('#f3',{opacity:0,left:600,top:820,scale:1.4},{opacity:1,left:SL.x,top:SL.y,scale:1,duration:.4,ease:'power3.out',immediateRender:false},6.9);
+tl.to('#f3',{scale:.78,duration:.09,yoyo:true,repeat:1},7.32);
+tl.set('#tp3',{left:SL.x,top:SL.y},7.32);tl.fromTo('#tp3',{opacity:.95,scale:.3},{opacity:0,scale:1.4,duration:.45,ease:'power2.out',immediateRender:false},7.32);
+tl.to('#sl2',{backgroundColor:'#775A18',color:'#fff',duration:.15},7.34);
+tl.fromTo('#sl2',{scale:.92},{scale:1,duration:.35,ease:'back.out(2.5)',immediateRender:false},7.34);
+// …e tocca «Prenota»
+tl.to('#f3',{left:GO.x,top:GO.y,duration:.4,ease:'power3.inOut'},7.6);
+tl.to('#f3',{scale:.78,duration:.09,yoyo:true,repeat:1},8.05);
+tl.set('#tp3',{left:GO.x,top:GO.y},8.05);tl.fromTo('#tp3',{opacity:.95,scale:.3},{opacity:0,scale:1.8,duration:.45,ease:'power2.out',immediateRender:false},8.05);
+tl.to('#go',{scale:.96,duration:.09,yoyo:true,repeat:1},8.05);
+tl.to('#go .t',{opacity:0,duration:.12},8.1);tl.to('#go',{backgroundColor:'#775A18',duration:.2},8.1);
+tl.fromTo('#go .ok',{opacity:0,y:16},{opacity:1,y:0,duration:.3,ease:'back.out(2)',immediateRender:false},8.15);
+tl.to('#f3',{opacity:0,duration:.15},8.25);
+// effetto: la conferma sale dal bottone
+const nbp={a:0,u:0};
+tl.to(nbp,{a:1,duration:.55,ease:'back.out(1.5)'},8.75);
+outUp(c3,$('#t3'),8.85);
+
+/* S4 · l'agenda di domani */
+sceneOn('#S4',S4T,CL+.05);
+tl.fromTo('#panel',{rotationX:6,rotationY:-6,scale:.97},{rotationX:2,rotationY:3,scale:1,duration:CL-S4T,ease:'sine.inOut',immediateRender:false},S4T);
+tl.fromTo('#r4',{scale:1.04},{scale:1.08,duration:CL-S4T-.5,ease:'sine.inOut',immediateRender:false},S4T);
+tl.to(nbp,{u:1,duration:.36,ease:'power2.in'},S4T);
+const IMP=S4T+.36;
+tl.set('#rowN',{opacity:1},IMP);tl.set('#free',{opacity:0},IMP);
+tl.fromTo('#rowN',{scale:1.12},{scale:1,duration:.4,ease:'back.out(2.2)',immediateRender:false},IMP);
+tl.fromTo('#ringN',{opacity:1,scale:.97},{opacity:0,scale:1.1,duration:.6,ease:'power2.out',immediateRender:false},IMP);
+['#row0','#row1','#row3','#row4'].forEach((r,k)=>{const d=Math.abs(k-1.5)+.5;tl.to(r,{y:(k<2?-1:1)*14/d,duration:.09,yoyo:true,repeat:1,ease:'power2.out'},IMP+.04*d);});
+tl.to('#panel',{y:10,duration:.06,yoyo:true,repeat:1,ease:'power2.out'},IMP);
+inDepth(c4,$('#t4'),IMP+.05);
+tl.to('#chk',{backgroundColor:'#C9B16C',duration:.15},10.55);
+tl.to('#chk path',{strokeDashoffset:0,duration:.25,ease:'power2.out'},10.55);
+tl.fromTo('#chk',{scale:1.3},{scale:1,duration:.35,ease:'back.out(2)',immediateRender:false},10.55);
+outUp(c4,$('#t4'),12.15);
+
+/* chiusura: la spunta diventa il punto d'oro che risucchia tutto → zoom in sul logo */
+const LOGO={x:540,y:585};
+const dotp={a:0,m:0};
+tl.to(dotp,{a:1,duration:.18,ease:'power2.out'},12.32);
+tl.to(dotp,{m:1,duration:.38,ease:'power2.inOut'},12.42);
+tl.to('#r4',{scale:0,rotation:-18,duration:.36,ease:'power3.in'},12.42);
+tl.fromTo('#r4',{filter:'blur(0px)'},{filter:'blur(10px)',duration:.36,ease:'power2.in',immediateRender:false},12.42);
+tl.set('#close',{visibility:'visible'},CL);
+tl.fromTo('#dot',{scale:2.6},{opacity:0,scale:7,duration:.35,ease:'power2.out',immediateRender:false},CL);
+tl.fromTo('#flash',{opacity:0},{opacity:1,duration:.08,immediateRender:false},CL);
+tl.to('#flash',{opacity:0,duration:.55,ease:'power2.out'},CL+.08);
+tl.fromTo('#halo',{opacity:0,scale:.4},{opacity:1,scale:1,duration:1.1,ease:'expo.out',immediateRender:false},CL);
+tl.fromTo('#logoB',{opacity:0,scale:.16,filter:'blur(18px)'},{opacity:1,scale:1,filter:'blur(0px)',duration:.9,ease:'expo.out',immediateRender:false},CL);
+tl.to('#logoB',{scale:1.035,duration:1.3,ease:'sine.inOut'},CL+.9);
+const lc=$('#lc');const LCL=lc.getTotalLength();lc.style.strokeDasharray=LCL;lc.style.strokeDashoffset=LCL;
+tl.to(lc,{strokeDashoffset:0,duration:.5,ease:'power2.inOut'},CL+.5);
+tl.fromTo('#btnC',{opacity:0,y:40,scale:.92},{opacity:1,y:0,scale:1,duration:.5,ease:'back.out(1.6)',immediateRender:false},CL+.75);
+tl.fromTo('#offer',{opacity:0,y:24},{opacity:1,y:0,duration:.4,ease:'power3.out',immediateRender:false},CL+.95);
+tl.fromTo('#url',{opacity:0,y:24},{opacity:1,y:0,duration:.4,ease:'power3.out',immediateRender:false},CL+1.1);
+tl.to({},{duration:.01},DURATION);
+
+/* ---- render: tutto da tl.time() ---- */
+const turb=$('#turb'),nb=$('#nb'),dot=$('#dot');
+const drift=(el,t,ax,ay,bx,by,s1,s2)=>{el.style.transform=`translate(${(ax+bx*Math.sin(t*s1)).toFixed(1)}px,${(ay+by*Math.cos(t*s2)).toFixed(1)}px)`;};
+const st=()=>$('#stage').getBoundingClientRect();
+function screenOf(el){const r=el.getBoundingClientRect(),s=st(),k=s.width/W;return{x:(r.left+r.width/2-s.left)/k,y:(r.top+r.height/2-s.top)/k,w:r.width/k};}
+function render(t){
+  drift($('#g1a'),t,-260,260,180,120,.45,.38);drift($('#g1b'),t,380,-160,140,110,.33,.41);
+  drift($('#g2a'),t,-200,420,170,110,.42,.36);drift($('#g2b'),t,420,-120,120,100,.35,.4);
+  drift($('#g3a'),t,300,500,160,120,.4,.35);drift($('#g3b'),t,-300,-100,120,120,.37,.44);
+  drift($('#g4a'),t,-280,600,160,120,.38,.33);drift($('#g4b'),t,320,-80,120,120,.41,.37);
+  turb.setAttribute('seed',String(1+Math.floor(t*12)%48));
+  const inClose=t>=CL;
+  bokEls.forEach((d,i)=>{const b=BOK[i];let x=b[0]+30*Math.sin(t*.35+i),y=b[1]+25*Math.cos(t*.3+i);
+    if(t<S2T){y=b[1]-t*40*(.6+b[3]);}
+    else if(t<S3T){x=b[0]+18*Math.sin(t*9+i)*(t>3?1:0);}
+    else if(t<S4T){y=b[1]-(t-S3T)*80*(.6+b[3]);}
+    else {y=b[1]+(t-S4T)*70*(.6+b[3]);}
+    d.style.transform=`translate(${(x-b[2]/2).toFixed(1)}px,${(y-b[2]/2).toFixed(1)}px)`;
+    d.style.background='rgba(222,200,140,.32)';d.style.opacity=inClose?0:.45;});
+  // chiamate perse: nascono dal telefono, tremano, poi l'onda le porta via
+  BUBS.forEach((b,k)=>{const el=bubEls[k];let op=0,x=b[3],y=b[4],s=1,r=0;
+    if(t>=b[5]&&t<S3T){const p=pops[k].p;op=Math.min(1,p*1.4);s=.4+.6*p;r=(k%2?3:-3)*(1-p);
+      x=540+(b[3]-540)*p;y=1120+(b[4]-1120)*p;
+      const j=Math.max(0,Math.min(1,(t-4.85)/.6));x+=j*6*Math.sin(t*31+k*2);y+=j*4*Math.cos(t*27+k);
+      if(t>5.45){const z=Math.min(1,(t-5.45)/.6);x=x+(ICS.x-x)*.5*z;y=y+(ICS.y-y)*.5*z;s*=1-.6*z;op*=1-z;}}
+    el.style.opacity=op;
+    el.style.transform=`translate(${x.toFixed(1)}px,${y.toFixed(1)}px) rotate(${r.toFixed(2)}deg) scale(${s.toFixed(3)})`;});
+  // la conferma: sale dal bottone (S3), poi cade nello spazio libero delle 10:30 (S4)
+  let no=0,nx=540,ny=560,ns=1,nr=0;
+  if(t>=8.75&&t<S4T){const a=nbp.a;no=Math.min(1,a*1.6);ns=.55+.45*a;nx=540;ny=1460+(600-1460)*a+6*Math.sin(t*7)*a;nr=2*Math.sin(t*18)*(1-a*.6);}
+  else if(t>=S4T&&t<IMP+.12){const u=nbp.u,rN=screenOf($('#rowN'));no=t<IMP?1:Math.max(0,1-(t-IMP)/.12);
+    nx=540+(rN.x-540)*u;ny=600+(rN.y-600)*u;ns=1+(rN.w/660-1)*u;nr=-3*Math.sin(Math.PI*u);}
+  nb.style.opacity=no;nb.style.transform=`translate(${nx.toFixed(1)}px,${ny.toFixed(1)}px) rotate(${nr.toFixed(2)}deg) scale(${ns.toFixed(3)})`;
+  // punto d'oro: nasce dalla spunta e va al logo
+  if(t>=12.32&&t<CL){const c=screenOf($('#chk'));const m=dotp.m;
+    const px=c.x+(LOGO.x-c.x)*m, py=c.y+(LOGO.y-c.y)*m;dot.style.left=px.toFixed(1)+'px';dot.style.top=py.toFixed(1)+'px';
+    dot.style.opacity=dotp.a;gsap.set(dot,{scale:.3+1.3*dotp.a+1.0*m});}
+  else if(t<12.32){dot.style.opacity=0;}
+  else{dot.style.left=LOGO.x+'px';dot.style.top=LOGO.y+'px';}
+}
+
+/* ---- colla ---- */
+const stage=$('#stage');
+const fit=()=>{const k=Math.min(innerWidth/W,innerHeight/H);stage.style.transform=`translate(-50%,-50%) scale(${k})`;};
+addEventListener('resize',fit);fit();
+(function frame(){render(tl.time());requestAnimationFrame(frame);})();
+addEventListener('keydown',e=>{if(e.code==='Space'){e.preventDefault();tl.paused()?tl.play():tl.pause();}if(/^[rR]$/.test(e.key))tl.play(0);});
+if(Q.has('debug')){const ui=$('#ui');ui.style.cssText='display:flex;position:fixed;left:50%;bottom:16px;transform:translateX(-50%);gap:10px;background:#111;color:#ddd;padding:10px 14px;border-radius:12px;font:13px system-ui;z-index:9';
+  ui.innerHTML='<input id="sc" type="range" min="0" max="1000" value="0" style="width:320px"><span id="ck">0.00s</span>';
+  $('#sc').oninput=e=>{tl.pause();tl.time(e.target.value/1000*DURATION);};setInterval(()=>{$('#ck').textContent=tl.time().toFixed(2)+'s';},100);}
+tl.eventCallback('onComplete',()=>tl.play(0));
+const seek=t=>{tl.pause();tl.time(t,false);if(gsap.ticker.tick)gsap.ticker.tick();render(t);};
+window.OPENER={tl,DURATION,seek,W,H,ready:false};
+document.fonts.ready.then(()=>{window.OPENER.ready=true;tl.time(0);render(0);if(!Q.has('clean'))tl.play(0);});
+</script>
+</body>
+</html>

@@ -64,7 +64,9 @@ def main():
         try:
             z = json.loads(r.stdout.strip().splitlines()[-1])
             for p in z["problemi"]: segna("ERRORE", "zone sicure", f"a {S.it(p['t'])} s {p['elemento']}: {p['problema']}")
-            if not z["problemi"]: segna("OK", "zone sicure", f"testi e logo dentro 80 / 120 / 250 / 380 px in {len(z['tempi'])} istanti, nessun a capo imprevisto")
+            if not z["problemi"]: segna("OK", "zone sicure", f"testi e logo dentro 130 px ai lati, 250 px in alto e sopra il 35 % in basso in {len(z['tempi'])} istanti, nessun a capo imprevisto")
+            for f in z.get("fuori", []): segna("ATTENZIONE", "fuori quadro", f"a {S.it(f['t'])} s oggetti 3D oltre il bordo: " + "; ".join(f["oggetti"]) + " (guardare il foglio)")
+            if "fuori" in z and not z["fuori"]: segna("OK", "fuori quadro", "nessun oggetto 3D oltre i bordi, anche nelle transizioni (le tessere sono contenute dal modello)")
         except Exception:
             segna("ERRORE", "zone sicure", "la pagina non si apre: " + (r.stderr.strip().splitlines() or ["?"])[-1])
     else:

@@ -32,10 +32,10 @@ body{position:relative;background:var(--fondo);font-family:'Inter',sans-serif;co
 body.scuro #vig{background:radial-gradient(ellipse 75% 60% at 50% 55%, rgba(0,0,0,0) 55%, rgba(0,0,0,.55) 100%)}
 #shade{position:absolute;left:0;right:0;top:0;height:900px;z-index:1;opacity:0;background:var(--velo)}
 #flash{position:absolute;inset:0;z-index:2;opacity:0;background:radial-gradient(circle at 50% 62%, #fff7e6, rgba(255,244,220,.55) 55%, rgba(255,244,220,0))}
-.ui{position:absolute;z-index:3;left:80px;width:880px}
+.ui{position:absolute;z-index:3;left:130px;width:820px} /* 21/11: margini laterali 130 px (i telefoni più allungati del 9:16 tagliano circa 100 px per lato) */
 .w{display:inline-block}
 .logo{position:absolute;z-index:3}
-#logoS{left:80px;top:250px;width:240px;height:64px}
+#logoS{left:130px;top:250px;width:240px;height:64px}
 #h1{top:380px}
 #t1{font-weight:800;font-size:{{PX_GANCIO}}px;line-height:1.04;letter-spacing:-.04em}
 #t1b{margin-top:0;font-weight:800;font-size:{{PX_ACCENTO}}px;line-height:1.04;letter-spacing:-.04em;color:{{COLORE_ACCENTO}}}
@@ -60,12 +60,12 @@ body.scuro #scheda .riga{border-top-color:#3A3A3A}
 #notif .tx1{font-weight:600;font-size:48px;line-height:1.15}
 #notif .tx2{font-weight:500;font-size:40px;color:var(--testo2);margin-top:12px}
 .pill{display:inline-flex;align-items:center;gap:14px;margin-top:28px;background:var(--ottone);color:#fff;border-radius:12px;padding:14px 24px;font-weight:700;font-size:32px;letter-spacing:.12em;text-transform:uppercase}
-#logoB{left:180px;top:610px;width:720px}
-#aloneC{position:absolute;z-index:2;left:60px;top:400px;width:960px;height:620px;opacity:0;pointer-events:none;background:radial-gradient(ellipse 50% 50% at 50% 50%, rgba(201,177,108,.42), rgba(201,177,108,.16) 45%, rgba(201,177,108,0) 72%)}
-#lineaC{position:absolute;z-index:3;left:540px;top:868px;height:5px;width:0;border-radius:3px;background:var(--oro);transform:translateX(-50%)}
-#btn{top:1000px;height:144px;border-radius:12px;background:var(--btn);color:var(--btn-tx);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:48px}
-#offer{top:1196px;text-align:center;font-weight:600;font-size:44px;color:var(--testo2)}
-#url{top:1272px;text-align:center;font-weight:600;font-size:40px}
+#logoB{left:180px;top:490px;width:720px} /* 21/11: blocco di chiusura alzato di 120 px: tutto sopra il 35 % in basso che Meta copre nelle sponsorizzate (da 1248 px) */
+#aloneC{position:absolute;z-index:2;left:60px;top:280px;width:960px;height:620px;opacity:0;pointer-events:none;background:radial-gradient(ellipse 50% 50% at 50% 50%, rgba(201,177,108,.42), rgba(201,177,108,.16) 45%, rgba(201,177,108,0) 72%)}
+#lineaC{position:absolute;z-index:3;left:540px;top:748px;height:5px;width:0;border-radius:3px;background:var(--oro);transform:translateX(-50%)}
+#btn{top:880px;height:144px;border-radius:12px;background:var(--btn);color:var(--btn-tx);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:48px}
+#offer{top:1076px;text-align:center;font-weight:600;font-size:44px;color:var(--testo2)}
+#url{top:1152px;text-align:center;font-weight:600;font-size:40px}
 {{CSS_SCENA}}
 </style>
 <script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
@@ -210,7 +210,20 @@ const M4=new THREE.Matrix4();
 const RITMO = new URLSearchParams(location.search).get('ritmo') || '{{RITMO}}';
 // ritmo «rapido» (20/11): le trasformazioni fra le scene durano al massimo 0,42 s e le tessere partono più insieme; la chiusura non cambia
 const TRR = TR => RITMO!=='rapido' ? TR : TR.map((x,k)=> k>=TR.length-2 ? x : [x[0],x[1],x[2]+0.05,Math.min(x[3],0.42),x[4]]);
-function tilesAt(t, F, TR, first){
+// 21/11: le tessere restano sempre nell'inquadratura, anche durante le trasformazioni. Fuori da una fascia interna (85 % del limite)
+// la posizione sullo schermo viene compressa dolcemente verso il centro, alla stessa profondità: mai oltre 130 px dai lati, 150 px dall'alto, 120 px dal basso.
+const QUADRO = { x: 1 - 2*130/1080, su: 1 - 2*150/1920, giu: 1 - 2*120/1920, ginocchio: 0.85 };
+const _vq = new THREE.Vector3();
+const morbido = (a, L) => { const k=L*QUADRO.ginocchio; if(a<=k) return a; return k + (L-k)*Math.tanh((a-k)/(L-k)); };
+function dentroQuadro(p, sc){ if(SPOT_QUADRO===false) return;
+  _vq.copy(p).project(cam); if(_vq.z<-1 || _vq.z>1) return;
+  // mezza misura della tessera sullo schermo (in unità NDC), così resta dentro anche il bordo e non solo il centro
+  const d=Math.max(0.1, p.distanceTo(cam.position)), h=Math.tan(THREE.MathUtils.degToRad(cam.fov/2))*d, r=Math.max(sc.x,sc.y,sc.z)*0.6/h;
+  const Lx=Math.max(0.2, QUADRO.x - r/cam.aspect), Ls=Math.max(0.2, QUADRO.su - r), Lg=Math.max(0.2, QUADRO.giu - r);
+  const x=Math.sign(_vq.x)*morbido(Math.abs(_vq.x),Lx), y=_vq.y>=0 ? morbido(_vq.y,Ls) : -morbido(-_vq.y,Lg);
+  if(x===_vq.x && y===_vq.y) return; _vq.x=x; _vq.y=y; p.copy(_vq.unproject(cam)); }
+const SPOT_QUADRO = (typeof SPOT!=='undefined' && SPOT.dentro_quadro===false) ? false : true;
+function tilesAt(t, F, TR, first){ cam.updateMatrixWorld(); cam.updateProjectionMatrix();
   const cache={}; const get=n=>cache[n]??=F[n](t); const spread=RITMO==='rapido'?0.12:0.28; TR=TRR(TR);
   for(let i=0;i<N;i++){
     let st=get(first)[i];
@@ -220,6 +233,7 @@ function tilesAt(t, F, TR, first){
       p.add(V((R[i][0]-.5)*1.4*arc, (R[i][1]-.2)*1.4*arc, (R[i][2]-.2)*1.8*arc));
       st={ p, q:A.q.clone().slerp(B.q,u), s:A.s.clone().lerp(B.s,u), g:A.g+(B.g-A.g)*u+arc*0.3, c:A.c+(B.c-A.c)*u };
     }
+    dentroQuadro(st.p, st.s);
     M4.compose(st.p, st.q, st.s); tiles.setMatrixAt(i,M4);
     aGlow.array[i]=st.g; tmpC.copy(white).lerp(black,st.c); tiles.setColorAt(i,tmpC);
   }
@@ -248,6 +262,19 @@ const LATE=[];  // funzioni da chiamare quando i font sono pronti
 
 function seek(t){ seek2d(t); render3d(t); }
 window.seek = seek;
+// 21/11: per i controlli. Oggetti 3D visibili (etichette, telefoni, campanelle…) che escono dall'inquadratura; le tessere sono già contenute da dentroQuadro.
+window.oggettiFuori = (margine=20) => { const out=[], b=new THREE.Box3(), v=new THREE.Vector3();
+  scene.updateMatrixWorld(true); cam.updateMatrixWorld();
+  scene.traverseVisible(o=>{ if(!o.isMesh || o.isInstancedMesh || o===ground || !o.geometry) return;
+    let vis=true; for(let q=o; q; q=q.parent) if(!q.visible) vis=false; if(!vis) return;
+    b.setFromObject(o); if(b.isEmpty()) return; const sz=b.getSize(v).length(); if(sz<0.02 || sz>6) return;
+    let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9, dietro=false;
+    for(const cx of [b.min.x,b.max.x]) for(const cy of [b.min.y,b.max.y]) for(const cz of [b.min.z,b.max.z]){ const p=new THREE.Vector3(cx,cy,cz).project(cam); if(p.z>1) dietro=true;
+      const X=(p.x+1)/2*1080, Y=(1-p.y)/2*1920; x0=Math.min(x0,X); x1=Math.max(x1,X); y0=Math.min(y0,Y); y1=Math.max(y1,Y); }
+    if(dietro) return;
+    const f=[]; if(x0<-margine) f.push('sinistra '+Math.round(x0)); if(x1>1080+margine) f.push('destra '+Math.round(x1)); if(y0<-margine) f.push('alto '+Math.round(y0)); if(y1>1920+margine) f.push('basso '+Math.round(y1));
+    if(f.length) out.push((o.geometry.type||'mesh').replace('Geometry','')+': '+f.join(', ')); });
+  return out; };
 window.ready = document.fonts.load('800 64px Inter').then(()=>document.fonts.load('700 52px Inter')).then(()=>document.fonts.load('600 40px Inter')).then(()=>document.fonts.ready)
   .then(()=>Promise.all([...document.images].map(im=>im.decode().catch(()=>{})))).then(()=>{ LATE.forEach(f=>f()); seek(0); return true; });
 if(location.search.includes('play')){ window.ready.then(()=>{ const t0=performance.now();

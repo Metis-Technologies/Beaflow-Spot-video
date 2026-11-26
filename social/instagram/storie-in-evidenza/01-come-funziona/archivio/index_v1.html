@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="it">
+<!-- Made with the Bang Motion skill (Bang Tutorial, MIT, https://github.com/bangtutorial/bang-motion) -->
+<head>
+<meta charset="utf-8">
+<title>Beaflow · Come funziona (storia in evidenza)</title>
+<!--
+  STYLE BRIEF (approvato in chat il 22/11)
+  Tema/produce + 3 aggettivi : Beaflow, gestionale e prenotazioni per saloni · calmo, ordinato, curato
+  Concetto (opener-konsep)   : candidati 13 Estafet benda / 9 Una funzione mostrata tutta / 3 Problema → sparisce
+                               scelto 13: la prenotazione è un oggetto che viaggia dal telefono del cliente all'agenda di oggi
+  Impronta struttura         : staffetta · 4 momenti · telefono → scheda in volo → agenda/slot → promemoria · apre sul telefono già acceso · chiude con logo + filo oro
+  Palette (dal brand)        : oro #C9B16C (logo) · ottone #775A18 (accento spot) · crema #F6F0E4 (fondo spot chiari) · nero #111111 (testi)
+  Font                       : Fraunces 500 (titoli) / Inter (UI del prodotto)
+  Enfasi                     : una parola in ottone, nessuna pillola
+  Direzione                  : Editoriale chiaro + tocco lusso (oro)
+  Firma di movimento         : filo d'oro che si disegna
+  Movimento del fondo (§7c)  : luce calda che si sposta + grana viva
+  Superficie fondo (§7d)     : crema a gradiente + alone caldo + grana (3 strati)
+  Resa oggetti (§7e)         : porcellana piatta con ombre morbide
+  Transizioni                : portate dalla scheda in volo (la camera la segue), nessun taglio
+  Momento speciale           : la scheda che atterra nello slot delle 15:00
+  Formato                    : 1080×1920 (storia), 7 s, loop, senza audio
+-->
+<style>
+@font-face{font-family:"Fraunces";src:url(assets/fraunces.woff2) format("woff2");font-weight:100 900;font-display:block}
+@font-face{font-family:"InterV";src:url(assets/inter.woff2) format("woff2");font-weight:100 900;font-display:block}
+:root{--oro:#C9B16C;--ottone:#775A18;--crema:#F6F0E4;--crema2:#EBDFC8;--nero:#111111;--porc:#FFFDF8}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;background:#E9DFCB;overflow:hidden}
+#stage{position:fixed;left:50%;top:50%;width:1080px;height:1920px;transform:translate(-50%,-50%);overflow:hidden;
+  background:linear-gradient(175deg,#FAF6EE 0%,var(--crema) 45%,var(--crema2) 100%)}
+.bg{position:absolute;inset:0;pointer-events:none}
+#glow1,#glow2{position:absolute;border-radius:50%;pointer-events:none}
+#glow1{width:1300px;height:1300px;background:radial-gradient(circle,rgba(201,177,108,.30) 0%,rgba(201,177,108,.10) 40%,transparent 68%)}
+#glow2{width:1000px;height:1000px;background:radial-gradient(circle,rgba(255,250,240,.85) 0%,transparent 65%)}
+#grain{position:absolute;inset:0;width:100%;height:100%;opacity:.11;mix-blend-mode:multiply;pointer-events:none}
+#world{position:absolute;left:0;top:0;width:2400px;height:2400px;transform-origin:0 0;will-change:transform}
+.shadow{box-shadow:0 30px 60px -20px rgba(80,60,20,.28),0 8px 18px -6px rgba(80,60,20,.18)}
+
+/* telefono del cliente */
+#phone{position:absolute;left:280px;top:620px;width:460px;height:920px;border-radius:72px;background:#151515;padding:16px}
+#screen{position:relative;width:100%;height:100%;border-radius:58px;background:var(--porc);overflow:hidden;font-family:"InterV",system-ui,sans-serif;color:var(--nero)}
+.notch{position:absolute;left:50%;top:18px;width:120px;height:30px;margin-left:-60px;border-radius:15px;background:#151515}
+.sh{position:absolute;left:34px;right:34px}
+#s-name{top:86px;font-size:36px;font-weight:650;letter-spacing:-.01em}
+#s-sub{top:132px;font-size:24px;color:#7A705E}
+#s-serv{top:190px;height:104px;border-radius:24px;background:#F4EEE2;padding:22px 24px}
+#s-serv b{display:block;font-size:28px;font-weight:600}
+#s-serv span{font-size:23px;color:#7A705E}
+#s-day{top:326px;font-size:26px;font-weight:600}
+#chips{top:372px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.chip{height:70px;border-radius:20px;border:2px solid #E3D9C6;display:flex;align-items:center;justify-content:center;font-size:27px;font-weight:600;color:#3A3328;background:#fff}
+#chip15{position:relative;overflow:hidden}
+#chip15 .fill{position:absolute;inset:0;background:var(--ottone);transform:scale(0);border-radius:18px}
+#chip15 em{position:relative;font-style:normal}
+#btn{top:742px;height:96px;border-radius:30px;background:var(--nero);color:#fff;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:600}
+#tap{position:absolute;width:90px;height:90px;margin:-45px 0 0 -45px;border-radius:50%;border:4px solid var(--oro);opacity:0;pointer-events:none}
+#finger{position:absolute;width:58px;height:58px;margin:-29px 0 0 -29px;border-radius:50%;background:rgba(17,17,17,.16);opacity:0;pointer-events:none}
+
+/* agenda di oggi (nello stesso mondo, a destra del telefono) */
+#agenda{position:absolute;left:1240px;top:620px;width:600px;height:930px;border-radius:48px;background:var(--porc);font-family:"InterV",system-ui,sans-serif;color:var(--nero);overflow:visible}
+#ag-h{position:absolute;left:40px;top:40px;font-size:40px;font-weight:650;letter-spacing:-.01em}
+#ag-d{position:absolute;right:40px;top:50px;font-size:26px;color:#7A705E}
+.row{position:absolute;left:28px;right:28px;height:84px}
+.row .h{position:absolute;left:12px;top:26px;width:86px;font-size:25px;color:#8C8270;font-variant-numeric:tabular-nums}
+.row .ln{position:absolute;left:110px;right:12px;top:41px;height:2px;background:#EEE6D6}
+.appt{position:absolute;left:110px;right:12px;top:8px;height:68px;border-radius:18px;background:#EFE7D8;padding:0 22px;display:flex;align-items:center;font-size:25px;font-weight:600;color:#4A4234}
+#slot{position:absolute;left:110px;right:12px;top:8px;height:68px;border-radius:18px;border:3px dashed #D8C9A6}
+#slotglow{position:absolute;left:96px;right:-2px;top:-6px;height:96px;border-radius:26px;background:radial-gradient(closest-side,rgba(201,177,108,.55),transparent);opacity:0}
+
+/* la prenotazione: l'oggetto che viaggia */
+#card{position:absolute;left:0;top:0;width:368px;height:68px;margin:-34px 0 0 -184px;border-radius:18px;background:var(--ottone);color:#fff;
+  font-family:"InterV",system-ui,sans-serif;font-size:25px;font-weight:600;display:flex;align-items:center;gap:12px;padding:0 20px;opacity:0;will-change:transform}
+#card i{width:12px;height:12px;border-radius:50%;background:var(--oro);flex:none}
+#card small{margin-left:auto;font-size:23px;font-weight:600;opacity:.85;font-variant-numeric:tabular-nums}
+
+/* promemoria */
+#remind{position:absolute;left:1270px;top:1590px;width:540px;height:110px;border-radius:30px;background:var(--nero);color:#fff;font-family:"InterV",system-ui,sans-serif;
+  display:flex;align-items:center;gap:20px;padding:0 28px;opacity:0}
+#remind svg{flex:none}
+#remind b{display:block;font-size:26px;font-weight:600}
+#remind span{font-size:22px;color:#CFC4AC}
+
+/* filo d'oro (firma) */
+#wire{position:absolute;left:0;top:0;width:2400px;height:2400px;overflow:visible;pointer-events:none}
+
+/* livello schermo (fuori dal rig): titoli e logo */
+#hud{position:absolute;inset:0;pointer-events:none}
+#pocket{position:absolute;left:0;right:0;top:0;height:700px;pointer-events:none;background:linear-gradient(180deg,#FAF6EE 0%,rgba(250,246,238,.97) 58%,rgba(248,243,233,.75) 76%,rgba(246,240,228,0) 100%)}
+.ttl{position:absolute;font-family:"Fraunces",Georgia,serif;font-weight:500;color:var(--nero);letter-spacing:-.015em;line-height:1.02;white-space:nowrap;
+  font-variation-settings:"opsz" 144,"SOFT" 50}
+.ttl .w{display:inline-block}
+.ttl .ch{display:inline-block;opacity:0;will-change:transform,opacity,filter}
+.k{color:var(--ottone)}
+#t1{left:90px;top:300px;font-size:104px}
+#t2{right:90px;top:300px;font-size:104px;text-align:right}
+#t3{left:90px;top:300px;font-size:92px;line-height:1.04;white-space:normal;width:900px}
+#logo{position:absolute;left:50%;top:330px;width:560px;margin-left:-280px;opacity:0}
+#logoline{position:absolute;left:50%;top:500px;margin-left:-180px;overflow:visible}
+#filters{position:absolute;width:0;height:0}
+#ui{display:none}
+</style>
+</head>
+<body>
+<svg id="filters"><defs></defs></svg>
+<div id="stage">
+  <div class="bg"><div id="glow1"></div><div id="glow2"></div></div>
+  <svg id="grain" viewBox="0 0 1080 1920" preserveAspectRatio="none"><filter id="gr"><feTurbulence id="turb" type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="1"/><feColorMatrix type="saturate" values="0"/></filter><rect width="1080" height="1920" filter="url(#gr)"/></svg>
+
+  <div id="world">
+    <svg id="wire" viewBox="0 0 2400 2400"><path id="wirePath" fill="none" stroke="#C9B16C" stroke-width="5" stroke-linecap="round"/></svg>
+
+    <div id="phone" class="shadow"><div id="screen">
+      <div class="notch"></div>
+      <div class="sh" id="s-name">Studio Aurora</div>
+      <div class="sh" id="s-sub">Prenota online</div>
+      <div class="sh" id="s-serv"><b>Taglio e piega</b><span>45 min</span></div>
+      <div class="sh" id="s-day">Oggi</div>
+      <div class="sh" id="chips">
+        <div class="chip">10:00</div><div class="chip">11:30</div><div class="chip">14:00</div>
+        <div class="chip" id="chip15"><span class="fill"></span><em>15:00</em></div><div class="chip">16:30</div><div class="chip">18:00</div>
+      </div>
+      <div class="sh" id="btn">Prenota</div>
+      <div id="finger"></div><div id="tap"></div>
+    </div></div>
+
+    <div id="agenda" class="shadow">
+      <div id="ag-h">Oggi</div><div id="ag-d">sabato</div>
+      <div id="rows"></div>
+    </div>
+
+    <div id="remind" class="shadow">
+      <svg width="56" height="56" viewBox="0 0 56 56"><circle cx="28" cy="28" r="28" fill="#C9B16C"/><path d="M28 15c-6 0-10 4.5-10 10.5V32l-3 4h26l-3-4v-6.5C38 19.5 34 15 28 15zM24 39a4 4 0 0 0 8 0" fill="none" stroke="#111" stroke-width="2.6" stroke-linejoin="round"/></svg>
+      <div><b>Promemoria a Giulia</b><span>inviato in automatico</span></div>
+    </div>
+
+    <div id="card"><i></i>Giulia · Taglio<small>15:00</small></div>
+  </div>
+
+  <div id="pocket"></div>
+  <div id="hud">
+    <h1 class="ttl" id="t1">Il cliente prenota</h1>
+    <h1 class="ttl" id="t2">Tu lo vedi <span class="k">subito</span></h1>
+    <h1 class="ttl" id="t3">E il promemoria<br>parte <span class="k">da solo</span></h1>
+    <img id="logo" src="assets/logo.svg" alt="Beaflow">
+    <svg id="logoline" width="360" height="10" viewBox="0 0 360 10"><path id="llp" d="M5 5H355" stroke="#C9B16C" stroke-width="4" stroke-linecap="round" fill="none"/></svg>
+  </div>
+</div>
+<div id="ui"></div>
+
+<script src="assets/gsap.min.js"></script>
+<script>
+const $=(s,r=document)=>r.querySelector(s);
+const W=1080,H=1920,DURATION=7.0;
+const Q=new URLSearchParams(location.search);
+
+/* ---- agenda: righe orarie ---- */
+const ORE=['9:00','10:00','11:00','12:00','14:00','15:00','16:00','17:00'];
+const PIENE={1:'Marco · Barba',2:'Sara · Manicure',6:'Luca · Colore'};
+const ROW0=760, RH=92, AGX=1240;
+ORE.forEach((o,k)=>{const r=document.createElement('div');r.className='row';r.style.top=(ROW0-620+k*RH)+'px';
+  r.innerHTML=`<div class="h">${o}</div>`+(PIENE[k]?`<div class="appt">${PIENE[k]}</div>`:(k===5?`<div id="slotglow"></div><div id="slot"></div>`:`<div class="ln"></div>`));
+  $('#rows').appendChild(r);});
+/* centro dello slot delle 15:00 nel mondo */
+const SLOT={x:AGX+28+110+(600-56-110-12)/2, y:ROW0+5*RH+8+34};
+/* bottone «Prenota» e chip 15:00 nel mondo (telefono a 280,620 + padding 16) */
+const BTN={x:280+16+34+(460-32-68)/2, y:620+16+742+48};
+const CH15={x:280+16+34+((460-32-68-28)/3)*0.5, y:620+16+372+84+35};
+
+/* ---- split per lettera + blur direzionale (techniques.md §1) ---- */
+const defs=$('#filters defs');let fc=0;
+function makeBlur(){const NS='http://www.w3.org/2000/svg',id='mb'+(fc++),f=document.createElementNS(NS,'filter');f.id=id;
+  f.setAttribute('x','-70%');f.setAttribute('y','-70%');f.setAttribute('width','240%');f.setAttribute('height','240%');
+  const g=document.createElementNS(NS,'feGaussianBlur');g.setAttribute('stdDeviation','0 0');f.appendChild(g);defs.appendChild(f);return{url:`url(#${id})`,node:g};}
+function blurTween(tl,el,at,from,to,dur,{ease='power3.out',ax=1,ay=.08}={}){const b=makeBlur(),o={v:from};
+  tl.set(el,{filter:b.url},at);tl.to(o,{v:to,duration:dur,ease,onUpdate(){b.node.setAttribute('stdDeviation',`${(o.v*ax).toFixed(2)} ${(o.v*ay).toFixed(2)}`);}},at);
+  tl.set(el,{filter:'none'},at+dur);}
+function split(el){const out=[];const walk=(node,cls)=>{[...node.childNodes].forEach(n=>{
+    if(n.nodeType===3){const frag=document.createDocumentFragment();n.textContent.split(/(\s+)/).forEach(tok=>{if(!tok)return;
+        if(/^\s+$/.test(tok)){const s=document.createElement('span');s.className='ch';s.innerHTML='&nbsp;';frag.appendChild(s);out.push(s);return;}
+        const w=document.createElement('span');w.className='w';for(const c of tok){const s=document.createElement('span');s.className='ch'+(cls?' '+cls:'');s.textContent=c;w.appendChild(s);out.push(s);}frag.appendChild(w);});
+      n.replaceWith(frag);}
+    else if(n.nodeType===1){walk(n,n.className);} });};walk(el,'');return out;}
+
+const tl=gsap.timeline({paused:true});
+const VERT={ax:.1,ay:1};
+const inUp=(ch,el,at,{dur=.8,st=.022}={})=>{tl.fromTo(ch,{opacity:0,yPercent:60,scaleY:1.4},{opacity:1,yPercent:0,scaleY:1,duration:dur,ease:'power4.out',stagger:st,immediateRender:false},at);blurTween(tl,el,at,28,0,dur,VERT);};
+const inRight=(ch,el,at,{dur=.75,st=.022}={})=>{tl.fromTo(ch,{opacity:0,xPercent:50},{opacity:1,xPercent:0,duration:dur,ease:'power4.out',stagger:{each:st,from:'end'},immediateRender:false},at);blurTween(tl,el,at,48,0,dur,{ease:'power4.out'});};
+const inWords=(el,at,{dur=.6,st=.11}={})=>{const w=el.querySelectorAll('.w');tl.set(el.querySelectorAll('.ch'),{opacity:1},at);
+  tl.fromTo(w,{opacity:0,yPercent:45,rotateX:-60},{opacity:1,yPercent:0,rotateX:0,duration:dur,ease:'back.out(1.5)',stagger:st,immediateRender:false},at);};
+const outUp=(ch,el,at,{dur=.38,st=.008}={})=>{tl.to(ch,{opacity:0,yPercent:-70,duration:dur,ease:'power2.in',stagger:st},at);blurTween(tl,el,at,0,40,dur+.1,{ease:'power2.in',...VERT});};
+const outLeft=(ch,el,at,{dur=.38,st=.008}={})=>{tl.to(ch,{opacity:0,xPercent:-60,duration:dur,ease:'power2.in',stagger:st},at);blurTween(tl,el,at,0,50,dur+.1,{ease:'power2.in'});};
+
+/* ---- camera: il mondo si muove, tutto insieme. cam = punto guardato (mondo) + zoom ---- */
+const cam={cx:510,cy:1080,z:1};
+const camTo=(at,dur,v,ease='power2.inOut')=>tl.to(cam,{...v,duration:dur,ease},at);
+
+/* ---- la prenotazione in volo (curva quadratica, funzione pura del tempo) ---- */
+const fly={u:0,lift:0,pop:0,land:0};
+const P0={x:BTN.x,y:BTN.y-150}, P2={x:SLOT.x,y:SLOT.y-110}, P1={x:(BTN.x+SLOT.x)/2,y:520};
+const bez=(u,a,b,c)=>(1-u)*(1-u)*a+2*(1-u)*u*b+u*u*c;
+const wireD=(()=>{const pts=[];for(let i=0;i<=60;i++){const u=i/60;pts.push(`${bez(u,P0.x,P1.x,P2.x).toFixed(1)} ${bez(u,P0.y,P1.y,P2.y).toFixed(1)}`);}return 'M'+pts.join(' L');})();
+const wire=$('#wirePath');wire.setAttribute('d',wireD);
+const WLEN=wire.getTotalLength();wire.style.strokeDasharray=WLEN;wire.style.strokeDashoffset=WLEN;
+const llp=$('#llp');const LLEN=llp.getTotalLength();llp.style.strokeDasharray=LLEN;llp.style.strokeDashoffset=LLEN;
+
+const t1=$('#t1'),t2=$('#t2'),t3=$('#t3');const c1=split(t1),c2=split(t2),c3=split(t3);
+
+/* ================= RUNDOWN =================
+   0,0–2,3  telefono: scelta delle 15:00, tocco su «Prenota», la scheda nasce       · «Il cliente prenota»
+   2,3–4,6  la scheda vola (la camera la segue) e si incastra alle 15:00 di oggi    · «Tu lo vedi subito»
+   4,6–5,9  dallo slot parte il promemoria                                          · «Il promemoria parte da solo»
+   5,9–7,0  la camera si allontana: telefono e agenda nello stesso mondo, logo + filo
+   ============================================ */
+inUp(c1,t1,.15);
+tl.fromTo('#chip15 .fill',{scale:0},{scale:1,duration:.35,ease:'power3.out',immediateRender:false},.75);
+tl.to('#chip15 em',{color:'#fff',duration:.2},.8);
+// dito: scelta orario, poi bottone (coordinate locali allo schermo del telefono)
+tl.set('#finger',{left:CH15.x-296,top:CH15.y-636},.55);
+tl.fromTo('#finger',{opacity:0,scale:1.4},{opacity:1,scale:1,duration:.2,immediateRender:false},.55);
+tl.to('#finger',{scale:.8,duration:.1,yoyo:true,repeat:1},.72);
+camTo(.95,.55,{cy:1380,z:1.25});
+tl.to('#finger',{left:BTN.x-296,top:BTN.y-636,duration:.5,ease:'power2.inOut'},.95);
+tl.to('#finger',{scale:.75,duration:.1,yoyo:true,repeat:1},1.45);
+tl.to('#btn',{scale:.95,duration:.1,yoyo:true,repeat:1,transformOrigin:'50% 50%'},1.45);
+tl.set('#tap',{left:BTN.x-296,top:BTN.y-636},1.45);
+tl.fromTo('#tap',{opacity:.9,scale:.3},{opacity:0,scale:1.6,duration:.6,ease:'power2.out',immediateRender:false},1.45);
+tl.to('#finger',{opacity:0,duration:.2},1.7);
+tl.to(fly,{pop:1,duration:.45,ease:'back.out(1.6)'},1.5);
+tl.to(fly,{lift:1,duration:.55,ease:'power3.out'},1.6);
+camTo(1.7,.6,{cy:1080,z:1.0});
+outUp(c1,t1,2.2);
+// volo: la camera segue la scheda; il filo d'oro si disegna dietro
+tl.to(fly,{u:1,duration:1.25,ease:'power2.inOut'},2.3);
+tl.to(wire,{strokeDashoffset:0,duration:1.25,ease:'power2.inOut'},2.3);
+camTo(2.3,1.3,{cx:SLOT.x,cy:1000,z:.9});
+inRight(c2,t2,2.75);
+camTo(3.6,.6,{cy:SLOT.y-120,z:1.22},'power3.out');
+tl.to(fly,{land:1,duration:.5,ease:'back.out(1.4)'},3.55);
+tl.fromTo('#slotglow',{opacity:0},{opacity:1,duration:.25,immediateRender:false},3.65);
+tl.to('#slotglow',{opacity:0,duration:.8},3.95);
+tl.to('#slot',{opacity:0,duration:.2},3.6);
+tl.to(wire,{opacity:0,duration:.6},4.0);
+outLeft(c2,t2,4.45);
+// promemoria
+camTo(4.55,.7,{cy:1170,z:.84});
+tl.fromTo('#remind',{opacity:0,y:-90,scale:.85},{opacity:1,y:0,scale:1,duration:.7,ease:'back.out(1.5)',immediateRender:false},4.75);
+inWords(t3,4.8);
+tl.to(t3.querySelectorAll('.w'),{opacity:0,yPercent:-40,duration:.35,ease:'power2.in',stagger:.03},5.85);
+// chiusura: la camera si allontana, logo + filo d'oro
+camTo(5.9,.9,{cx:1050,cy:1230,z:.55},'power3.inOut');
+tl.fromTo('#logo',{opacity:0,y:30},{opacity:1,y:0,duration:.6,ease:'power3.out',immediateRender:false},6.2);
+tl.to(llp,{strokeDashoffset:0,duration:.55,ease:'power2.inOut'},6.4);
+tl.to({},{duration:.01},DURATION);
+
+/* ---- render: tutto è funzione di tl.time() ---- */
+const world=$('#world'),card=$('#card'),g1=$('#glow1'),g2=$('#glow2'),turb=$('#turb');
+function render(t){
+  // camera + respiro (seno, mai random)
+  const z=cam.z*(1+.012*Math.sin(t*.9)), cx=cam.cx+6*Math.sin(t*.7), cy=cam.cy+5*Math.cos(t*.6);
+  world.style.transform=`translate(${(W/2-cx*z).toFixed(2)}px,${(H/2-cy*z).toFixed(2)}px) scale(${z.toFixed(4)})`;
+  // fondo vivo: luce calda che si sposta + grana che cambia 12 volte al secondo
+  g1.style.transform=`translate(${(-260+180*Math.sin(t*.45)).toFixed(1)}px,${(260+120*Math.cos(t*.38)).toFixed(1)}px)`;
+  g2.style.transform=`translate(${(380+140*Math.cos(t*.33)).toFixed(1)}px,${(-160+110*Math.sin(t*.41)).toFixed(1)}px)`;
+  turb.setAttribute('seed',String(1+Math.floor(t*12)%48));
+  // scheda
+  const u=fly.u, land=fly.land;
+  let x,y,s,rot;
+  if(u<=0){x=BTN.x;y=BTN.y-150*fly.lift;s=(.55+.45*fly.pop);rot=-3*fly.lift;}
+  else{x=bez(u,P0.x,P1.x,P2.x);y=bez(u,P0.y,P1.y,P2.y);s=1+.18*Math.sin(Math.PI*u);rot=-3+8*Math.sin(Math.PI*u)+3*u;}
+  if(land>0){y=y+(SLOT.y-P2.y)*land;rot=rot*(1-land);s=s+(1-s)*land;}
+  card.style.opacity=fly.pop>0?Math.min(1,fly.pop*1.4):0;
+  card.style.transform=`translate(${x.toFixed(1)}px,${y.toFixed(1)}px) rotate(${rot.toFixed(2)}deg) scale(${s.toFixed(3)})`;
+  const lift=Math.min(1,fly.lift+(u>0&&land<1?1:0))*(1-land);
+  card.style.boxShadow=`0 ${(6+30*lift).toFixed(0)}px ${(14+50*lift).toFixed(0)}px -10px rgba(80,55,10,${(.25+.2*lift).toFixed(2)})`;
+}
+
+/* ---- colla: adatta allo schermo, autoplay, loop, scrub con ?debug=1 ---- */
+const stage=$('#stage');
+const fit=()=>{const k=Math.min(innerWidth/W,innerHeight/H);stage.style.transform=`translate(-50%,-50%) scale(${k})`;};
+addEventListener('resize',fit);fit();
+(function frame(){render(tl.time());requestAnimationFrame(frame);})();
+addEventListener('keydown',e=>{if(e.code==='Space'){e.preventDefault();tl.paused()?tl.play():tl.pause();}if(/^[rR]$/.test(e.key))tl.play(0);});
+if(Q.has('debug')){const ui=$('#ui');ui.style.cssText='display:flex;position:fixed;left:50%;bottom:16px;transform:translateX(-50%);gap:10px;background:#111;color:#ddd;padding:10px 14px;border-radius:12px;font:13px system-ui;z-index:9';
+  ui.innerHTML='<input id="sc" type="range" min="0" max="1000" value="0" style="width:320px"><span id="ck">0.00s</span>';
+  $('#sc').oninput=e=>{tl.pause();tl.time(e.target.value/1000*DURATION);};
+  setInterval(()=>{$('#ck').textContent=tl.time().toFixed(2)+'s';},100);}
+tl.eventCallback('onComplete',()=>tl.play(0));
+const seek=t=>{tl.pause();tl.time(t,false);if(gsap.ticker.tick)gsap.ticker.tick();render(t);};
+window.OPENER={tl,DURATION,seek,W,H,ready:false};
+document.fonts.ready.then(()=>{window.OPENER.ready=true;render(0);if(!Q.has('clean'))tl.play(0);});
+</script>
+</body>
+</html>

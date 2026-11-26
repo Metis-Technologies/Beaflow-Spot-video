@@ -1,0 +1,22 @@
+{
+  "numero": 52,
+  "nome": "stanchi-del-telefono",
+  "titolo": "Stanchi del telefono",
+  "ossatura": "E",
+  "stile": "motion",
+  "tema": "chiaro",
+  "versione": 1,
+  "funzione": "prenotazioni online dei clienti, anche fuori orario, che entrano in agenda (confermato: link di prenotazione, prenotazioni online, agenda)",
+  "note": "26/11: lotto E «Annuncio» (52–56), idea dall'annuncio Treatwell visto dall'utente su Instagram (cartello «cerchiamo…»), solo l'idea: testi e grafica nostri. Stile Motion causa → effetto. Prima un'anteprima muta.",
+  "scene": [
+    {"schermo": ["Cerchiamo", "Saloni stanchi", "del telefono"], "voce": "Cerchiamo saloni stanchi del telefono.", "voce_inizio": 0.05,
+     "si_vede": "il cartello appeso; sotto, il telefono squilla e a ogni squillo il cartello trema; la camera entra nel telefono"},
+    {"schermo": ["Squilla.", "Ancora."], "voce": "Rispondi mentre lavori?", "voce_inizio": 2.95,
+     "si_vede": "chiamata in arrivo, poi persa; tre «Chiamata persa»; il dito tocca Beaflow, onda d'oro"},
+    {"schermo": ["Prenotano", "da soli"], "voce": "Con Beaflow, prenotano da soli.", "voce_inizio": 6.3,
+     "si_vede": "la pagina di prenotazione del cliente alle 23:40: sceglie le 10:30 e tocca «Prenota»"},
+    {"schermo": ["Anche a", "negozio chiuso"], "voce": "Anche la sera, a negozio chiuso.", "voce_inizio": 9.8,
+     "si_vede": "la prenotazione cade nell'agenda di domani: «10:30 · Sara · Taglio», prenotato alle 23:40, confermato"}
+  ],
+  "dati": {}
+}

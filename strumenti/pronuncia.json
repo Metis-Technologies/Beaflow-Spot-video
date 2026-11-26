@@ -9,6 +9,9 @@
     "agenda": {
       "solo_gancio": true,
       "nota": "Da sola in un gancio breve suona «azienda» (19/11, spot 25: «Buchi in agenda?» bocciata due volte). Meglio cambiare parole: «Troppi posti vuoti?»."
+    },
+    "tre": {
+      "nota": "«Oggi, alle tre.» (21/11, spot 49): «tre» con un accento strano. Provate «alle tré» con aiuto nel prompt, «alle quindici», «alle tre del pomeriggio»: scelta dall'utente «Oggi, alle tre del pomeriggio.». Numeri brevi in fondo alla frase: dargli contesto."
     }
   },
   "evita": {

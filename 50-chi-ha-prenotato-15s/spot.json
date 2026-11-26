@@ -1,0 +1,38 @@
+{
+  "numero": 50,
+  "nome": "chi-ha-prenotato",
+  "titolo": "Chi ha prenotato",
+  "ossatura": "D",
+  "stile": "motion",
+  "tema": "chiaro",
+  "versione": 1,
+  "funzione": "elenco delle prenotazioni di oggi e prenotazioni online che arrivano da sole (confermato: prenotazioni online, agenda)",
+  "note": "Idea dell'utente del 22/11: una persona in camera che chiede «sei un parrucchiere o estetista? ti serve un elenco delle persone che ti hanno prenotato?». Avatar Higgsfield scartato per il costo (63–224 crediti): fatto in stile Motion causa → effetto con il telefono al posto della persona. Pagina: sorgente/index.html. Voci Harrison generate il 22/11.",
+  "scene": [
+    {
+      "schermo": ["Parrucchiere,", "barbiere,", "estetista?"],
+      "voce": "Parrucchiere, barbiere, estetista?",
+      "voce_inizio": 0.05,
+      "si_vede": "forbici, rasoio e pennello cadono a domino; a ogni oggetto entra una parola"
+    },
+    {
+      "schermo": ["Chi viene", "oggi?"],
+      "voce": "Chi viene oggi? Lo cerchi nelle chat?",
+      "voce_inizio": 2.95,
+      "si_vede": "il pennello urta il telefono, che si accende: pioggia di chat e una chiamata persa, il telefono vibra"
+    },
+    {
+      "schermo": ["Tutti in", "un elenco"],
+      "voce": "Con Beaflow, hai l'elenco pronto.",
+      "voce_inizio": 6.3,
+      "si_vede": "un dito tocca l'icona Beaflow: i fumetti si mettono in fila e diventano le righe dell'elenco «Oggi»"
+    },
+    {
+      "schermo": ["Lo vedi", "subito"],
+      "voce": "Prenotano da soli, lo vedi subito.",
+      "voce_inizio": 9.8,
+      "si_vede": "la notifica «Nuova prenotazione» cade nell'elenco e diventa «Luca · Colore · 16:30», le righe sobbalzano, spunta «Confermato»"
+    }
+  ],
+  "dati": {}
+}

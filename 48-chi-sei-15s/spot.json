@@ -1,0 +1,68 @@
+{
+  "numero": 48,
+  "nome": "chi-sei",
+  "titolo": "Chi sei",
+  "ossatura": "D",
+  "tema": "chiaro",
+  "versione": 2,
+  "seme": 581,
+  "funzione": "spot «per chi è» (ossatura D, 21/11): pubblico e problema, prenotazioni online, piano Free; nessuna funzione nuova",
+  "note": "Ispirato nella struttura a uno spot visto su Instagram (pubblico → problema → soluzione → invito); testi riscritti da zero. Dati dimostrativi. v2 (21/11): gancio su due scene con tutte le attività gestite (parrucchiere, barbiere, centro estetico, spa, unghie, massaggi, tatuaggi), tolta la scena «Tu lavori, l'agenda si riempie».",
+  "scene": [
+    {
+      "schermo": [
+        "Parrucchiere,",
+        "barbiere,"
+      ],
+      "accento": [
+        "estetista?"
+      ],
+      "voce": "Parrucchiere, barbiere, estetista?",
+      "voce_inizio": 0.05,
+      "si_vede": "le tessere diventano a turno forbici, rasoio e pennello: i mestieri"
+    },
+    {
+      "schermo": [
+        "Spa, unghie,",
+        "massaggi,"
+      ],
+      "accento": [
+        "tatuaggi?"
+      ],
+      "voce": "Spa, unghie, massaggi, tatuaggi?",
+      "voce_inizio": 2.55,
+      "si_vede": "le tessere diventano a turno un fiore di loto, una boccetta di smalto, pietre da massaggio e una macchinetta da tatuaggio"
+    },
+    {
+      "schermo": [
+        "Agenda tra",
+        "messaggi",
+        "e quaderno?"
+      ],
+      "voce": "Agenda tra messaggi e quaderno?",
+      "voce_inizio": 5.12,
+      "si_vede": "fumetti di messaggi, pagine di quaderno e un telefono che squilla, in disordine"
+    },
+    {
+      "schermo": [
+        "Con Beaflow,",
+        "prenotano",
+        "da soli."
+      ],
+      "voce": "Con Beaflow, prenotano da soli.",
+      "voce_inizio": 7.55,
+      "si_vede": "il disordine si ricompone in un telefono con la pagina di prenotazione e il bottone «Prenota»"
+    },
+    {
+      "schermo": [
+        "Parti gratis,",
+        "in pochi",
+        "minuti."
+      ],
+      "voce": "Parti gratis, in pochi minuti.",
+      "voce_inizio": 10.02,
+      "si_vede": "un anello di avanzamento si completa e diventa una spunta oro"
+    }
+  ],
+  "dati": {}
+}

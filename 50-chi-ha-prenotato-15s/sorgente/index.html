@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="it">
+<!-- Made with the Bang Motion skill (Bang Tutorial, MIT, https://github.com/bangtutorial/bang-motion) -->
+<head>
+<meta charset="utf-8">
+<title>Beaflow · Spot 50 «Chi ha prenotato» v1</title>
+<!--
+  STYLE BRIEF (22/11): stile Motion causa → effetto (claude/STILE-MOTION.md), spot 15 s, ossatura D «Per chi è»
+  Catena : forbici, rasoio e pennello cadono a domino (una parola per oggetto) → il pennello esce a destra
+           → rientra da sinistra e urta il telefono, che si accende → pioggia di chat, il telefono vibra
+           → il dito tocca l'icona Beaflow → onda d'oro → i fumetti volano in fila e diventano le righe dell'elenco «Oggi»
+           → scende la notifica «Nuova prenotazione» → cade nell'elenco e diventa «Luca · Colore · 16:30»
+           → «Confermato ✓» → la spunta diventa il punto d'oro → chiusura degli spot
+  Voce   : 0,05 · 2,95 · 6,30 · 9,80 · chiusura 12,90 (spot.json)
+  Formato: 1080×1920, 15 s, 30 fps; testi a 130 px dai lati (regole degli spot)
+-->
+<style>
+@font-face{font-family:"Fraunces";src:url(assets/fraunces.woff2) format("woff2");font-weight:100 900;font-display:block}
+@font-face{font-family:"InterV";src:url(assets/inter.woff2) format("woff2");font-weight:100 900;font-display:block}
+:root{--oro:#C9B16C;--ottone:#775A18;--crema:#F6F0E4;--crema2:#EBDFC8;--nero:#111111;--porc:#FFFDF8}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;background:#E9DFCB;overflow:hidden}
+#stage{position:fixed;left:50%;top:50%;width:1080px;height:1920px;transform:translate(-50%,-50%);overflow:hidden;background:var(--crema)}
+.scene{position:absolute;inset:0;overflow:hidden;visibility:hidden}
+#S1{visibility:visible}#k2,#k3{opacity:0}
+.bgc{position:absolute;inset:0;background:linear-gradient(175deg,#FAF6EE 0%,var(--crema) 45%,var(--crema2) 100%)}
+.glow{position:absolute;border-radius:50%;pointer-events:none}
+.gw{width:1300px;height:1300px;background:radial-gradient(circle,rgba(201,177,108,.32) 0%,rgba(201,177,108,.1) 40%,transparent 68%)}
+.gl{width:1000px;height:1000px;background:radial-gradient(circle,rgba(255,250,240,.85) 0%,transparent 65%)}
+.persp{position:absolute;inset:0;perspective:2200px;perspective-origin:50% 45%}
+.rig{position:absolute;inset:0;transform-style:preserve-3d;will-change:transform}
+.pocket{position:absolute;left:0;right:0;top:0;height:640px;pointer-events:none;background:linear-gradient(180deg,#FAF6EE 0%,rgba(250,246,238,.96) 55%,rgba(248,243,233,.7) 75%,rgba(246,240,228,0) 100%)}
+.shadow{box-shadow:0 40px 80px -24px rgba(70,50,15,.35),0 10px 22px -8px rgba(70,50,15,.2)}
+#grain{position:absolute;inset:0;width:100%;height:100%;opacity:.1;mix-blend-mode:multiply;pointer-events:none}
+.bok{position:absolute;border-radius:50%;pointer-events:none;filter:blur(18px)}
+
+/* S1 · tessere degli attrezzi */
+.tile{position:absolute;width:200px;height:290px;top:1010px;border-radius:40px;background:var(--porc);display:flex;align-items:center;justify-content:center;transform-origin:100% 100%}
+.tile svg{width:132px;height:132px}
+.floor{position:absolute;top:1290px;width:240px;height:40px;border-radius:50%;background:radial-gradient(closest-side,rgba(70,50,15,.22),transparent);}
+
+/* S2 · telefono */
+.phone{position:absolute;width:460px;height:920px;border-radius:72px;background:#151515;padding:16px}
+#ph2{left:310px;top:640px}
+.screen{position:relative;width:100%;height:100%;border-radius:58px;overflow:hidden;font-family:"InterV",system-ui,sans-serif;background:#0B0A09}
+.notch{position:absolute;left:50%;top:18px;width:120px;height:30px;margin-left:-60px;border-radius:15px;background:#151515;z-index:3}
+#lock{position:absolute;inset:0;background:linear-gradient(170deg,#2A2218,#121010);opacity:0}
+#lock-t{position:absolute;left:0;right:0;top:110px;text-align:center;font-size:112px;font-weight:300;color:#F6F0E4;letter-spacing:-.02em}
+#lock-d{position:absolute;left:0;right:0;top:240px;text-align:center;font-size:28px;color:#CFC4AC}
+#unread{position:absolute;left:50%;top:330px;transform:translateX(-50%);padding:14px 26px;border-radius:30px;background:rgba(255,253,248,.14);color:#F6F0E4;font-size:26px;font-weight:600;white-space:nowrap;opacity:0}
+#dock{position:absolute;left:24px;right:24px;bottom:28px;height:150px;border-radius:44px;background:rgba(255,253,248,.12);display:flex;align-items:center;justify-content:space-around;padding:0 18px}
+.app{width:100px;height:100px;border-radius:28px;background:rgba(255,253,248,.22)}
+#bapp{width:116px;height:116px;border-radius:32px;background:#111;border:2px solid rgba(201,177,108,.7);display:flex;align-items:center;justify-content:center;font-family:"Fraunces",Georgia,serif;font-size:76px;font-weight:600;color:var(--oro);line-height:1;padding-bottom:8px}
+#finger{position:absolute;width:62px;height:62px;margin:-31px 0 0 -31px;border-radius:50%;background:rgba(255,253,248,.35);border:3px solid rgba(255,253,248,.4);opacity:0;z-index:4}
+#tap{position:absolute;width:150px;height:150px;margin:-75px 0 0 -75px;border-radius:50%;border:5px solid var(--oro);opacity:0;z-index:4}
+#hitring{position:absolute;left:0;top:0;width:200px;height:200px;margin:-100px 0 0 -100px;border-radius:50%;border:5px solid var(--oro);opacity:0}
+
+/* fumetti condivisi S2 → S3 */
+.bub{position:absolute;left:0;top:0;width:420px;height:112px;margin:-56px 0 0 -210px;border-radius:34px;background:var(--porc);display:flex;align-items:center;gap:18px;padding:0 22px;
+  font-family:"InterV",system-ui,sans-serif;box-shadow:0 26px 50px -18px rgba(70,50,15,.4),0 6px 14px -6px rgba(70,50,15,.2);opacity:0;will-change:transform}
+.bub .av,.lrow .av{width:64px;height:64px;border-radius:50%;background:var(--crema2);color:#4A4234;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:700;flex:none}
+.bub b{display:block;font-size:26px;font-weight:650;color:var(--nero);white-space:nowrap}
+.bub span{display:block;font-size:25px;color:#6E6452;white-space:nowrap;margin-top:2px}
+.bub.miss span{color:#9A3B2E}
+
+/* S3–S4 · l'elenco di oggi */
+#panel{position:absolute;left:150px;top:620px;width:780px;height:960px;border-radius:52px;background:var(--porc);font-family:"InterV",system-ui,sans-serif;color:var(--nero);transform-style:flat}
+#p-h{position:absolute;left:44px;top:40px;font-size:46px;font-weight:650;letter-spacing:-.01em}
+#p-d{position:absolute;right:44px;top:54px;font-size:28px;color:#7A705E}
+#cnt{position:absolute;left:44px;top:100px;font-size:26px;color:var(--ottone);font-weight:600;font-variant-numeric:tabular-nums}
+.lrow{position:absolute;left:30px;right:30px;height:104px;border-radius:26px;background:#F4EEE2;display:flex;align-items:center;gap:20px;padding:0 22px;opacity:0}
+.lrow .h{width:96px;font-size:28px;font-weight:650;color:#4A4234;font-variant-numeric:tabular-nums;flex:none}
+.lrow .nm{font-size:29px;font-weight:600;color:var(--nero);white-space:nowrap}
+.lrow .sv{font-size:26px;color:#7A705E;white-space:nowrap;margin-left:6px}
+#row6{background:var(--ottone)}
+#row6 .h,#row6 .nm{color:#fff}#row6 .sv{color:rgba(255,255,255,.85)}
+#row6 .av{background:var(--oro);color:var(--nero)}
+#row6 .pill{margin-left:auto;padding:8px 18px;border-radius:20px;background:rgba(255,253,248,.2);color:#fff;font-size:22px;font-weight:650}
+#chk{width:56px;height:56px;border-radius:50%;background:rgba(255,253,248,.2);display:flex;align-items:center;justify-content:center;flex:none}
+#chk path{stroke-dasharray:40;stroke-dashoffset:40}
+#ring6{position:absolute;left:18px;right:18px;height:128px;border-radius:34px;border:4px solid var(--oro);opacity:0}
+
+/* notifica condivisa S3 → S4 */
+#nb{position:absolute;left:0;top:0;width:660px;height:136px;margin:-68px 0 0 -330px;border-radius:38px;background:#151311;color:#fff;font-family:"InterV",system-ui,sans-serif;
+  display:flex;align-items:center;gap:22px;padding:0 26px;box-shadow:0 30px 60px -20px rgba(40,25,5,.55);opacity:0;will-change:transform}
+#nb .ic{width:80px;height:80px;border-radius:24px;background:#2A2218;display:flex;align-items:center;justify-content:center;flex:none}
+#nb b{display:block;font-size:29px;font-weight:650;white-space:nowrap}
+#nb span{display:block;font-size:26px;color:#D9CEB6;white-space:nowrap;margin-top:3px}
+
+/* titoli */
+.ttl{position:absolute;left:130px;font-family:"Fraunces",Georgia,serif;font-weight:500;color:var(--nero);letter-spacing:-.015em;line-height:1.03;white-space:nowrap;font-variation-settings:"opsz" 144,"SOFT" 50;font-size:100px}
+.ttl .w{display:inline-block}
+.ttl .ch{display:inline-block;opacity:0;will-change:transform,opacity,filter}
+.k{color:var(--ottone)}
+#t1a{top:300px}#t1b{top:404px}#t1c{top:508px}
+#t2,#t3,#t4{top:300px}
+
+/* chiusura come negli spot */
+#close{position:absolute;inset:0;visibility:hidden}
+#dot{position:absolute;left:0;top:0;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;background:radial-gradient(circle,#FFF6DA 0%,#C9B16C 45%,rgba(201,177,108,0) 72%);opacity:0}
+#flash{position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(255,246,218,.95),rgba(201,177,108,.25) 45%,transparent 75%);opacity:0}
+#halo{position:absolute;left:540px;top:600px;width:1100px;height:1100px;margin:-550px 0 0 -550px;border-radius:50%;background:radial-gradient(circle,rgba(201,177,108,.35),transparent 65%);opacity:0}
+#logoB{position:absolute;left:180px;top:490px;width:720px;transform-origin:50% 50%;opacity:0}
+#lineC{position:absolute;left:340px;top:748px;overflow:visible}
+#btnC{position:absolute;left:280px;top:880px;width:520px;height:144px;border-radius:72px;background:var(--nero);color:#fff;font-family:"InterV",system-ui,sans-serif;font-size:50px;font-weight:600;display:flex;align-items:center;justify-content:center;opacity:0}
+#offer{position:absolute;left:0;right:0;top:1076px;text-align:center;font-family:"InterV",system-ui,sans-serif;font-size:40px;font-weight:500;color:#4A4234;opacity:0}
+#url{position:absolute;left:0;right:0;top:1152px;text-align:center;font-family:"InterV",system-ui,sans-serif;font-size:40px;font-weight:600;color:var(--ottone);opacity:0}
+#filters{position:absolute;width:0;height:0}
+#ui{display:none}
+#wave{position:absolute;left:0;top:0;width:200px;height:200px;margin:-100px 0 0 -100px;border-radius:50%;
+  background:radial-gradient(circle,#FBF1D6 0%,#EED9A4 55%,#D9BC78 80%,rgba(201,177,108,.0) 100%);opacity:0;pointer-events:none;will-change:transform}
+</style>
+</head>
+<body>
+<svg id="filters"><defs></defs></svg>
+<div id="stage">
+
+  <!-- S1 · forbici, rasoio, pennello: cadono a domino -->
+  <div class="scene" id="S1"><div class="bgc"></div><div class="glow gw" id="g1a"></div><div class="glow gl" id="g1b"></div>
+    <div class="persp"><div class="rig" id="r1">
+      <div class="floor" style="left:170px"></div><div class="floor" style="left:420px"></div><div class="floor" style="left:670px"></div>
+      <div class="tile shadow" id="k1" style="left:190px"><svg viewBox="0 0 64 64" fill="none" stroke="#775A18" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="18" cy="46" r="8"/><circle cx="46" cy="46" r="8"/><path d="M23.5 40.5L46 8M40.5 40.5L18 8"/><circle cx="32" cy="27" r="1.6" fill="#775A18"/></svg></div>
+      <div class="tile shadow" id="k2" style="left:440px"><svg viewBox="0 0 64 64" fill="none" stroke="#775A18" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10 22h34l8-6v12l-8-6"/><path d="M10 22v8h30"/><path d="M40 30l12 22a4 4 0 0 1-7 3L33 30"/></svg></div>
+      <div class="tile shadow" id="k3" style="left:690px"><svg viewBox="0 0 64 64" fill="none" stroke="#775A18" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M32 6c7 6 9 13 7 20H25c-2-7 0-14 7-20z"/><path d="M26 26h12v8H26z"/><path d="M29 34h6l-1 24h-4z"/></svg></div>
+    </div></div>
+    <div class="pocket"></div>
+    <h1 class="ttl" id="t1a">Parrucchiere,</h1>
+    <h1 class="ttl" id="t1b">barbiere,</h1>
+    <h1 class="ttl" id="t1c"><span class="k">estetista?</span></h1>
+  </div>
+
+  <!-- S2 · il pennello urta il telefono: si accende, arrivano le chat -->
+  <div class="scene" id="S2"><div class="bgc"></div><div class="glow gw" id="g2a"></div><div class="glow gl" id="g2b"></div>
+    <div class="persp"><div class="rig" id="r2">
+      <div class="phone shadow" id="ph2"><div class="screen">
+        <div class="notch"></div>
+        <div id="lock"><div id="lock-t">8:30</div><div id="lock-d">lunedì</div><div id="unread">12 messaggi non letti</div>
+          <div id="dock"><div class="app"></div><div class="app"></div><div id="bapp">b</div><div class="app"></div></div></div>
+        <div id="finger"></div><div id="tap"></div>
+      </div></div>
+      <div class="tile shadow" id="k3b" style="left:0;top:0;transform-origin:50% 50%"><svg viewBox="0 0 64 64" fill="none" stroke="#775A18" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M32 6c7 6 9 13 7 20H25c-2-7 0-14 7-20z"/><path d="M26 26h12v8H26z"/><path d="M29 34h6l-1 24h-4z"/></svg></div>
+      <div id="hitring"></div>
+    </div></div>
+    <div class="pocket"></div>
+    <h1 class="ttl" id="t2">Chi viene<br><span class="k">oggi?</span></h1>
+  </div>
+
+  <!-- S3 e S4 · l'elenco di oggi (S4 = inquadratura più vicina) -->
+  <div class="scene" id="S3"><div class="bgc"></div><div class="glow gw" id="g3a"></div><div class="glow gl" id="g3b"></div>
+    <div class="persp"><div class="rig" id="r3">
+      <div id="panel" class="shadow"><div id="p-h">Oggi</div><div id="p-d">lunedì</div><div id="cnt">0 prenotazioni</div><div id="rows"></div></div>
+    </div></div>
+    <div class="pocket"></div>
+    <h1 class="ttl" id="t3">Tutti in<br>un <span class="k">elenco</span></h1>
+    <h1 class="ttl" id="t4">Lo vedi<br><span class="k">subito</span></h1>
+  </div>
+
+  <div id="wave"></div>
+  <div id="bubs"></div>
+  <div id="nb"><div class="ic"><svg width="44" height="44" viewBox="0 0 40 40"><path d="M20 7c-5.5 0-9 4-9 9.5V23l-3 4h24l-3-4v-6.5C29 11 25.5 7 20 7zM16.5 30a3.5 3.5 0 0 0 7 0" fill="none" stroke="#C9B16C" stroke-width="2.6" stroke-linejoin="round"/></svg></div>
+    <div><b>Nuova prenotazione</b><span>Luca · Colore · 16:30</span></div></div>
+  <div id="bokeh"></div>
+
+  <div id="close"><div class="bgc"></div><div id="halo"></div>
+    <img id="logoB" src="assets/logo.svg" alt="Beaflow">
+    <svg id="lineC" width="400" height="10" viewBox="0 0 400 10"><path id="lc" d="M5 5H395" stroke="#C9B16C" stroke-width="5" stroke-linecap="round" fill="none"/></svg>
+    <div id="btnC">Inizia gratis</div>
+    <div id="offer">Piano Free · 0 € per sempre</div>
+    <div id="url">beaflow.it</div>
+  </div>
+  <div id="dot"></div><div id="flash"></div>
+
+  <svg id="grain" viewBox="0 0 1080 1920" preserveAspectRatio="none"><filter id="gr"><feTurbulence id="turb" type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="1"/><feColorMatrix type="saturate" values="0"/></filter><rect width="1080" height="1920" filter="url(#gr)"/></svg>
+</div>
+<div id="ui"></div>
+
+<script src="assets/gsap.min.js"></script>
+<script>
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const W=1080,H=1920,DURATION=15.0;
+const Q=new URLSearchParams(location.search);
+
+/* ---- dati dimostrativi ---- */
+const ROWS=[['9:30','G','Giulia','Taglio'],['10:15','M','Marco','Barba'],['11:00','S','Sara','Manicure'],['14:30','E','Elena','Pulizia viso'],['15:00','A','Anna','Piega']];
+const BUBS=[['G','Giulia','Alle 9:30 va bene?',345,810,3.3],['M','Marco','Barba alle 10:15?',735,940,3.6],['S','Sara','Confermo le 11',345,1070,3.9],
+            ['E','Elena','Chiamata persa',735,1200,4.2,'miss'],['A','Anna','Messaggio vocale · 0:42',345,1330,4.5]];
+ROWS.forEach((r,k)=>{const d=document.createElement('div');d.className='lrow';d.id='row'+(k+1);d.style.top=(150+k*124)+'px';
+  d.innerHTML=`<div class="h">${r[0]}</div><div class="av">${r[1]}</div><div><span class="nm">${r[2]}</span><span class="sv">· ${r[3]}</span></div>`;$('#rows').appendChild(d);});
+{const d=document.createElement('div');d.id='ring6';d.style.top=(150+5*124-12)+'px';$('#rows').appendChild(d);
+ const r=document.createElement('div');r.className='lrow';r.id='row6';r.style.top=(150+5*124)+'px';
+ r.innerHTML=`<div class="h">16:30</div><div class="av">L</div><div><span class="nm">Luca</span><span class="sv">· Colore</span></div><div class="pill">Nuova</div><div id="chk"><svg width="32" height="32" viewBox="0 0 34 34"><path d="M8 18l6 6 12-13" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>`;
+ $('#rows').appendChild(r);}
+BUBS.forEach((b,k)=>{const d=document.createElement('div');d.className='bub'+(b[6]?' '+b[6]:'');d.innerHTML=`<div class="av">${b[0]}</div><div><b>${b[1]}</b><span>${b[2]}</span></div>`;$('#bubs').appendChild(d);});
+const bubEls=$$('#bubs .bub');
+
+/* ---- bokeh ---- */
+const BOK=[[120,520,150,.5],[930,700,110,.7],[180,1500,190,.35],[880,1380,140,.55],[540,1720,120,.6],[60,980,90,.8],[1010,300,100,.45]];
+BOK.forEach(b=>{const d=document.createElement('div');d.className='bok';d.style.width=d.style.height=b[2]+'px';$('#bokeh').appendChild(d);});
+const bokEls=$$('#bokeh .bok');
+
+/* ---- split + blur direzionale ---- */
+const defs=$('#filters defs');let fc=0;
+function makeBlur(){const NS='http://www.w3.org/2000/svg',id='mb'+(fc++),f=document.createElementNS(NS,'filter');f.id=id;
+  f.setAttribute('x','-70%');f.setAttribute('y','-70%');f.setAttribute('width','240%');f.setAttribute('height','240%');
+  const g=document.createElementNS(NS,'feGaussianBlur');g.setAttribute('stdDeviation','0 0');f.appendChild(g);defs.appendChild(f);return{url:`url(#${id})`,node:g};}
+function blurTween(tl,el,at,from,to,dur,{ease='power3.out',ax=1,ay=.08}={}){const b=makeBlur(),o={v:from};
+  tl.set(el,{filter:b.url},at);tl.to(o,{v:to,duration:dur,ease,onUpdate(){b.node.setAttribute('stdDeviation',`${(o.v*ax).toFixed(2)} ${(o.v*ay).toFixed(2)}`);}},at);
+  tl.set(el,{filter:'none'},at+dur);}
+function split(el){const out=[];const walk=(node)=>{[...node.childNodes].forEach(n=>{
+    if(n.nodeType===3){const frag=document.createDocumentFragment();n.textContent.split(/(\s+)/).forEach(tok=>{if(!tok)return;
+        if(/^\s+$/.test(tok)){const s=document.createElement('span');s.className='ch';s.innerHTML='&nbsp;';frag.appendChild(s);out.push(s);return;}
+        const w=document.createElement('span');w.className='w';for(const c of tok){const s=document.createElement('span');s.className='ch';s.textContent=c;w.appendChild(s);out.push(s);}frag.appendChild(w);});
+      n.replaceWith(frag);} else if(n.nodeType===1){walk(n);} });};walk(el);return out;}
+
+const tl=gsap.timeline({paused:true});
+const VERT={ax:.1,ay:1};
+const inUp=(ch,el,at,{dur=.6,st=.018}={})=>{tl.fromTo(ch,{opacity:0,yPercent:60,scaleY:1.4},{opacity:1,yPercent:0,scaleY:1,duration:dur,ease:'power4.out',stagger:st,immediateRender:false},at);blurTween(tl,el,at,28,0,dur,VERT);};
+const inLeft=(ch,el,at,{dur=.6,st=.02}={})=>{tl.fromTo(ch,{opacity:0,xPercent:-50},{opacity:1,xPercent:0,duration:dur,ease:'power4.out',stagger:st,immediateRender:false},at);blurTween(tl,el,at,48,0,dur,{ease:'power4.out'});};
+const inDepth=(ch,el,at,{dur=.7,st=.016}={})=>{tl.fromTo(ch,{opacity:0,scale:2.3},{opacity:1,scale:1,duration:dur,ease:'expo.out',stagger:{each:st,from:'center'},immediateRender:false},at);blurTween(tl,el,at,22,0,dur,{ease:'expo.out',ax:1,ay:1});};
+const inWords=(el,at,{dur=.5,st=.09}={})=>{tl.set(el.querySelectorAll('.ch'),{opacity:1},at);
+  tl.fromTo(el.querySelectorAll('.w'),{opacity:0,yPercent:45,rotateX:-60},{opacity:1,yPercent:0,rotateX:0,duration:dur,ease:'back.out(1.5)',stagger:st,immediateRender:false},at);};
+const outUp=(ch,el,at,{dur=.26,st=.005}={})=>{tl.to(ch,{opacity:0,yPercent:-70,duration:dur,ease:'power2.in',stagger:st},at);blurTween(tl,el,at,0,40,dur+.1,{ease:'power2.in',...VERT});};
+const outRight=(ch,el,at,{dur=.26,st=.005}={})=>{tl.to(ch,{opacity:0,xPercent:60,duration:dur,ease:'power2.in',stagger:{each:st,from:'end'}},at);blurTween(tl,el,at,0,50,dur+.1,{ease:'power2.in'});};
+const sceneOn=(id,from,to)=>{tl.set(id,{visibility:'visible'},from);if(to!=null)tl.set(id,{visibility:'hidden'},to);};
+const cub=(u,a,b,c,d)=>{const v=1-u;return v*v*v*a+3*v*v*u*b+3*v*u*u*c+u*u*u*d;};
+
+const c1a=split($('#t1a')),c1b=split($('#t1b')),c1c=split($('#t1c')),c2=split($('#t2')),c3=split($('#t3')),c4=split($('#t4'));
+
+/* ================= SCALETTA · causa → effetto (15 s) =================
+   S1 0,00–2,85  forbici, rasoio, pennello atterrano (una parola ciascuno) → cadono a domino → il pennello esce a destra
+   S2 2,85–6,10  il pennello rientra da sinistra e URTA il telefono → si accende → pioggia di chat, vibra → il dito tocca Beaflow → onda d'oro
+   S3 6,10–9,50  dall'onda si apre l'elenco: i fumetti VOLANO nelle righe → scende la notifica «Nuova prenotazione»
+   S4 9,50–12,85 più vicini: la notifica CADE nell'elenco e diventa Luca 16:30 → le righe sobbalzano → «Confermato ✓»
+   CH 12,85–15   la spunta diventa il punto d'oro che risucchia tutto → zoom in sul logo → filo → Inizia gratis → offerta → sito
+   ===================================================================== */
+const S2T=2.85,S3T=6.1,S4T=9.5,CL=12.85;
+
+/* S1 */
+sceneOn('#S1',0,S2T);
+tl.fromTo('#r1',{rotationX:6,rotationY:-10,z:-40},{rotationX:3,rotationY:6,z:0,duration:S2T,ease:'sine.inOut',immediateRender:false},0);
+const LAND=[0.05,0.7,1.35];
+['#k1','#k2','#k3'].forEach((k,i)=>{tl.fromTo(k,{y:-240,opacity:i?0:1,rotation:-10,scale:.86},{y:0,opacity:1,rotation:0,scale:1,duration:.4,ease:'power3.in',immediateRender:false},LAND[i]);
+  tl.to(k,{scaleY:.9,scaleX:1.06,duration:.07,yoyo:true,repeat:1,ease:'power2.out',transformOrigin:'50% 100%'},LAND[i]+.4);});
+inUp(c1a,$('#t1a'),LAND[0]+.38);inUp(c1b,$('#t1b'),LAND[1]+.38);inUp(c1c,$('#t1c'),LAND[2]+.38);
+// causa: il domino
+tl.to('#k1',{rotation:26,duration:.18,ease:'power2.in',transformOrigin:'100% 100%'},2.0);
+tl.to('#k2',{rotation:26,duration:.16,ease:'power2.in',transformOrigin:'100% 100%'},2.14);
+tl.to('#k1',{rotation:34,duration:.12,ease:'power1.out'},2.18);
+tl.to('#k3',{rotation:90,duration:.24,ease:'power2.in',transformOrigin:'100% 100%'},2.26);
+tl.to('#k3',{x:820,y:-40,duration:.45,ease:'power2.in'},2.42);
+blurTween(tl,$('#k3'),2.42,0,30,.45,{ease:'power2.in'});
+tl.to('#r1',{x:-40,duration:.4,ease:'power2.in'},2.45);
+outUp([...c1a,...c1b,...c1c],$('#t1a'),2.5);tl.to(['#t1b','#t1c'],{opacity:0,duration:.25},2.5);
+
+/* S2 */
+sceneOn('#S2',S2T,S3T);
+tl.fromTo('#ph2',{rotationY:14,rotationX:5,z:-60},{rotationY:-4,rotationX:3,z:0,duration:3.2,ease:'sine.inOut',immediateRender:false},S2T);
+// il pennello rientra da sinistra, nella stessa direzione
+const HIT=3.1;
+tl.fromTo('#k3b',{x:-320,y:900,rotation:90,opacity:1},{x:65,y:900,duration:HIT-S2T,ease:'power1.in',immediateRender:false},S2T);
+blurTween(tl,$('#k3b'),S2T,30,0,HIT-S2T,{ease:'power1.in'});
+tl.to('#k3b',{x:0,rotation:72,duration:.3,ease:'power2.out'},HIT);
+tl.to('#k3b',{scale:0,opacity:0,duration:.3,ease:'power2.in'},HIT+.25);
+// effetto: il telefono sobbalza e si accende
+tl.to('#ph2',{rotationZ:2.2,x:14,duration:.06,yoyo:true,repeat:3,ease:'sine.inOut'},HIT);
+tl.set('#hitring',{left:310,top:1045},HIT);tl.fromTo('#hitring',{opacity:.9,scale:.3},{opacity:0,scale:1.8,duration:.5,ease:'power2.out',immediateRender:false},HIT);
+tl.fromTo('#lock',{opacity:0},{opacity:1,duration:.25,ease:'power2.out',immediateRender:false},HIT+.02);
+tl.fromTo('#lock-t',{scale:1.15,opacity:0},{scale:1,opacity:1,duration:.4,ease:'expo.out',immediateRender:false},HIT+.05);
+inLeft(c2,$('#t2'),HIT+.04);
+// le chat arrivano una dopo l'altra, il telefono vibra a ogni messaggio
+const pops=BUBS.map(()=>({p:0}));
+BUBS.forEach((b,k)=>{tl.to(pops[k],{p:1,duration:.4,ease:'back.out(1.8)'},b[5]);
+  tl.to('#ph2',{rotationZ:k%2?-1.2:1.2,duration:.045,yoyo:true,repeat:3,ease:'sine.inOut'},b[5]);});
+tl.fromTo('#unread',{opacity:0,y:-20},{opacity:1,y:0,duration:.35,ease:'back.out(1.6)',immediateRender:false},4.7);
+tl.to('#ph2',{rotationZ:1.4,duration:.04,yoyo:true,repeat:9,ease:'sine.inOut'},4.75);
+// causa: il dito tocca l'icona Beaflow
+const _ba=$('#bapp'),_dk=$('#dock');
+const ICON={x:_dk.offsetLeft+_ba.offsetLeft+_ba.offsetWidth/2,y:_dk.offsetTop+_ba.offsetTop+_ba.offsetHeight/2};   // centro dell'icona nello schermo
+const ICS={x:310+16+ICON.x,y:640+16+ICON.y};                                                                         // …e sullo stage
+tl.fromTo('#finger',{opacity:0,left:360,top:900,scale:1.4},{opacity:1,left:ICON.x,top:ICON.y,scale:1,duration:.4,ease:'power3.out',immediateRender:false},5.0);
+tl.to('#finger',{scale:.78,duration:.09,yoyo:true,repeat:1},5.42);
+tl.to('#bapp',{scale:.88,duration:.09,yoyo:true,repeat:1},5.42);
+tl.set('#tap',{left:ICON.x,top:ICON.y},5.42);tl.fromTo('#tap',{opacity:.95,scale:.3},{opacity:0,scale:1.7,duration:.45,ease:'power2.out',immediateRender:false},5.42);
+tl.to('#finger',{opacity:0,duration:.15},5.55);
+outRight(c2,$('#t2'),5.4);
+tl.set('#r2',{transformOrigin:`${ICS.x}px ${ICS.y}px`},5.45);
+tl.to('#r2',{scale:1.18,duration:.6,ease:'power2.in'},5.45);
+// effetto: l'onda d'oro parte dall'icona
+tl.set('#wave',{left:ICS.x,top:ICS.y},5.5);
+tl.fromTo('#wave',{opacity:1,scale:.1},{scale:19,duration:.62,ease:'power2.in',immediateRender:false},5.5);
+
+/* S3 */
+sceneOn('#S3',S3T,CL+.05);
+tl.to('#wave',{opacity:0,duration:.45,ease:'power2.out'},S3T);
+tl.fromTo('#panel',{scale:.9,rotationX:10,rotationY:-8,z:-120},{scale:1,rotationX:5,rotationY:4,z:0,duration:.9,ease:'expo.out',immediateRender:false},S3T);
+tl.to('#panel',{rotationX:3,rotationY:-3,duration:2.4,ease:'sine.inOut'},S3T+.9);
+const fl=BUBS.map(()=>({u:0}));
+const ARR=BUBS.map((b,k)=>S3T+.08+k*.13+.5);
+BUBS.forEach((b,k)=>{tl.to(fl[k],{u:1,duration:.5,ease:'power2.inOut'},ARR[k]-.5);
+  tl.fromTo('#row'+(k+1),{opacity:0,scale:1.07},{opacity:1,scale:1,duration:.35,ease:'back.out(2)',immediateRender:false},ARR[k]-.06);});
+inUp(c3,$('#t3'),ARR[0]-.05);
+tl.fromTo('#cnt',{opacity:.4},{opacity:1,duration:.3,immediateRender:false},ARR[0]);
+// causa: scende la notifica
+const nbp={a:0,u:0};
+tl.to(nbp,{a:1,duration:.45,ease:'back.out(1.7)'},9.02);
+outUp(c3,$('#t3'),8.85);
+
+/* S4 · stacco su un'inquadratura più vicina */
+tl.set('#r3',{transformOrigin:'540px 1000px',scale:1.1,rotationY:-6,rotationX:4},S4T);
+tl.set('#panel',{rotationX:2,rotationY:-2},S4T);
+tl.to('#r3',{rotationY:3,scale:1.13,duration:CL-S4T-.5,ease:'sine.inOut'},S4T);
+tl.to(nbp,{u:1,duration:.36,ease:'power2.in'},S4T);
+const IMP=S4T+.36;
+tl.set('#row6',{opacity:1},IMP);
+tl.fromTo('#row6',{scale:1.12},{scale:1,duration:.4,ease:'back.out(2.2)',immediateRender:false},IMP);
+tl.fromTo('#ring6',{opacity:1,scale:.97},{opacity:0,scale:1.1,duration:.6,ease:'power2.out',immediateRender:false},IMP);
+for(let k=1;k<=5;k++){const d=6-k;tl.to('#row'+k,{y:-18/Math.sqrt(d),duration:.09,yoyo:true,repeat:1,ease:'power2.out'},IMP+.04*d);}
+tl.to('#panel',{y:10,duration:.06,yoyo:true,repeat:1,ease:'power2.out'},IMP);
+inDepth(c4,$('#t4'),IMP+.05);
+// «Confermato ✓»
+tl.to('#chk',{backgroundColor:'#C9B16C',duration:.15},10.55);
+tl.to('#chk path',{strokeDashoffset:0,duration:.25,ease:'power2.out'},10.55);
+tl.fromTo('#chk',{scale:1.3},{scale:1,duration:.35,ease:'back.out(2)',immediateRender:false},10.55);
+tl.to('#row6 .pill',{opacity:.0,duration:.2},10.5);
+outUp(c4,$('#t4'),12.15);
+
+/* chiusura: la spunta diventa il punto d'oro che risucchia tutto → zoom in sul logo */
+const LOGO={x:540,y:585};
+const dotp={a:0,m:0};
+tl.to(dotp,{a:1,duration:.18,ease:'power2.out'},12.32);
+tl.to(dotp,{m:1,duration:.38,ease:'power2.inOut'},12.42);
+tl.to('#r3',{scale:0,rotation:-18,duration:.36,ease:'power3.in'},12.42);
+tl.fromTo('#r3',{filter:'blur(0px)'},{filter:'blur(10px)',duration:.36,ease:'power2.in',immediateRender:false},12.42);
+tl.set('#close',{visibility:'visible'},CL);
+tl.fromTo('#dot',{scale:2.6},{opacity:0,scale:7,duration:.35,ease:'power2.out',immediateRender:false},CL);
+tl.fromTo('#flash',{opacity:0},{opacity:1,duration:.08,immediateRender:false},CL);
+tl.to('#flash',{opacity:0,duration:.55,ease:'power2.out'},CL+.08);
+tl.fromTo('#halo',{opacity:0,scale:.4},{opacity:1,scale:1,duration:1.1,ease:'expo.out',immediateRender:false},CL);
+tl.fromTo('#logoB',{opacity:0,scale:.16,filter:'blur(18px)'},{opacity:1,scale:1,filter:'blur(0px)',duration:.9,ease:'expo.out',immediateRender:false},CL);
+tl.to('#logoB',{scale:1.035,duration:1.3,ease:'sine.inOut'},CL+.9);
+const lc=$('#lc');const LCL=lc.getTotalLength();lc.style.strokeDasharray=LCL;lc.style.strokeDashoffset=LCL;
+tl.to(lc,{strokeDashoffset:0,duration:.5,ease:'power2.inOut'},CL+.5);
+tl.fromTo('#btnC',{opacity:0,y:40,scale:.92},{opacity:1,y:0,scale:1,duration:.5,ease:'back.out(1.6)',immediateRender:false},CL+.75);
+tl.fromTo('#offer',{opacity:0,y:24},{opacity:1,y:0,duration:.4,ease:'power3.out',immediateRender:false},CL+.95);
+tl.fromTo('#url',{opacity:0,y:24},{opacity:1,y:0,duration:.4,ease:'power3.out',immediateRender:false},CL+1.1);
+tl.to({},{duration:.01},DURATION);
+
+/* ---- render: tutto da tl.time() ---- */
+const turb=$('#turb'),nb=$('#nb'),dot=$('#dot'),cnt=$('#cnt');
+const drift=(el,t,ax,ay,bx,by,s1,s2)=>{el.style.transform=`translate(${(ax+bx*Math.sin(t*s1)).toFixed(1)}px,${(ay+by*Math.cos(t*s2)).toFixed(1)}px)`;};
+const st=()=>$('#stage').getBoundingClientRect();
+function screenOf(el){const r=el.getBoundingClientRect(),s=st(),k=s.width/W;return{x:(r.left+r.width/2-s.left)/k,y:(r.top+r.height/2-s.top)/k,w:r.width/k};}
+let lastCnt='';
+function render(t){
+  drift($('#g1a'),t,-260,260,180,120,.45,.38);drift($('#g1b'),t,380,-160,140,110,.33,.41);
+  drift($('#g2a'),t,-200,420,170,110,.42,.36);drift($('#g2b'),t,420,-120,120,100,.35,.4);
+  drift($('#g3a'),t,300,500,160,120,.4,.35);drift($('#g3b'),t,-300,-100,120,120,.37,.44);
+  turb.setAttribute('seed',String(1+Math.floor(t*12)%48));
+  // bokeh: S1 scendono con gli attrezzi, S2 vanno a destra col pennello, S3 salgono verso le righe, S4 scendono con la notifica
+  const inClose=t>=CL;
+  bokEls.forEach((d,i)=>{const b=BOK[i];let x=b[0]+30*Math.sin(t*.35+i),y=b[1]+25*Math.cos(t*.3+i);
+    if(t<S2T){y=b[1]+t*60*(.6+b[3]);}
+    else if(t<S3T){x=((b[0]+(t-S2T)*180*(.6+b[3]))%1300)-110;}
+    else if(t<S4T){y=b[1]-(t-S3T)*90*(.6+b[3]);}
+    else {y=b[1]+(t-S4T)*70*(.6+b[3]);}
+    d.style.transform=`translate(${(x-b[2]/2).toFixed(1)}px,${(y-b[2]/2).toFixed(1)}px)`;
+    d.style.background='rgba(222,200,140,.32)';d.style.opacity=inClose?0:.45;});
+  // fumetti: nascono attorno al telefono (S2), tremano, poi volano nelle righe dell'elenco (S3)
+  BUBS.forEach((b,k)=>{const el=bubEls[k];let op=0,x=b[3],y=b[4],s=1,r=0;
+    if(t>=b[5]&&t<S3T){const p=pops[k].p;op=Math.min(1,p*1.4);s=.4+.6*p;r=(k%2?3:-3)*(1-p);
+      const j=Math.max(0,Math.min(1,(t-4.7)/.6));x+=j*6*Math.sin(t*31+k*2);y+=j*4*Math.cos(t*27+k);
+      if(t>5.45){const z=Math.min(1,(t-5.45)/.65);x=x+(ICS.x-x)*.08*z;y=y+(ICS.y-y)*.05*z;s*=1+.06*z;}}
+    else if(t>=S3T&&t<ARR[k]+.2){const u=fl[k].u,row=screenOf($('#row'+(k+1)));
+      const x0=b[3],y0=b[4];x=cub(u,x0,x0+(k%2?60:-60),row.x,row.x);y=cub(u,y0,y0-160,row.y-140,row.y);
+      s=1+(row.w/420-1)*u;r=(k%2?-8:8)*Math.sin(Math.PI*u);op=t<ARR[k]?1:Math.max(0,1-(t-ARR[k])/.18);}
+    el.style.opacity=op;
+    el.style.transform=`translate(${x.toFixed(1)}px,${y.toFixed(1)}px) rotate(${r.toFixed(2)}deg) scale(${s.toFixed(3)})`;});
+  // contatore dell'elenco
+  let n=ARR.filter(a=>t>=a-.02).length+(t>=IMP?1:0);const txt=n===1?'1 prenotazione':`${n} prenotazioni`;
+  if(txt!==lastCnt){cnt.textContent=txt;lastCnt=txt;}
+  // notifica: scende sopra l'elenco (S3), poi cade nelle 16:30 e diventa la riga (S4)
+  let no=0,nx=540,ny=560,ns=1,nr=0;
+  if(t>=9.02&&t<S4T){const a=nbp.a;no=Math.min(1,a*1.5);ns=.7+.3*a;ny=600+6*Math.sin(t*7);nr=2*Math.sin(t*18)*(1-a*.6);}
+  else if(t>=S4T&&t<IMP+.12){const u=nbp.u,r6=screenOf($('#row6'));no=t<IMP?1:Math.max(0,1-(t-IMP)/.12);
+    nx=540+(r6.x-540)*u;ny=600+(r6.y-600)*u;ns=1+(r6.w/660-1)*u;nr=-3*Math.sin(Math.PI*u);}
+  nb.style.opacity=no;nb.style.transform=`translate(${nx.toFixed(1)}px,${ny.toFixed(1)}px) rotate(${nr.toFixed(2)}deg) scale(${ns.toFixed(3)})`;
+  // punto d'oro: nasce dalla spunta e va al logo
+  if(t>=12.32&&t<CL){const c=screenOf($('#chk'));const m=dotp.m;
+    const px=c.x+(LOGO.x-c.x)*m, py=c.y+(LOGO.y-c.y)*m;dot.style.left=px.toFixed(1)+'px';dot.style.top=py.toFixed(1)+'px';
+    dot.style.opacity=dotp.a;gsap.set(dot,{scale:.3+1.3*dotp.a+1.0*m});}
+  else if(t<12.32){dot.style.opacity=0;}
+  else{dot.style.left=LOGO.x+'px';dot.style.top=LOGO.y+'px';}
+}
+
+/* ---- colla ---- */
+const stage=$('#stage');
+const fit=()=>{const k=Math.min(innerWidth/W,innerHeight/H);stage.style.transform=`translate(-50%,-50%) scale(${k})`;};
+addEventListener('resize',fit);fit();
+(function frame(){render(tl.time());requestAnimationFrame(frame);})();
+addEventListener('keydown',e=>{if(e.code==='Space'){e.preventDefault();tl.paused()?tl.play():tl.pause();}if(/^[rR]$/.test(e.key))tl.play(0);});
+if(Q.has('debug')){const ui=$('#ui');ui.style.cssText='display:flex;position:fixed;left:50%;bottom:16px;transform:translateX(-50%);gap:10px;background:#111;color:#ddd;padding:10px 14px;border-radius:12px;font:13px system-ui;z-index:9';
+  ui.innerHTML='<input id="sc" type="range" min="0" max="1000" value="0" style="width:320px"><span id="ck">0.00s</span>';
+  $('#sc').oninput=e=>{tl.pause();tl.time(e.target.value/1000*DURATION);};setInterval(()=>{$('#ck').textContent=tl.time().toFixed(2)+'s';},100);}
+tl.eventCallback('onComplete',()=>tl.play(0));
+const seek=t=>{tl.pause();tl.time(t,false);if(gsap.ticker.tick)gsap.ticker.tick();render(t);};
+window.OPENER={tl,DURATION,seek,W,H,ready:false};
+document.fonts.ready.then(()=>{window.OPENER.ready=true;tl.time(0);render(0);if(!Q.has('clean'))tl.play(0);});
+</script>
+</body>
+</html>

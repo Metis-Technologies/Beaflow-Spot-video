@@ -1,0 +1,24 @@
+{
+  "numero": 51,
+  "nome": "prova-personaggio",
+  "titolo": "Prova personaggio parlante",
+  "ossatura": "D",
+  "stile": "motion",
+  "tema": "chiaro",
+  "versione": 1,
+  "durata": 20.0,
+  "chiusura_inizio": 17.4,
+  "funzione": "elenco delle prenotazioni di oggi e prenotazioni online (come lo spot 50)",
+  "note": "23/11: prova di un personaggio 2D che parla (labiale dal volume della voce), idea presa dalla modalità «vector» di AI-Video-Factory (github.com/ersinkoc/AI-Video-Factory). Voci Harrison riusate dallo spot 50 (zero crediti). 20 s invece di 15: solo prova, non per Edoardo.",
+  "scene": [
+    {"schermo": ["Parrucchiere,", "barbiere,", "estetista?"], "voce": "Parrucchiere, barbiere, estetista?", "voce_inizio": 0.15,
+     "si_vede": "il personaggio saluta; forbici, rasoio e pennello cadono sopra di lui, uno per parola; il pennello gli scivola in mano"},
+    {"schermo": ["Chi viene", "oggi?"], "voce": "Chi viene oggi? Lo cerchi nelle chat?", "voce_inizio": 4.25,
+     "si_vede": "il pennello diventa il telefono; piovono le chat, lui si gratta la testa; tocca Beaflow, onda d'oro"},
+    {"schermo": ["Tutti in", "un elenco"], "voce": "Con Beaflow, hai l'elenco pronto.", "voce_inizio": 8.5,
+     "si_vede": "dall'onda si apre l'elenco «Oggi», le chat diventano righe; lui lo indica e sorride"},
+    {"schermo": ["Lo vedi", "subito"], "voce": "Prenotano da soli, lo vedi subito.", "voce_inizio": 12.75,
+     "si_vede": "la notifica cade nell'elenco: «Luca · Colore · 16:30» confermato; pollice in su e occhiolino"}
+  ],
+  "dati": {}
+}

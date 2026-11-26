@@ -5,6 +5,8 @@
 
 Voce: <spot>/audio/line1..5.mp3 (accelerata dell'8%, pause interne a 0,18 s) agli istanti «voce_inizio» di spot.json;
 la chiusura «Beaflow. Inizia gratis.» è comune (comune/voce/chiusura.mp3, inizio a 12,9 s).
+Durata diversa da 15 s (23/11, prova 51 da 20 s): «durata» e «chiusura_inizio» in spot.json; la musica si allunga ripetendo
+le ultime 4 battute (8 s a 120 BPM) con una dissolvenza incrociata; nel nome del file «_<durata>s_».
 Effetti: funzione effetti(s, a) in <spot>/effetti.py. Musica: comune/musica/beaflow_musica_120bpm.mp3.
 Parte da <spot>/sorgente/muto.mp4 e scrive le due versioni in <spot>/export/ con i nomi della serie.
 """
@@ -60,6 +62,25 @@ def put(buf, x, at, gain):
 
 
 # ───────── spot ─────────
+def imposta_durata(s):
+    """Durata dello spot e inizio della chiusura da spot.json (di serie 15 s e 12,9 s)."""
+    global DUR, CHIUSURA
+    DUR = float(s.get("durata", 15.0)); CHIUSURA = ("line6", float(s.get("chiusura_inizio", 12.9)))
+
+def secondi(s):
+    d = float(s.get("durata", 15.0)); return f"{d:g}s"
+
+def allunga_musica(m, dur, periodo=8.0, fine=14.0, xf=0.25):
+    """Musica più corta dello spot: ripete il tratto [fine-periodo, fine] (battute intere) con una dissolvenza incrociata."""
+    n = int(dur * SR) + SR
+    if len(m) >= n: return m
+    a, b, x = int((fine - periodo) * SR), int(fine * SR), int(xf * SR)
+    out = m[:b].copy(); giro = m[a:b]
+    while len(out) < n:
+        r = np.linspace(0, 1, x); out[-x:] = out[-x:] * (1 - r) + giro[:x] * r
+        out = np.concatenate([out, giro[x:]])
+    return out
+
 def carica(d):
     s = json.loads((d / "spot.json").read_text(encoding="utf-8"))
     catena = [d]
@@ -69,6 +90,7 @@ def carica(d):
         for n, cambi in (s.get("scene") or {}).items(): scene[int(n) - 1].update(cambi)
         s = {**sb, **{k: v for k, v in s.items() if k not in ("scene", "base")}, "scene": scene, "base": sb.get("base")}
         catena.append(b)
+    imposta_durata(s)
     return s, catena
 
 def trova(catena, rel):
@@ -173,13 +195,13 @@ def mux(d, wavname, mix, out):
 def esporta(d, s, sovrascrivi):
     (d / "export").mkdir(exist_ok=True)
     for variante in ("musica", "senza-musica"):
-        dst = d / "export" / f"beaflow_{s['nome']}_15s_{variante}_v{s.get('versione', 1)}.mp4"
+        dst = d / "export" / f"beaflow_{s['nome']}_{secondi(s)}_{variante}_v{s.get('versione', 1)}.mp4"
         if dst.exists() and not sovrascrivi:
             print(f"  NON copiato: {dst.name} esiste già. Per una correzione alzare «versione» in spot.json (la precedente va in export/archivio/); --sovrascrivi solo se il video non è stato ancora consegnato.")
             continue
         shutil.copy(d / "sorgente" / f"spot-{variante}.mp4", dst); print("  export/" + dst.name)
         v = s.get('versione', 1)                     # 20/11: le versioni precedenti vanno da sole in export/archivio/
-        for vecchio in sorted((d / "export").glob(f"beaflow_{s['nome']}_15s_{variante}_v*.mp4")):
+        for vecchio in sorted((d / "export").glob(f"beaflow_{s['nome']}_{secondi(s)}_{variante}_v*.mp4")):
             m = re.search(r"_v(\d+)\.mp4$", vecchio.name)
             if m and int(m.group(1)) < v:
                 (d / "export" / "archivio").mkdir(exist_ok=True); shutil.move(str(vecchio), d / "export" / "archivio" / vecchio.name)
@@ -234,6 +256,7 @@ def main():
     print(f"musica: tempo stimato {bpm:.1f} BPM, primo battito a {phase:.3f} s")
     if 117 <= bpm <= 123 and phase > 0.02:          # allinea i battiti ai cambi di scena
         m = m[int(phase * SR):]
+    if DUR > 15.0: m = allunga_musica(m, DUR); print(f"  musica allungata a {DUR:g} s (ultime 4 battute ripetute)")
     mus = np.zeros(int(DUR * SR)); n = min(len(m), len(mus)); mus[:n] = m[:n]
     mus *= P.get("musica_picco", 0.24) / np.abs(mus).max()
     fade = int(0.6 * SR); mus[-fade:] *= np.linspace(1, 0, fade) ** 1.5; mus[: int(0.05 * SR)] *= np.linspace(0, 1, int(0.05 * SR))

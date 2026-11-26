@@ -74,6 +74,14 @@ In entrambi i casi un file che non è un audio valido (scaricamento incompleto) 
 - `"ritmo": "classico"` (anche per un solo spot, in `spot.json`) = com'era fino al lotto C v1. Prova senza ricostruire: `?ritmo=classico` nell'indirizzo della pagina.
 - Le animazioni interne di una scena (etichette, oggetti) restano in `scena.js`: farle partire entro 0,3–0,5 s dal taglio, così la scena non resta ferma.
 
+## Inquadratura e zone sicure (21/11)
+
+- **Margini laterali 130 px** (titoli, logo piccolo, schede): i telefoni più allungati del 9:16 fanno ingrandire il video a Instagram e Facebook, che tagliano circa 95–100 px per lato. A 112 px una riga tiene circa 15 caratteri (`costruisci` avvisa sopra).
+- **Chiusura 120 px più in alto** (logo a 490, filo a 748, bottone 880–1024, offerta 1076, sito 1152): tutto sopra il 35 % in basso che Meta copre nelle sponsorizzate (da 1248 px).
+- **Le tessere restano sempre nell'inquadratura**, anche durante le trasformazioni: `dentroQuadro()` nel modello comprime dolcemente verso il centro le tessere che andrebbero oltre 130 px dai lati, 150 px dall'alto o 120 px dal basso, tenendo conto della loro grandezza. Si spegne solo con `"dentro_quadro": false` in `spot.json`.
+- Gli altri oggetti 3D (etichette, telefoni, campanelle, onde) non sono contenuti in automatico: si fanno comparire e sparire dentro l'inquadratura (scala, dissolvenza), mai entrando o uscendo dai bordi. `controlli` («fuori quadro») segnala gli oggetti oltre il bordo a metà scena e attorno a ogni cambio scena.
+- `controlli` («zone sicure») verifica i testi dentro 130 px ai lati, 250 px in alto e sopra 1248 px in basso.
+
 ## Versioni di settore e ganci alternativi
 
 ```bash

@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="it">
+<!-- Made with the Bang Motion skill (Bang Tutorial, MIT, https://github.com/bangtutorial/bang-motion) -->
+<head>
+<meta charset="utf-8">
+<title>Beaflow · Prova 51 «Personaggio parlante» v1 (20 s)</title>
+<!--
+  STYLE BRIEF (23/11): stile Motion causa → effetto (claude/STILE-MOTION.md), prova da 20 s, ossatura D «Per chi è»,
+  con un personaggio 2D che parla: labiale dal volume della voce (sorgente/bocca.js, da strumenti/motion/bocca.py).
+  Catena : il personaggio saluta → forbici, rasoio, pennello atterrano sopra di lui (una parola ciascuno) → domino:
+           il pennello scivola nella sua mano e diventa il telefono → arrivano le chat dal telefono, lui si gratta la testa
+           → col pollice tocca Beaflow → onda d'oro → le chat diventano le righe dell'elenco «Oggi», lui lo indica
+           → la notifica cade nell'elenco e diventa «Luca · Colore · 16:30» → pollice in su, occhiolino
+           → la spunta diventa il punto d'oro che risucchia tutto → chiusura degli spot
+  Voce   : 0,15 · 4,25 · 8,50 · 12,75 · chiusura 17,40 (spot.json, voci dello spot 50)
+  Formato: 1080×1920, 20 s, 30 fps; testi a 130 px dai lati (regole degli spot)
+-->
+<style>
+@font-face{font-family:"Fraunces";src:url(assets/fraunces.woff2) format("woff2");font-weight:100 900;font-display:block}
+@font-face{font-family:"InterV";src:url(assets/inter.woff2) format("woff2");font-weight:100 900;font-display:block}
+:root{--oro:#C9B16C;--ottone:#775A18;--crema:#F6F0E4;--crema2:#EBDFC8;--nero:#111111;--porc:#FFFDF8}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;background:#E9DFCB;overflow:hidden}
+#stage{position:fixed;left:50%;top:50%;width:1080px;height:1920px;transform:translate(-50%,-50%);overflow:hidden;background:var(--crema)}
+.scene{position:absolute;inset:0;overflow:hidden;visibility:hidden}
+#S1{visibility:visible}#k2,#k3{opacity:0}
+.bgc{position:absolute;inset:0;background:linear-gradient(175deg,#FAF6EE 0%,var(--crema) 45%,var(--crema2) 100%)}
+.bg2{background:linear-gradient(185deg,#F3EADA 0%,#EFE3CC 50%,#E6D6B8 100%)}
+.bg3{background:linear-gradient(165deg,#FBF8F1 0%,#F5EEE0 55%,#ECE1CB 100%)}
+.glow{position:absolute;border-radius:50%;pointer-events:none}
+.gw{width:1300px;height:1300px;background:radial-gradient(circle,rgba(201,177,108,.32) 0%,rgba(201,177,108,.1) 40%,transparent 68%)}
+.gl{width:1000px;height:1000px;background:radial-gradient(circle,rgba(255,250,240,.85) 0%,transparent 65%)}
+.persp{position:absolute;inset:0;perspective:2200px;perspective-origin:50% 45%}
+.rig{position:absolute;inset:0;transform-style:preserve-3d;will-change:transform}
+.pocket{position:absolute;left:0;right:0;top:0;height:640px;pointer-events:none;background:linear-gradient(180deg,#FAF6EE 0%,rgba(250,246,238,.96) 55%,rgba(248,243,233,.7) 75%,rgba(246,240,228,0) 100%)}
+.shadow{box-shadow:0 40px 80px -24px rgba(70,50,15,.35),0 10px 22px -8px rgba(70,50,15,.2)}
+#grain{position:absolute;inset:0;width:100%;height:100%;opacity:.1;mix-blend-mode:multiply;pointer-events:none}
+.bok{position:absolute;border-radius:50%;pointer-events:none;filter:blur(18px)}
+
+/* S1 · tessere degli attrezzi, sopra il personaggio */
+.tile{position:absolute;width:150px;height:190px;top:690px;border-radius:34px;background:var(--porc);display:flex;align-items:center;justify-content:center;transform-origin:100% 100%}
+.tile svg{width:100px;height:100px}
+.kw{position:absolute;left:0;top:0;width:0;height:0}
+.floor{position:absolute;top:866px;width:190px;height:30px;border-radius:50%;background:radial-gradient(closest-side,rgba(70,50,15,.22),transparent)}
+
+/* personaggio */
+#guy{position:absolute;left:0;top:0;width:600px;height:1300px;transform-origin:0 0;will-change:transform}
+#guy svg{overflow:visible;display:block}
+#shadowG{position:absolute;left:0;top:0;width:640px;height:90px;margin-left:-320px;border-radius:50%;background:radial-gradient(closest-side,rgba(70,50,15,.25),transparent);display:none}
+
+/* fumetti S2 → S3 */
+.bub{position:absolute;left:0;top:0;width:380px;height:100px;margin:-50px 0 0 -190px;border-radius:32px;background:var(--porc);display:flex;align-items:center;gap:16px;padding:0 20px;
+  font-family:"InterV",system-ui,sans-serif;box-shadow:0 26px 50px -18px rgba(70,50,15,.4),0 6px 14px -6px rgba(70,50,15,.2);opacity:0;will-change:transform}
+.bub .av,.lrow .av{width:58px;height:58px;border-radius:50%;background:var(--crema2);color:#4A4234;display:flex;align-items:center;justify-content:center;font-size:27px;font-weight:700;flex:none}
+.bub b{display:block;font-size:25px;font-weight:650;color:var(--nero);white-space:nowrap}
+.bub span{display:block;font-size:23px;color:#6E6452;white-space:nowrap;margin-top:2px}
+.bub.miss span{color:#9A3B2E}
+
+/* S3–S4 · l'elenco di oggi */
+#panel{position:absolute;left:130px;top:650px;width:540px;height:820px;border-radius:48px;background:var(--porc);font-family:"InterV",system-ui,sans-serif;color:var(--nero);transform-style:flat}
+#p-h{position:absolute;left:38px;top:36px;font-size:44px;font-weight:650;letter-spacing:-.01em}
+#p-d{position:absolute;right:38px;top:50px;font-size:26px;color:#7A705E}
+#cnt{position:absolute;left:38px;top:94px;font-size:24px;color:var(--ottone);font-weight:600;font-variant-numeric:tabular-nums}
+.lrow{position:absolute;left:24px;right:24px;height:100px;border-radius:24px;background:#F4EEE2;display:flex;align-items:center;gap:14px;padding:0 18px;opacity:0}
+.lrow .h{width:76px;font-size:25px;font-weight:650;color:#4A4234;font-variant-numeric:tabular-nums;flex:none}
+.lrow .nm{font-size:27px;font-weight:600;color:var(--nero);white-space:nowrap}
+.lrow .sv{font-size:24px;color:#7A705E;white-space:nowrap;margin-left:5px}
+#row5{background:var(--ottone)}
+#row5 .h,#row5 .nm{color:#fff}#row5 .sv{color:rgba(255,255,255,.85)}
+#row5 .av{background:var(--oro);color:var(--nero)}
+#chk{margin-left:auto;width:52px;height:52px;border-radius:50%;background:rgba(255,253,248,.2);display:flex;align-items:center;justify-content:center;flex:none}
+#chk path{stroke-dasharray:40;stroke-dashoffset:40}
+#ring5{position:absolute;left:14px;right:14px;height:124px;border-radius:32px;border:4px solid var(--oro);opacity:0}
+
+/* notifica S3 → S4 */
+#nb{position:absolute;left:0;top:0;width:540px;height:128px;margin:-64px 0 0 -270px;border-radius:36px;background:#151311;color:#fff;font-family:"InterV",system-ui,sans-serif;
+  display:flex;align-items:center;gap:20px;padding:0 24px;box-shadow:0 30px 60px -20px rgba(40,25,5,.55);opacity:0;will-change:transform}
+#nb .ic{width:76px;height:76px;border-radius:22px;background:#2A2218;display:flex;align-items:center;justify-content:center;flex:none}
+#nb b{display:block;font-size:27px;font-weight:650;white-space:nowrap}
+#nb span{display:block;font-size:24px;color:#D9CEB6;white-space:nowrap;margin-top:3px}
+
+/* titoli */
+.ttl{position:absolute;left:130px;font-family:"Fraunces",Georgia,serif;font-weight:500;color:var(--nero);letter-spacing:-.015em;line-height:1.03;white-space:nowrap;font-variation-settings:"opsz" 144,"SOFT" 50;font-size:100px}
+.ttl .w{display:inline-block}
+.ttl .ch{display:inline-block;opacity:0;will-change:transform,opacity,filter}
+.k{color:var(--ottone)}
+#t1a{top:290px}#t1b{top:394px}#t1c{top:498px}
+#t2,#t3,#t4{top:300px}
+
+/* chiusura come negli spot */
+#close{position:absolute;inset:0;visibility:hidden}
+#dot{position:absolute;left:0;top:0;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;background:radial-gradient(circle,#FFF6DA 0%,#C9B16C 45%,rgba(201,177,108,0) 72%);opacity:0}
+#flash{position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(255,246,218,.95),rgba(201,177,108,.25) 45%,transparent 75%);opacity:0}
+#halo{position:absolute;left:540px;top:600px;width:1100px;height:1100px;margin:-550px 0 0 -550px;border-radius:50%;background:radial-gradient(circle,rgba(201,177,108,.35),transparent 65%);opacity:0}
+#logoB{position:absolute;left:180px;top:490px;width:720px;transform-origin:50% 50%;opacity:0}
+#lineC{position:absolute;left:340px;top:748px;overflow:visible}
+#btnC{position:absolute;left:280px;top:880px;width:520px;height:144px;border-radius:72px;background:var(--nero);color:#fff;font-family:"InterV",system-ui,sans-serif;font-size:50px;font-weight:600;display:flex;align-items:center;justify-content:center;opacity:0}
+#offer{position:absolute;left:0;right:0;top:1076px;text-align:center;font-family:"InterV",system-ui,sans-serif;font-size:40px;font-weight:500;color:#4A4234;opacity:0}
+#url{position:absolute;left:0;right:0;top:1152px;text-align:center;font-family:"InterV",system-ui,sans-serif;font-size:40px;font-weight:600;color:var(--ottone);opacity:0}
+#filters{position:absolute;width:0;height:0}
+#ui{display:none}
+#wave{position:absolute;left:0;top:0;width:200px;height:200px;margin:-100px 0 0 -100px;border-radius:50%;
+  background:radial-gradient(circle,#FBF1D6 0%,#EED9A4 55%,#D9BC78 80%,rgba(201,177,108,.0) 100%);opacity:0;pointer-events:none;will-change:transform}
+</style>
+</head>
+<body>
+<svg id="filters"><defs></defs></svg>
+<div id="stage">
+
+  <!-- S1 · saluto; forbici, rasoio, pennello atterrano sopra di lui e cadono a domino -->
+  <div class="scene" id="S1"><div class="bgc"></div><div class="glow gw" id="g1a"></div><div class="glow gl" id="g1b"></div>
+    <div class="persp"><div class="rig" id="r1">
+      <div class="floor" style="left:145px"></div><div class="floor" style="left:445px"></div><div class="floor" style="left:745px"></div>
+      <div class="tile shadow" id="k1" style="left:165px"><svg viewBox="0 0 64 64" fill="none" stroke="#775A18" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="18" cy="46" r="8"/><circle cx="46" cy="46" r="8"/><path d="M23.5 40.5L46 8M40.5 40.5L18 8"/><circle cx="32" cy="27" r="1.6" fill="#775A18"/></svg></div>
+      <div class="tile shadow" id="k2" style="left:465px"><svg viewBox="0 0 64 64" fill="none" stroke="#775A18" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10 22h34l8-6v12l-8-6"/><path d="M10 22v8h30"/><path d="M40 30l12 22a4 4 0 0 1-7 3L33 30"/></svg></div>
+      <div class="kw" id="k3w"><div class="tile shadow" id="k3" style="left:765px"><svg viewBox="0 0 64 64" fill="none" stroke="#775A18" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M32 6c7 6 9 13 7 20H25c-2-7 0-14 7-20z"/><path d="M26 26h12v8H26z"/><path d="M29 34h6l-1 24h-4z"/></svg></div></div>
+    </div></div>
+    <div class="pocket"></div>
+    <h1 class="ttl" id="t1a">Parrucchiere,</h1>
+    <h1 class="ttl" id="t1b">barbiere,</h1>
+    <h1 class="ttl" id="t1c"><span class="k">estetista?</span></h1>
+  </div>
+
+  <!-- S2 · più vicini: il telefono in mano, le chat -->
+  <div class="scene" id="S2"><div class="bgc bg2"></div><div class="glow gw" id="g2a"></div><div class="glow gl" id="g2b"></div>
+    <div class="pocket"></div>
+    <h1 class="ttl" id="t2">Chi viene<br><span class="k">oggi?</span></h1>
+  </div>
+
+  <!-- S3 e S4 · l'elenco di oggi (S4 = inquadratura più vicina) -->
+  <div class="scene" id="S3"><div class="bgc bg3"></div><div class="glow gw" id="g3a"></div><div class="glow gl" id="g3b"></div>
+    <div class="persp"><div class="rig" id="r3">
+      <div id="panel" class="shadow"><div id="p-h">Oggi</div><div id="p-d">lunedì</div><div id="cnt">0 prenotazioni</div><div id="rows"></div></div>
+    </div></div>
+    <div class="pocket"></div>
+    <h1 class="ttl" id="t3">Tutti in<br>un <span class="k">elenco</span></h1>
+    <h1 class="ttl" id="t4">Lo vedi<br><span class="k">subito</span></h1>
+  </div>
+
+  <!-- il personaggio: uno solo, inquadrato in modo diverso in ogni scena -->
+  <div id="guy"><svg width="600" height="1300" viewBox="0 0 600 1300">
+    <defs>
+      <clipPath id="mclip"><path id="mclipP" d=""/></clipPath>
+      <linearGradient id="scr" x1="0" y1="0" x2="0.3" y2="1"><stop offset="0" stop-color="#2A2218"/><stop offset="1" stop-color="#121010"/></linearGradient>
+    </defs>
+    <g id="body">
+      <path d="M40 1300 C40 820 110 600 300 600 C490 600 560 820 560 1300 Z" fill="#FFFDF8" stroke="#111" stroke-width="7"/>
+      <path d="M255 470 L345 470 L350 610 Q300 650 250 610 Z" fill="#EDC3A1" stroke="#111" stroke-width="7" stroke-linejoin="round"/>
+      <path d="M232 606 L300 700 L368 606" fill="none" stroke="#111" stroke-width="6" stroke-linejoin="round"/>
+      <path d="M172 770 Q300 748 428 770 L472 1300 L128 1300 Z" fill="#1A1714" stroke="#111" stroke-width="7" stroke-linejoin="round"/>
+      <path d="M196 772 L236 618 M404 772 L364 618" stroke="#C9B16C" stroke-width="11" stroke-linecap="round"/>
+      <rect x="240" y="900" width="120" height="84" rx="14" fill="none" stroke="#C9B16C" stroke-width="5"/>
+    </g>
+    <g id="head">
+      <ellipse cx="152" cy="330" rx="26" ry="38" fill="#EDC3A1" stroke="#111" stroke-width="7"/>
+      <ellipse cx="448" cy="330" rx="26" ry="38" fill="#EDC3A1" stroke="#111" stroke-width="7"/>
+      <ellipse cx="300" cy="320" rx="150" ry="175" fill="#EDC3A1" stroke="#111" stroke-width="7"/>
+      <path d="M150 335 C128 180 210 108 310 110 C412 112 474 182 452 325 C442 258 412 222 362 210 C330 242 262 246 214 220 C182 242 160 285 150 335 Z" fill="#3B2A20" stroke="#111" stroke-width="7" stroke-linejoin="round"/>
+      <circle cx="212" cy="392" r="26" fill="#E8A08A" opacity=".45"/><circle cx="388" cy="392" r="26" fill="#E8A08A" opacity=".45"/>
+      <path id="brL" d="M214 268 Q245 250 276 262" fill="none" stroke="#3B2A20" stroke-width="12" stroke-linecap="round"/>
+      <path id="brR" d="M324 262 Q355 250 386 268" fill="none" stroke="#3B2A20" stroke-width="12" stroke-linecap="round"/>
+      <g id="eyL"><ellipse cx="248" cy="316" rx="15" ry="20" fill="#111"/><circle cx="253" cy="308" r="5" fill="#fff"/></g>
+      <g id="eyR"><ellipse cx="352" cy="316" rx="15" ry="20" fill="#111"/><circle cx="357" cy="308" r="5" fill="#fff"/></g>
+      <path d="M300 330 Q288 374 306 382" fill="none" stroke="#B98868" stroke-width="6" stroke-linecap="round"/>
+      <g id="mouth" transform="translate(300 434)">
+        <path id="mo" d="" fill="#5A2320" stroke="#111" stroke-width="6" stroke-linejoin="round"/>
+        <g clip-path="url(#mclip)"><rect id="teeth" x="-60" y="-30" width="120" height="14" fill="#fff"/><ellipse id="tongue" cx="0" cy="30" rx="24" ry="14" fill="#D9786E"/></g>
+        <path id="moC" d="" fill="none" stroke="#111" stroke-width="6" stroke-linecap="round"/>
+      </g>
+    </g>
+    <g id="phoneG" opacity="0">
+      <rect x="-40" y="-250" width="150" height="300" rx="28" fill="#151515"/>
+      <rect x="-32" y="-242" width="134" height="284" rx="21" fill="url(#scr)"/>
+      <rect x="10" y="-236" width="50" height="12" rx="6" fill="#151515"/>
+      <text x="35" y="-160" text-anchor="middle" font-family="InterV,sans-serif" font-size="44" font-weight="300" fill="#F6F0E4">8:30</text>
+      <rect id="ph-un" x="-14" y="-128" width="98" height="26" rx="13" fill="rgba(255,253,248,.18)" opacity="0"/>
+      <text id="ph-unT" x="35" y="-110" text-anchor="middle" font-family="InterV,sans-serif" font-size="14" font-weight="600" fill="#F6F0E4" opacity="0">4 messaggi</text>
+      <rect x="-24" y="-8" width="118" height="42" rx="16" fill="rgba(255,253,248,.12)"/>
+      <rect x="-14" y="-1" width="26" height="26" rx="8" fill="rgba(255,253,248,.22)"/>
+      <rect x="18" y="-1" width="26" height="26" rx="8" fill="rgba(255,253,248,.22)"/>
+      <g id="ph-b"><rect x="48" y="-3" width="30" height="30" rx="9" fill="#111" stroke="#C9B16C" stroke-width="1.6"/><text x="63" y="20" text-anchor="middle" font-family="Fraunces,serif" font-size="22" font-weight="600" fill="#C9B16C">b</text></g>
+      <circle id="ph-tap" cx="63" cy="12" r="18" fill="none" stroke="#C9B16C" stroke-width="3" opacity="0"/>
+    </g>
+    <g id="armL"><path class="ao1" fill="none" stroke="#111" stroke-width="76" stroke-linecap="round"/><path class="ao2" fill="none" stroke="#111" stroke-width="68" stroke-linecap="round"/>
+      <path class="af2" fill="none" stroke="#EDC3A1" stroke-width="54" stroke-linecap="round"/><path class="af1" fill="none" stroke="#FFFDF8" stroke-width="62" stroke-linecap="round"/>
+      <g class="hand"><g class="thumb" opacity="0"><rect x="-16" y="20" width="32" height="84" rx="16" fill="#EDC3A1" stroke="#111" stroke-width="7"/></g>
+        <circle cx="0" cy="18" r="40" fill="#EDC3A1" stroke="#111" stroke-width="7"/></g></g>
+    <g id="armR"><path class="ao1" fill="none" stroke="#111" stroke-width="76" stroke-linecap="round"/><path class="ao2" fill="none" stroke="#111" stroke-width="68" stroke-linecap="round"/>
+      <path class="af2" fill="none" stroke="#EDC3A1" stroke-width="54" stroke-linecap="round"/><path class="af1" fill="none" stroke="#FFFDF8" stroke-width="62" stroke-linecap="round"/>
+      <g class="hand"><circle cx="0" cy="18" r="40" fill="#EDC3A1" stroke="#111" stroke-width="7"/></g></g>
+  </svg></div>
+
+  <div id="wave"></div>
+  <div id="bubs"></div>
+  <div id="nb"><div class="ic"><svg width="42" height="42" viewBox="0 0 40 40"><path d="M20 7c-5.5 0-9 4-9 9.5V23l-3 4h24l-3-4v-6.5C29 11 25.5 7 20 7zM16.5 30a3.5 3.5 0 0 0 7 0" fill="none" stroke="#C9B16C" stroke-width="2.6" stroke-linejoin="round"/></svg></div>
+    <div><b>Nuova prenotazione</b><span>Luca · Colore · 16:30</span></div></div>
+  <div id="bokeh"></div>
+
+  <div id="close"><div class="bgc"></div><div id="halo"></div>
+    <img id="logoB" src="assets/logo.svg" alt="Beaflow">
+    <svg id="lineC" width="400" height="10" viewBox="0 0 400 10"><path id="lc" d="M5 5H395" stroke="#C9B16C" stroke-width="5" stroke-linecap="round" fill="none"/></svg>
+    <div id="btnC">Inizia gratis</div>
+    <div id="offer">Piano Free · 0 € per sempre</div>
+    <div id="url">beaflow.it</div>
+  </div>
+  <div id="dot"></div><div id="flash"></div>
+
+  <svg id="grain" viewBox="0 0 1080 1920" preserveAspectRatio="none"><filter id="gr"><feTurbulence id="turb" type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="1"/><feColorMatrix type="saturate" values="0"/></filter><rect width="1080" height="1920" filter="url(#gr)"/></svg>
+</div>
+<div id="ui"></div>
+
+<script src="assets/gsap.min.js"></script>
+<script src="bocca.js"></script>
+<script>
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const W=1080,H=1920,DURATION=20.0;
+const Q=new URLSearchParams(location.search);
+const BOCCA=window.BOCCA||{fps:30,a:[],w:[],parla:[]};
+
+/* ---- dati dimostrativi ---- */
+const ROWS=[['9:30','G','Giulia','Taglio'],['10:15','M','Marco','Barba'],['14:30','E','Elena','Viso'],['15:00','A','Anna','Piega']];
+//          iniziale, nome, testo, x, y di arrivo, istante
+const BUBS=[['G','Giulia','Alle 9:30 va bene?',335,700,4.55],['M','Marco','Barba alle 10:15?',745,700,4.9],
+            ['E','Elena','Chiamata persa',335,830,5.25,'miss'],['A','Anna','Messaggio vocale · 0:42',745,830,5.6]];
+ROWS.forEach((r,k)=>{const d=document.createElement('div');d.className='lrow';d.id='row'+(k+1);d.style.top=(150+k*118)+'px';
+  d.innerHTML=`<div class="h">${r[0]}</div><div class="av">${r[1]}</div><div><span class="nm">${r[2]}</span><span class="sv">· ${r[3]}</span></div>`;$('#rows').appendChild(d);});
+{const d=document.createElement('div');d.id='ring5';d.style.top=(150+4*118-12)+'px';$('#rows').appendChild(d);
+ const r=document.createElement('div');r.className='lrow';r.id='row5';r.style.top=(150+4*118)+'px';
+ r.innerHTML=`<div class="h">16:30</div><div class="av">L</div><div><span class="nm">Luca</span><span class="sv">· Colore</span></div><div id="chk"><svg width="30" height="30" viewBox="0 0 34 34"><path d="M8 18l6 6 12-13" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>`;
+ $('#rows').appendChild(r);}
+BUBS.forEach(b=>{const d=document.createElement('div');d.className='bub'+(b[6]?' '+b[6]:'');d.innerHTML=`<div class="av">${b[0]}</div><div><b>${b[1]}</b><span>${b[2]}</span></div>`;$('#bubs').appendChild(d);});
+const bubEls=$$('#bubs .bub');
+
+/* ---- bokeh ---- */
+const BOK=[[120,520,150,.5],[930,700,110,.7],[180,1500,190,.35],[880,1380,140,.55],[540,1720,120,.6],[60,980,90,.8],[1010,300,100,.45]];
+BOK.forEach(b=>{const d=document.createElement('div');d.className='bok';d.style.width=d.style.height=b[2]+'px';$('#bokeh').appendChild(d);});
+const bokEls=$$('#bokeh .bok');
+
+/* ---- split + blur direzionale (come gli altri spot Motion) ---- */
+const defs=$('#filters defs');let fc=0;
+function makeBlur(){const NS='http://www.w3.org/2000/svg',id='mb'+(fc++),f=document.createElementNS(NS,'filter');f.id=id;
+  f.setAttribute('x','-70%');f.setAttribute('y','-70%');f.setAttribute('width','240%');f.setAttribute('height','240%');
+  const g=document.createElementNS(NS,'feGaussianBlur');g.setAttribute('stdDeviation','0 0');f.appendChild(g);defs.appendChild(f);return{url:`url(#${id})`,node:g};}
+function blurTween(tl,el,at,from,to,dur,{ease='power3.out',ax=1,ay=.08}={}){const b=makeBlur(),o={v:from};
+  tl.set(el,{filter:b.url},at);tl.to(o,{v:to,duration:dur,ease,onUpdate(){b.node.setAttribute('stdDeviation',`${(o.v*ax).toFixed(2)} ${(o.v*ay).toFixed(2)}`);}},at);
+  tl.set(el,{filter:'none'},at+dur);}
+function split(el){const out=[];const walk=(node)=>{[...node.childNodes].forEach(n=>{
+    if(n.nodeType===3){const frag=document.createDocumentFragment();n.textContent.split(/(\s+)/).forEach(tok=>{if(!tok)return;
+        if(/^\s+$/.test(tok)){const s=document.createElement('span');s.className='ch';s.innerHTML='&nbsp;';frag.appendChild(s);out.push(s);return;}
+        const w=document.createElement('span');w.className='w';for(const c of tok){const s=document.createElement('span');s.className='ch';s.textContent=c;w.appendChild(s);out.push(s);}frag.appendChild(w);});
+      n.replaceWith(frag);} else if(n.nodeType===1){walk(n);} });};walk(el);return out;}
+
+const tl=gsap.timeline({paused:true});
+const VERT={ax:.1,ay:1};
+const inUp=(ch,el,at,{dur=.6,st=.018}={})=>{tl.fromTo(ch,{opacity:0,yPercent:60,scaleY:1.4},{opacity:1,yPercent:0,scaleY:1,duration:dur,ease:'power4.out',stagger:st,immediateRender:false},at);blurTween(tl,el,at,28,0,dur,VERT);};
+const inLeft=(ch,el,at,{dur=.6,st=.02}={})=>{tl.fromTo(ch,{opacity:0,xPercent:-50},{opacity:1,xPercent:0,duration:dur,ease:'power4.out',stagger:st,immediateRender:false},at);blurTween(tl,el,at,48,0,dur,{ease:'power4.out'});};
+const inDepth=(ch,el,at,{dur=.7,st=.016}={})=>{tl.fromTo(ch,{opacity:0,scale:2.3},{opacity:1,scale:1,duration:dur,ease:'expo.out',stagger:{each:st,from:'center'},immediateRender:false},at);blurTween(tl,el,at,22,0,dur,{ease:'expo.out',ax:1,ay:1});};
+const outUp=(ch,el,at,{dur=.26,st=.005}={})=>{tl.to(ch,{opacity:0,yPercent:-70,duration:dur,ease:'power2.in',stagger:st},at);blurTween(tl,el,at,0,40,dur+.1,{ease:'power2.in',...VERT});};
+const outRight=(ch,el,at,{dur=.26,st=.005}={})=>{tl.to(ch,{opacity:0,xPercent:60,duration:dur,ease:'power2.in',stagger:{each:st,from:'end'}},at);blurTween(tl,el,at,0,50,dur+.1,{ease:'power2.in'});};
+const sceneOn=(id,from,to)=>{tl.set(id,{visibility:'visible'},from);if(to!=null)tl.set(id,{visibility:'hidden'},to);};
+const cub=(u,a,b,c,d)=>{const v=1-u;return v*v*v*a+3*v*v*u*b+3*v*u*u*c+u*u*u*d;};
+const c1a=split($('#t1a')),c1b=split($('#t1b')),c1c=split($('#t1c')),c2=split($('#t2')),c3=split($('#t3')),c4=split($('#t4'));
+
+/* ---- personaggio: parametri animati dalla timeline, disegnati in render() ----
+   angoli in gradi dalla verticale in giù (0 = braccio giù, 90 = verso destra, ±180 = in su) */
+const POSE={rest:{aL1:-10,aL2:-4,aR1:10,aR2:4},restL:{aL1:-10,aL2:-4},
+  waveL:{aL1:-125,aL2:-168}, catchR:{aR1:150,aR2:-170}, holdR:{aR1:55,aR2:-170}, scratchL:{aL1:-135,aL2:145},
+  pointL:{aL1:-95,aL2:-110}, thumbL:{aL1:-45,aL2:176}};
+const G={aL1:-10,aL2:-4,aR1:10,aR2:4,tilt:0,look:0,lookY:0,phone:0,thumb:0,brows:0,expr:0,blinkL:1,blinkR:1,imp:0};
+const CAM={x:240,y:800,s:1};             // inquadratura del personaggio sullo stage
+const SH={L:[150,620],R:[450,620]},L1=210,L2=190;
+const pose=(p,at,dur=.35,ease='power2.inOut')=>tl.to(G,{...POSE[p],duration:dur,ease},at);
+const blink=(at,eye='both')=>{const k=eye==='both'?{blinkL:.08,blinkR:.08}:{blinkR:.08};
+  tl.to(G,{...k,duration:.06,ease:'power1.in'},at);tl.to(G,{...(eye==='both'?{blinkL:1,blinkR:1}:{blinkR:1}),duration:.08,ease:'power1.out'},at+(eye==='both'?.1:.3));};
+
+/* ================= SCALETTA · causa → effetto (20 s) =================
+   S1 0,00–4,00   saluta; forbici, rasoio, pennello atterrano sopra di lui (una parola ciascuno) → domino → il pennello gli scivola in mano
+                  → si gira e diventa il telefono
+   S2 4,00–8,20   più vicini: dal telefono escono le chat → lui si gratta la testa → col pollice tocca Beaflow → onda d'oro
+   S3 8,20–12,40  dall'onda si apre l'elenco: le chat VOLANO nelle righe → lui lo indica → scende la notifica
+   S4 12,40–17,35 più vicini: la notifica CADE nell'elenco → «Luca · 16:30» confermato → pollice in su, occhiolino
+   CH 17,35–20    la spunta diventa il punto d'oro che risucchia tutto → zoom in sul logo → filo → Inizia gratis → offerta → sito
+   ===================================================================== */
+const S2T=4.0,S3T=8.2,S4T=12.4,CL=17.35;
+
+/* S1 */
+sceneOn('#S1',0,S2T);
+tl.fromTo('#r1',{rotationX:6,rotationY:-8,z:-40},{rotationX:3,rotationY:5,z:0,duration:S2T,ease:'sine.inOut',immediateRender:false},0);
+tl.fromTo(CAM,{x:240,y:830,s:.98},{x:240,y:800,s:1,duration:.6,ease:'expo.out',immediateRender:false},0);
+tl.to(CAM,{s:1.02,x:234,duration:3.4,ease:'sine.inOut'},.6);
+// il saluto
+pose('waveL',.08,.35,'back.out(1.4)');
+tl.to(G,{aL2:-150,duration:.16,yoyo:true,repeat:5,ease:'sine.inOut'},.45);
+pose('restL',1.55,.4);
+// gli attrezzi atterrano, una parola ciascuno (inizio delle parole: 0,13 · 1,03 · 1,87)
+const LAND=[0.18,1.06,1.9];
+['#k1','#k2','#k3'].forEach((k,i)=>{tl.fromTo(k,{y:-240,opacity:i?0:1,rotation:-10,scale:.86},{y:0,opacity:1,rotation:0,scale:1,duration:.36,ease:'power3.in',immediateRender:false},LAND[i]-.36+.08);
+  tl.to(k,{scaleY:.9,scaleX:1.06,duration:.07,yoyo:true,repeat:1,ease:'power2.out',transformOrigin:'50% 100%'},LAND[i]+.08);
+  tl.to(G,{lookY:-1,look:i-1,duration:.18,ease:'power2.out'},LAND[i]-.1);});
+inUp(c1a,$('#t1a'),.13);inUp(c1b,$('#t1b'),1.03);inUp(c1c,$('#t1c'),1.87);
+tl.to(G,{lookY:0,look:0,duration:.3},2.4);
+// causa: il domino verso destra
+tl.to('#k1',{rotation:24,duration:.16,ease:'power2.in',transformOrigin:'100% 100%'},2.7);
+tl.to('#k2',{rotation:24,duration:.15,ease:'power2.in',transformOrigin:'100% 100%'},2.82);
+tl.to('#k1',{rotation:32,duration:.1,ease:'power1.out'},2.86);
+tl.to('#k3',{rotation:70,duration:.2,ease:'power2.in',transformOrigin:'100% 100%'},2.95);
+// lui alza la mano e lo prende al volo
+pose('catchR',2.75,.32,'power2.out');
+tl.to(G,{look:1,lookY:-.6,tilt:5,brows:.6,duration:.25},2.8);
+const kp={u:0};const CATCH=3.32;
+tl.to(kp,{u:1,duration:CATCH-3.12,ease:'power1.in'},3.12);
+tl.to(G,{aR1:142,duration:.08,yoyo:true,repeat:1,ease:'power2.out'},CATCH);
+tl.to(['#k1','#k2'],{scale:.7,opacity:0,duration:.3,ease:'power2.in'},3.15);
+// il pennello si gira e diventa il telefono; lui lo porta accanto al viso
+const flip={b:1};
+tl.to(flip,{b:0,duration:.14,ease:'power2.in'},3.45);
+tl.to(G,{phone:1,duration:.16,ease:'power2.out'},3.59);
+pose('holdR',3.55,.4);
+tl.to(G,{look:.6,lookY:.2,tilt:-3,brows:0,duration:.3},3.6);
+outUp([...c1a,...c1b,...c1c],$('#t1a'),3.55);tl.to(['#t1b','#t1c'],{opacity:0,duration:.25},3.55);
+blink(1.4);
+
+/* S2 · stacco più vicino */
+sceneOn('#S2',S2T,S3T);
+tl.set(CAM,{x:60,y:770,s:1.24},S2T);
+tl.to(CAM,{x:48,y:750,s:1.28,duration:S3T-S2T,ease:'sine.inOut'},S2T);
+tl.set(G,{...POSE.holdR,...POSE.rest,aR1:55,aR2:-170,look:.5,lookY:0,tilt:-2},S2T);
+inLeft(c2,$('#t2'),4.27);
+// le chat escono dal telefono una dopo l'altra, il telefono vibra
+const pops=BUBS.map(()=>({p:0}));
+BUBS.forEach((b,k)=>{tl.to(pops[k],{p:1,duration:.45,ease:'power3.out'},b[5]);
+  tl.to(G,{aR2:-176,duration:.04,yoyo:true,repeat:3,ease:'sine.inOut'},b[5]);
+  tl.to(G,{look:k%2?.9:-.3,lookY:-.8,duration:.2},b[5]+.1);});
+tl.to('#ph-un,#ph-unT',{opacity:1,duration:.3},5.7);
+// perplesso: sopracciglio, testa inclinata, si gratta la testa
+tl.to(G,{brows:-1,tilt:-7,look:.2,lookY:-.3,duration:.3},6.0);tl.set(G,{expr:1},6.45);
+pose('scratchL',6.45,.35);
+tl.to(G,{aL2:128,duration:.12,yoyo:true,repeat:5,ease:'sine.inOut'},6.8);
+pose('restL',7.45,.3);
+// causa: col pollice tocca l'icona Beaflow
+tl.to(G,{look:.9,lookY:.4,brows:.5,tilt:2,duration:.2},7.3);tl.set(G,{expr:2},7.5);
+tl.to('#ph-b',{scale:.8,transformOrigin:'63px 12px',duration:.08,yoyo:true,repeat:1},7.5);
+tl.fromTo('#ph-tap',{opacity:1,attr:{r:8}},{opacity:0,attr:{r:40},duration:.4,ease:'power2.out',immediateRender:false},7.5);
+outRight(c2,$('#t2'),7.45);
+// effetto: l'onda d'oro parte dal telefono
+const wv={s:0};tl.fromTo(wv,{s:.1},{s:20,duration:.6,ease:'power2.in',immediateRender:false},7.6);
+blink(5.0);
+
+/* S3 · l'elenco */
+sceneOn('#S3',S3T,CL+.05);
+tl.set('#wave',{opacity:1},7.6);tl.to('#wave',{opacity:0,duration:.45,ease:'power2.out'},S3T);
+tl.set(CAM,{x:565,y:908,s:.85},S3T);
+tl.to(CAM,{x:558,y:896,s:.87,duration:S4T-S3T,ease:'sine.inOut'},S3T);
+tl.set(G,{...POSE.rest,phone:0,look:-.8,lookY:.1,tilt:3,brows:.3,expr:2},S3T);
+tl.fromTo('#panel',{scale:.9,rotationX:10,rotationY:8,z:-120},{scale:1,rotationX:4,rotationY:-4,z:0,duration:.9,ease:'expo.out',immediateRender:false},S3T);
+tl.to('#panel',{rotationX:2,rotationY:3,duration:3,ease:'sine.inOut'},S3T+.9);
+const fl=BUBS.map(()=>({u:0}));
+const ARR=BUBS.map((b,k)=>S3T+.1+k*.14+.5);
+BUBS.forEach((b,k)=>{tl.to(fl[k],{u:1,duration:.5,ease:'power2.inOut'},ARR[k]-.5);
+  tl.fromTo('#row'+(k+1),{opacity:0,scale:1.07},{opacity:1,scale:1,duration:.35,ease:'back.out(2)',immediateRender:false},ARR[k]-.06);});
+inUp(c3,$('#t3'),8.55);
+// lui indica l'elenco
+pose('pointL',9.15,.35,'back.out(1.3)');
+tl.to(G,{aL2:-104,duration:.25,yoyo:true,repeat:3,ease:'sine.inOut'},9.5);
+pose('restL',11.0,.4);
+tl.to(G,{look:-.4,lookY:-.7,duration:.3},11.35);
+// causa: scende la notifica
+const nbp={a:0,u:0};
+tl.to(nbp,{a:1,duration:.45,ease:'back.out(1.7)'},11.55);
+outUp(c3,$('#t3'),11.3);
+blink(10.3);
+
+/* S4 · più vicini */
+tl.set('#r3',{transformOrigin:'400px 1050px',scale:1.08,rotationY:-5,rotationX:3},S4T);
+tl.set('#panel',{rotationX:2,rotationY:-2},S4T);
+tl.to('#r3',{rotationY:3,scale:1.11,duration:CL-S4T-.6,ease:'sine.inOut'},S4T);
+tl.set(CAM,{x:540,y:858,s:.92},S4T);
+tl.to(CAM,{x:534,y:846,s:.94,duration:CL-S4T-.6,ease:'sine.inOut'},S4T);
+tl.set(G,{look:-.6,lookY:-.2,tilt:-2,brows:.4},S4T);
+tl.to(nbp,{u:1,duration:.36,ease:'power2.in'},S4T);
+const IMP=S4T+.36;
+tl.set('#row5',{opacity:1},IMP);
+tl.fromTo('#row5',{scale:1.12},{scale:1,duration:.4,ease:'back.out(2.2)',immediateRender:false},IMP);
+tl.fromTo('#ring5',{opacity:1,scale:.97},{opacity:0,scale:1.1,duration:.6,ease:'power2.out',immediateRender:false},IMP);
+for(let k=1;k<=4;k++){const d=5-k;tl.to('#row'+k,{y:-18/Math.sqrt(d),duration:.09,yoyo:true,repeat:1,ease:'power2.out'},IMP+.04*d);}
+tl.to('#panel',{y:10,duration:.06,yoyo:true,repeat:1,ease:'power2.out'},IMP);
+tl.to(G,{tilt:4,duration:.1,yoyo:true,repeat:1},IMP);
+inDepth(c4,$('#t4'),12.8);
+// «Confermato ✓»
+tl.to('#chk',{backgroundColor:'#C9B16C',duration:.15},13.4);
+tl.to('#chk path',{strokeDashoffset:0,duration:.25,ease:'power2.out'},13.4);
+tl.fromTo('#chk',{scale:1.3},{scale:1,duration:.35,ease:'back.out(2)',immediateRender:false},13.4);
+// pollice in su e occhiolino
+pose('thumbL',13.6,.35,'back.out(1.5)');tl.to(G,{thumb:1,duration:.12},13.75);
+tl.to(G,{look:0,lookY:0,tilt:0,brows:.5,duration:.3},14.9);
+blink(15.1,'right');
+tl.to(G,{tilt:3,duration:.35,yoyo:true,repeat:1,ease:'sine.inOut'},15.6);
+pose('restL',16.35,.3);tl.to(G,{thumb:0,duration:.1},16.35);
+tl.to(G,{look:-.7,lookY:.3,duration:.25},16.6);
+outUp(c4,$('#t4'),16.6);
+
+/* chiusura: la spunta diventa il punto d'oro che risucchia tutto → zoom in sul logo */
+const LOGO={x:540,y:585};
+const dotp={a:0,m:0};const DOT0=16.82;
+tl.to(dotp,{a:1,duration:.18,ease:'power2.out'},DOT0);
+tl.to(dotp,{m:1,duration:.38,ease:'power2.inOut'},DOT0+.1);
+tl.to('#r3',{scale:0,rotation:-18,duration:.36,ease:'power3.in'},DOT0+.1);
+tl.fromTo('#r3',{filter:'blur(0px)'},{filter:'blur(10px)',duration:.36,ease:'power2.in',immediateRender:false},DOT0+.1);
+tl.to(G,{imp:1,duration:.36,ease:'power3.in'},DOT0+.1);
+tl.set('#guy',{visibility:'hidden'},CL);
+tl.set('#close',{visibility:'visible'},CL);
+tl.fromTo('#dot',{scale:2.6},{opacity:0,scale:7,duration:.35,ease:'power2.out',immediateRender:false},CL);
+tl.fromTo('#flash',{opacity:0},{opacity:1,duration:.08,immediateRender:false},CL);
+tl.to('#flash',{opacity:0,duration:.55,ease:'power2.out'},CL+.08);
+tl.fromTo('#halo',{opacity:0,scale:.4},{opacity:1,scale:1,duration:1.1,ease:'expo.out',immediateRender:false},CL);
+tl.fromTo('#logoB',{opacity:0,scale:.16,filter:'blur(18px)'},{opacity:1,scale:1,filter:'blur(0px)',duration:.9,ease:'expo.out',immediateRender:false},CL);
+tl.to('#logoB',{scale:1.04,duration:DURATION-CL-.9,ease:'sine.inOut'},CL+.9);
+const lc=$('#lc');const LCL=lc.getTotalLength();lc.style.strokeDasharray=LCL;lc.style.strokeDashoffset=LCL;
+tl.to(lc,{strokeDashoffset:0,duration:.5,ease:'power2.inOut'},CL+.5);
+tl.fromTo('#btnC',{opacity:0,y:40,scale:.92},{opacity:1,y:0,scale:1,duration:.5,ease:'back.out(1.6)',immediateRender:false},CL+.75);
+tl.fromTo('#offer',{opacity:0,y:24},{opacity:1,y:0,duration:.4,ease:'power3.out',immediateRender:false},CL+.95);
+tl.fromTo('#url',{opacity:0,y:24},{opacity:1,y:0,duration:.4,ease:'power3.out',immediateRender:false},CL+1.1);
+tl.to({},{duration:.01},DURATION);
+
+/* ---- disegno del personaggio ---- */
+const rad=d=>d*Math.PI/180;
+const guyEl=$('#guy'),headEl=$('#head'),mo=$('#mo'),moC=$('#moC'),mclip=$('#mclipP'),teeth=$('#teeth'),tongue=$('#tongue');
+const eyL=$('#eyL'),eyR=$('#eyR'),brL=$('#brL'),brR=$('#brR'),phoneG=$('#phoneG');
+const arms={L:$('#armL'),R:$('#armR')};
+function arm(side,a1,a2){const [sx,sy]=SH[side];const ex=sx+L1*Math.sin(rad(a1)),ey=sy+L1*Math.cos(rad(a1));
+  const wx=ex+L2*Math.sin(rad(a2)),wy=ey+L2*Math.cos(rad(a2));const el=arms[side];
+  const up=`M${sx} ${sy}L${ex.toFixed(1)} ${ey.toFixed(1)}`,fo=`M${ex.toFixed(1)} ${ey.toFixed(1)}L${wx.toFixed(1)} ${wy.toFixed(1)}`;
+  el.querySelector('.ao1').setAttribute('d',up);el.querySelector('.af1').setAttribute('d',up);
+  el.querySelector('.ao2').setAttribute('d',fo);el.querySelector('.af2').setAttribute('d',fo);
+  el.querySelector('.hand').setAttribute('transform',`translate(${wx.toFixed(1)} ${wy.toFixed(1)}) rotate(${(-a2).toFixed(1)})`);
+  return [wx,wy];}
+function mouthPath(hw,h){return `M${-hw} 0 Q0 ${(-h*.35).toFixed(1)} ${hw} 0 Q0 ${(h*1.5).toFixed(1)} ${-hw} 0 Z`;}
+const CLOSED=['M-40 -6 Q0 20 40 -6','M-32 6 Q-16 -4 0 6 Q16 14 32 4','M-48 -10 Q0 30 48 -10'];
+const OPEN=[[0,0],[28,18],[33,34],[37,50]];
+const toStage=(px,py)=>{const s=CAM.s*(1-G.imp);return{x:CX+px*s,y:CY+py*s,s};};
+let CX=0,CY=0;
+function drawGuy(t){
+  // il punto d'oro risucchia anche il personaggio
+  const dx=dotPos.x,dy=dotPos.y;CX=dx+(CAM.x-dx)*(1-G.imp);CY=dy+(CAM.y-dy)*(1-G.imp);
+  const f=Math.min(BOCCA.a.length-1,Math.max(0,Math.round(t*BOCCA.fps)));
+  const a=t<CL?(BOCCA.a[f]||0):0,w=BOCCA.w[f]||0;
+  const breathe=Math.sin(t*2.2)*4, nod=-a*2.2;
+  guyEl.style.transform=`translate(${CX.toFixed(1)}px,${(CY+breathe*CAM.s).toFixed(1)}px) scale(${(CAM.s*(1-G.imp)).toFixed(4)})`;
+  headEl.setAttribute('transform',`rotate(${(G.tilt+Math.sin(t*1.3)*1.2).toFixed(2)} 300 560) translate(0 ${(45+nod).toFixed(1)})`);
+  // occhi: sguardo e battito
+  const ex=G.look*9,ey=G.lookY*7;
+  eyL.setAttribute('transform',`translate(${ex.toFixed(1)} ${ey.toFixed(1)}) translate(248 316) scale(1 ${G.blinkL.toFixed(2)}) translate(-248 -316)`);
+  eyR.setAttribute('transform',`translate(${ex.toFixed(1)} ${ey.toFixed(1)}) translate(352 316) scale(1 ${G.blinkR.toFixed(2)}) translate(-352 -316)`);
+  // sopracciglia: + alzate, − perplesso (uno su e uno giù)
+  const b=G.brows;brL.setAttribute('transform',`translate(0 ${(-b*10 - (b<0?-b*6:0)).toFixed(1)}) rotate(${(b<0?b*8:-b*3).toFixed(1)} 245 260)`);
+  brR.setAttribute('transform',`translate(0 ${(-b*10 + (b<0?b*10:0)).toFixed(1)}) rotate(${(b<0?b*-4:b*3).toFixed(1)} 355 260)`);
+  // bocca: 4 aperture dal volume della voce, larga o tonda
+  if(a>0){let [hw,h]=OPEN[a];if(!w){hw*=.78;h*=1.08;}const d=mouthPath(hw,h);
+    mo.setAttribute('d',d);mclip.setAttribute('d',d);moC.setAttribute('d','');
+    teeth.setAttribute('y',(-h*.35).toFixed(1));teeth.setAttribute('height',(h*.3).toFixed(1));
+    tongue.setAttribute('cy',(h*.62).toFixed(1));tongue.setAttribute('rx',(hw*.6).toFixed(1));tongue.setAttribute('ry',(h*.28).toFixed(1));
+    mo.style.display=teeth.style.display=tongue.style.display='';}
+  else{mo.setAttribute('d','');mclip.setAttribute('d','');teeth.style.display=tongue.style.display='none';moC.setAttribute('d',CLOSED[G.expr|0]);}
+  // braccia, telefono, pollice
+  arm('L',G.aL1,G.aL2);const wR=arm('R',G.aR1,G.aR2);
+  arms.L.querySelector('.thumb').setAttribute('opacity',G.thumb.toFixed(2));
+  phoneG.setAttribute('opacity',G.phone>0?1:0);
+  phoneG.setAttribute('transform',`translate(${wR[0].toFixed(1)} ${(wR[1]+6).toFixed(1)}) translate(35 0) scale(${Math.max(.001,G.phone).toFixed(3)} 1) translate(-35 0)`);
+  return toStage(wR[0],wR[1]);}
+
+/* ---- render: tutto da tl.time() ---- */
+const turb=$('#turb'),nb=$('#nb'),dot=$('#dot'),cnt=$('#cnt'),wave=$('#wave'),k3w=$('#k3w'),k3=$('#k3');
+const drift=(el,t,ax,ay,bx,by,s1,s2)=>{el.style.transform=`translate(${(ax+bx*Math.sin(t*s1)).toFixed(1)}px,${(ay+by*Math.cos(t*s2)).toFixed(1)}px)`;};
+const st=()=>$('#stage').getBoundingClientRect();
+function screenOf(el){const r=el.getBoundingClientRect(),s=st(),k=s.width/W;return{x:(r.left+r.width/2-s.left)/k,y:(r.top+r.height/2-s.top)/k,w:r.width/k};}
+let lastCnt='';const dotPos={x:540,y:1000};
+function render(t){
+  drift($('#g1a'),t,-260,260,180,120,.45,.38);drift($('#g1b'),t,380,-160,140,110,.33,.41);
+  drift($('#g2a'),t,-200,420,170,110,.42,.36);drift($('#g2b'),t,420,-120,120,100,.35,.4);
+  drift($('#g3a'),t,300,500,160,120,.4,.35);drift($('#g3b'),t,-300,-100,120,120,.37,.44);
+  turb.setAttribute('seed',String(1+Math.floor(t*12)%48));
+  // punto d'oro (prima del personaggio: serve al risucchio)
+  if(t>=DOT0&&t<CL){const c=screenOf($('#chk'));const m=dotp.m;dotPos.x=c.x+(LOGO.x-c.x)*m;dotPos.y=c.y+(LOGO.y-c.y)*m;
+    dot.style.left=dotPos.x.toFixed(1)+'px';dot.style.top=dotPos.y.toFixed(1)+'px';dot.style.opacity=dotp.a;gsap.set(dot,{scale:.3+1.3*dotp.a+1.0*m});}
+  else if(t<DOT0){dot.style.opacity=0;}
+  else{dot.style.left=LOGO.x+'px';dot.style.top=LOGO.y+'px';}
+  const hand=drawGuy(t);
+  const phoneC={x:hand.x+35*hand.s,y:hand.y-100*hand.s};
+  // il pennello: dalla mensola alla mano, poi si gira e diventa il telefono
+  if(t<3.12){k3w.style.transform='none';k3.style.visibility='visible';}
+  else{const home={x:840,y:785};const u=kp.u;const tx=hand.x+20,ty=hand.y-70;
+    const x=cub(u,home.x,home.x+60,tx+40,tx)-home.x,y=cub(u,home.y,home.y+40,ty-140,ty)-home.y;
+    k3w.style.transform=`translate(${x.toFixed(1)}px,${y.toFixed(1)}px)`;
+    gsap.set(k3,{scaleX:(t<3.45?1:flip.b)*(1-.35*u),scaleY:1-.35*u,rotation:70*(1-u)+(-8)*u,transformOrigin:'50% 50%'});
+    k3.style.visibility=t<3.59?'visible':'hidden';}
+  // onda d'oro dal telefono
+  if(t>=7.6&&t<S3T+.5){wave.style.transform=`translate(${phoneC.x.toFixed(1)}px,${phoneC.y.toFixed(1)}px) scale(${(t<S3T?wv.s:20).toFixed(3)})`;}
+  // bokeh
+  const inClose=t>=CL;
+  bokEls.forEach((d,i)=>{const b=BOK[i];let x=b[0]+30*Math.sin(t*.35+i),y=b[1]+25*Math.cos(t*.3+i);
+    if(t<S2T){y=b[1]+t*50*(.6+b[3]);}
+    else if(t<S3T){y=b[1]-(t-S2T)*70*(.6+b[3]);}
+    else if(t<S4T){x=b[0]-(t-S3T)*60*(.6+b[3]);}
+    else {y=b[1]+(t-S4T)*50*(.6+b[3]);}
+    d.style.transform=`translate(${(x-b[2]/2).toFixed(1)}px,${(y-b[2]/2).toFixed(1)}px)`;
+    d.style.background='rgba(222,200,140,.32)';d.style.opacity=inClose?0:.45;});
+  // chat: escono dal telefono (S2), tremano, poi volano nelle righe dell'elenco (S3)
+  BUBS.forEach((b,k)=>{const el=bubEls[k];let op=0,x=b[3],y=b[4],s=1,r=0;
+    if(t>=b[5]&&t<S3T){const p=pops[k].p;op=Math.min(1,p*2);s=.3+.7*p;r=(k%2?4:-4)*(1-p);
+      x=phoneC.x+(b[3]-phoneC.x)*p;y=phoneC.y+(b[4]-phoneC.y)*p-Math.sin(Math.PI*p)*60;
+      const j=Math.max(0,Math.min(1,(t-5.9)/.6));x+=j*5*Math.sin(t*31+k*2);y+=j*4*Math.cos(t*27+k);
+      if(t>7.55){const z=Math.min(1,(t-7.55)/.65);x=x+(phoneC.x-x)*.08*z;y=y+(phoneC.y-y)*.06*z;s*=1+.05*z;}}
+    else if(t>=S3T&&t<ARR[k]+.2){const u=fl[k].u,row=screenOf($('#row'+(k+1)));
+      const x0=b[3],y0=b[4];x=cub(u,x0,x0+(k%2?-60:60),row.x,row.x);y=cub(u,y0,y0-120,row.y-140,row.y);
+      s=1+(row.w/380-1)*u;r=(k%2?-8:8)*Math.sin(Math.PI*u);op=t<ARR[k]?1:Math.max(0,1-(t-ARR[k])/.18);}
+    el.style.opacity=op;
+    el.style.transform=`translate(${x.toFixed(1)}px,${y.toFixed(1)}px) rotate(${r.toFixed(2)}deg) scale(${s.toFixed(3)})`;});
+  // contatore dell'elenco
+  let n=ARR.filter(a=>t>=a-.02).length+(t>=IMP?1:0);const txt=n===1?'1 prenotazione':`${n} prenotazioni`;
+  if(txt!==lastCnt){cnt.textContent=txt;lastCnt=txt;}
+  // notifica: scende sopra l'elenco (S3), poi cade nelle 16:30 e diventa la riga (S4)
+  let no=0,nx=400,ny=580,ns=1,nr=0;
+  if(t>=11.55&&t<S4T){const a=nbp.a;no=Math.min(1,a*1.5);ns=.7+.3*a;ny=580+6*Math.sin(t*7);nr=2*Math.sin(t*18)*(1-a*.6);}
+  else if(t>=S4T&&t<IMP+.12){const u=nbp.u,r5=screenOf($('#row5'));no=t<IMP?1:Math.max(0,1-(t-IMP)/.12);
+    nx=400+(r5.x-400)*u;ny=580+(r5.y-580)*u;ns=1+(r5.w/540-1)*u;nr=-3*Math.sin(Math.PI*u);}
+  nb.style.opacity=no;nb.style.transform=`translate(${nx.toFixed(1)}px,${ny.toFixed(1)}px) rotate(${nr.toFixed(2)}deg) scale(${ns.toFixed(3)})`;
+}
+
+/* ---- colla ---- */
+const stage=$('#stage');
+const fit=()=>{const k=Math.min(innerWidth/W,innerHeight/H);stage.style.transform=`translate(-50%,-50%) scale(${k})`;};
+addEventListener('resize',fit);fit();
+(function frame(){render(tl.time());requestAnimationFrame(frame);})();
+addEventListener('keydown',e=>{if(e.code==='Space'){e.preventDefault();tl.paused()?tl.play():tl.pause();}if(/^[rR]$/.test(e.key))tl.play(0);});
+if(Q.has('debug')){const ui=$('#ui');ui.style.cssText='display:flex;position:fixed;left:50%;bottom:16px;transform:translateX(-50%);gap:10px;background:#111;color:#ddd;padding:10px 14px;border-radius:12px;font:13px system-ui;z-index:9';
+  ui.innerHTML='<input id="sc" type="range" min="0" max="1000" value="0" style="width:320px"><span id="ck">0.00s</span>';
+  $('#sc').oninput=e=>{tl.pause();tl.time(e.target.value/1000*DURATION);};setInterval(()=>{$('#ck').textContent=tl.time().toFixed(2)+'s';},100);}
+tl.eventCallback('onComplete',()=>tl.play(0));
+const seek=t=>{tl.pause();tl.time(t,false);if(gsap.ticker.tick)gsap.ticker.tick();render(t);};
+window.OPENER={tl,DURATION,seek,W,H,ready:false};
+document.fonts.ready.then(()=>{window.OPENER.ready=true;tl.time(0);render(0);if(!Q.has('clean'))tl.play(0);});
+</script>
+</body>
+</html>

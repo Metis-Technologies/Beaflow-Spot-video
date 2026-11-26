@@ -1,0 +1,63 @@
+{
+  "numero": 49,
+  "nome": "lo-vedi-subito",
+  "titolo": "Lo vedi subito",
+  "ossatura": "B",
+  "tema": "chiaro",
+  "versione": 2,
+  "seme": 4917,
+  "funzione": "prenotazioni online che entrano da sole nell'agenda del giorno (confermato: prenotazioni online, agenda)",
+  "note": "Gancio chiesto dall'utente il 21/11: «i clienti prenotano e lo trovi subito in agenda, nel giorno di oggi», detto in modo semplice. Diverso dallo spot 21 (notifiche): qui la prenotazione finisce nell'agenda di oggi, al suo orario. Dati dimostrativi. v2 (21/11): voce della scena 3 rifatta, «Oggi, alle tre.» aveva un accento strano su «tre»; scelta dall'utente fra tre prove «Oggi, alle tre del pomeriggio.»",
+  "scene": [
+    {
+      "schermo": [
+        "Il cliente",
+        "prenota."
+      ],
+      "accento": [
+        "Lo vedi subito."
+      ],
+      "voce": "Il cliente prenota. Lo vedi subito.",
+      "voce_inizio": 0.05,
+      "si_vede": "un telefono; un dito tocca «Prenota»"
+    },
+    {
+      "schermo": [
+        "Con Beaflow,",
+        "va dritto",
+        "in agenda."
+      ],
+      "voce": "Con Beaflow, va dritto in agenda.",
+      "voce_inizio": 2.52,
+      "si_vede": "la prenotazione esce dal telefono come una tessera oro e vola verso l'agenda"
+    },
+    {
+      "schermo": [
+        "Oggi,",
+        "alle 15:00."
+      ],
+      "voce": "Oggi, alle tre del pomeriggio.",
+      "voce_inizio": 5.02,
+      "si_vede": "l'agenda di oggi; la tessera si incastra nello spazio delle 15:00 e si accende"
+    },
+    {
+      "schermo": [
+        "Zero chiamate,",
+        "zero messaggi."
+      ],
+      "voce": "Niente chiamate, niente messaggi.",
+      "voce_inizio": 7.52,
+      "si_vede": "cornetta e fumetti si dissolvono; altre prenotazioni atterrano da sole nella giornata"
+    },
+    {
+      "schermo": [
+        "Semplice",
+        "e veloce."
+      ],
+      "voce": "Semplice e veloce.",
+      "voce_inizio": 10.02,
+      "si_vede": "la giornata piena e ordinata, con una spunta"
+    }
+  ],
+  "dati": {}
+}

@@ -14,7 +14,7 @@ const FPS = 30;
 const SEG = [['s1',0,2.5],['s2',2.5,5],['s3',5,7.5],['s4',7.5,10],['s5',10,12.5],['s6',12.5,15]];
 const ENC = ['-c:v','libx264','-crf','17','-preset','medium','-pix_fmt','yuv420p','-profile:v','high','-r',String(FPS)];
 const TYPES = { '.html':'text/html', '.js':'text/javascript', '.svg':'image/svg+xml', '.woff2':'font/woff2', '.json':'application/json' };
-const SICURA = { sx: 80, dx: 960, alto: 250, basso: 1540 };           // 1080×1920 meno 80 / 120 / 250 / 380 px
+const SICURA = { sx: 130, dx: 950, alto: 250, basso: 1248 };          // 21/11: 1080×1920 meno 130 / 130 / 250 px e il 35 % in basso coperto da Meta nelle sponsorizzate
 
 function playwright() {
   const prove = ['playwright', path.join(MOTORE, 'node_modules', 'playwright')];
@@ -115,7 +115,14 @@ function serve(root) {
         return out;
       }, [t, SICURA]));
     }
-    console.log(JSON.stringify({ tempi, problemi }));
+    // 21/11: oggetti 3D fuori dall'inquadratura, a metà scena e attorno a ogni cambio scena
+    const fuori = [];
+    for (const t of [0.6, 1.6, 2.35, 2.5, 2.65, 2.85, 3.9, 4.85, 5.0, 5.15, 5.35, 6.4, 7.35, 7.5, 7.65, 7.85, 8.9, 9.85, 10.0, 10.15, 10.35, 11.4, 12.2]) {
+      await p.evaluate(t => seek(t), t);
+      const o = await p.evaluate(() => window.oggettiFuori ? window.oggettiFuori() : []);
+      if (o.length) fuori.push({ t, oggetti: [...new Set(o)].slice(0, 4) });
+    }
+    console.log(JSON.stringify({ tempi, problemi, fuori }));
   } else if (mode === 'segments') {
     fs.mkdirSync(out, { recursive: true });
     for (const [name, a, z] of SEG) {

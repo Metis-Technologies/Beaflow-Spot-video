@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="it">
+<!-- Made with the Bang Motion skill (Bang Tutorial, MIT, https://github.com/bangtutorial/bang-motion) -->
+<head>
+<meta charset="utf-8">
+<title>Beaflow · Come funziona v3 (storia in evidenza)</title>
+<!--
+  STYLE BRIEF v3 (22/11): causa → effetto, approvato in chat
+  Concetto       : 13 Staffetta di un oggetto; ogni scena nasce dal gesto della precedente
+  Palette        : oro #C9B16C · ottone #775A18 · crema #F6F0E4 · nero #111111 · scena 2 dentro l'onda d'oro (#FBF1D6 → #D9BC78)
+  Font           : Fraunces 500 (titoli) / Inter (UI e chiusura)
+  Profondità     : fondo che si muove · oggetto 3D in prospettiva · bokeh oro davanti che segue la direzione dell'oggetto
+  Catena         : tocco su «Prenota» → onda d'oro → l'onda diventa la scheda → la scheda esce a destra, entra da sinistra e cade nelle 15:00
+                   → l'urto fa sobbalzare le righe e stacca la campanella → la campanella entra nel telefono di Giulia → vibra, notifica
+                   → il pollice tocca → «Confermato ✓» → la spunta diventa il punto d'oro che risucchia tutto → zoom in sul logo (chiusura degli spot)
+  Titoli         : entrano nel momento del gesto (scelta, nascita della scheda, urto, vibrazione)
+  Formato        : 1080×1920, 10 s, loop, senza audio
+-->
+<style>
+@font-face{font-family:"Fraunces";src:url(assets/fraunces.woff2) format("woff2");font-weight:100 900;font-display:block}
+@font-face{font-family:"InterV";src:url(assets/inter.woff2) format("woff2");font-weight:100 900;font-display:block}
+:root{--oro:#C9B16C;--ottone:#775A18;--crema:#F6F0E4;--crema2:#EBDFC8;--nero:#111111;--porc:#FFFDF8}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;background:#E9DFCB;overflow:hidden}
+#stage{position:fixed;left:50%;top:50%;width:1080px;height:1920px;transform:translate(-50%,-50%);overflow:hidden;background:var(--crema)}
+.scene{position:absolute;inset:0;overflow:hidden;visibility:hidden}
+.bgc{position:absolute;inset:0;background:linear-gradient(175deg,#FAF6EE 0%,var(--crema) 45%,var(--crema2) 100%)}
+.bgd{position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 45%,#3B2D17 0%,#1A140C 55%,#0E0B07 100%)}
+.glow{position:absolute;border-radius:50%;pointer-events:none}
+.gw{width:1300px;height:1300px;background:radial-gradient(circle,rgba(201,177,108,.32) 0%,rgba(201,177,108,.1) 40%,transparent 68%)}
+.gl{width:1000px;height:1000px;background:radial-gradient(circle,rgba(255,250,240,.85) 0%,transparent 65%)}
+.gd{width:1200px;height:1200px;background:radial-gradient(circle,rgba(201,177,108,.28) 0%,rgba(119,90,24,.12) 40%,transparent 70%)}
+.persp{position:absolute;inset:0;perspective:2200px;perspective-origin:50% 45%}
+.rig{position:absolute;inset:0;transform-style:preserve-3d;will-change:transform}
+.pocket{position:absolute;left:0;right:0;top:0;height:640px;pointer-events:none;background:linear-gradient(180deg,#FAF6EE 0%,rgba(250,246,238,.96) 55%,rgba(248,243,233,.7) 75%,rgba(246,240,228,0) 100%)}
+.shadow{box-shadow:0 40px 80px -24px rgba(70,50,15,.35),0 10px 22px -8px rgba(70,50,15,.2)}
+#grain{position:absolute;inset:0;width:100%;height:100%;opacity:.1;mix-blend-mode:multiply;pointer-events:none}
+.bok{position:absolute;border-radius:50%;pointer-events:none;filter:blur(18px)}
+
+/* S1 telefono */
+.phone{position:absolute;width:460px;height:920px;border-radius:72px;background:#151515;padding:16px;transform-style:preserve-3d}
+#ph1{left:310px;top:620px}
+.screen{position:relative;width:100%;height:100%;border-radius:58px;background:var(--porc);overflow:hidden;font-family:"InterV",system-ui,sans-serif;color:var(--nero)}
+.notch{position:absolute;left:50%;top:18px;width:120px;height:30px;margin-left:-60px;border-radius:15px;background:#151515}
+.sh{position:absolute;left:34px;right:34px}
+#s-name{top:86px;font-size:36px;font-weight:650;letter-spacing:-.01em}
+#s-sub{top:132px;font-size:24px;color:#7A705E}
+#s-serv{top:190px;height:104px;border-radius:24px;background:#F4EEE2;padding:22px 24px}
+#s-serv b{display:block;font-size:28px;font-weight:600}
+#s-serv span{font-size:23px;color:#7A705E}
+#s-day{top:326px;font-size:26px;font-weight:600}
+#chips{top:372px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.chip{height:70px;border-radius:20px;border:2px solid #E3D9C6;display:flex;align-items:center;justify-content:center;font-size:27px;font-weight:600;color:#3A3328;background:#fff;position:relative;overflow:hidden}
+#chip15 .fill{position:absolute;inset:0;background:var(--ottone);transform:scale(0);border-radius:18px}
+#chip15 em{position:relative;font-style:normal}
+#btn{top:742px;height:96px;border-radius:30px;background:var(--nero);color:#fff;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:600}
+#tap{position:absolute;width:90px;height:90px;margin:-45px 0 0 -45px;border-radius:50%;border:4px solid var(--oro);opacity:0}
+#finger{position:absolute;width:58px;height:58px;margin:-29px 0 0 -29px;border-radius:50%;background:rgba(17,17,17,.18);opacity:0}
+
+/* S2: la prenotazione in volo, su fondo scuro */
+#wire2{position:absolute;inset:0;width:1080px;height:1920px;overflow:visible}
+.bcard{position:absolute;left:0;top:0;width:640px;height:170px;margin:-85px 0 0 -320px;border-radius:34px;background:linear-gradient(135deg,#8A6A22,#775A18 55%,#5E4613);
+  color:#fff;font-family:"InterV",system-ui,sans-serif;display:flex;align-items:center;gap:26px;padding:0 34px;transform-style:preserve-3d;will-change:transform}
+.bcard .av{width:96px;height:96px;border-radius:50%;background:var(--oro);color:var(--nero);display:flex;align-items:center;justify-content:center;font-size:44px;font-weight:700;flex:none}
+.bcard b{display:block;font-size:38px;font-weight:650;letter-spacing:-.01em}
+.bcard span{font-size:28px;opacity:.85}
+.bcard .tm{margin-left:auto;font-size:40px;font-weight:700;font-variant-numeric:tabular-nums}
+.bcard .sheen{position:absolute;inset:0;border-radius:34px;background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%);opacity:.0}
+
+/* S3 agenda */
+#ag{position:absolute;left:200px;top:600px;width:680px;height:1000px;border-radius:52px;background:var(--porc);font-family:"InterV",system-ui,sans-serif;color:var(--nero);transform-style:flat}
+#ag-h{position:absolute;left:44px;top:42px;font-size:44px;font-weight:650;letter-spacing:-.01em}
+#ag-d{position:absolute;right:44px;top:54px;font-size:28px;color:#7A705E}
+.row{position:absolute;left:30px;right:30px;height:100px}
+.row .h{position:absolute;left:12px;top:32px;width:96px;font-size:27px;color:#8C8270;font-variant-numeric:tabular-nums}
+.row .ln{position:absolute;left:124px;right:12px;top:49px;height:2px;background:#EEE6D6}
+.appt{position:absolute;left:124px;right:12px;top:10px;height:80px;border-radius:20px;background:#EFE7D8;padding:0 24px;display:flex;align-items:center;font-size:28px;font-weight:600;color:#4A4234}
+#slot{position:absolute;left:124px;right:12px;top:10px;height:80px;border-radius:20px;border:3px dashed #D8C9A6}
+#booked{position:absolute;left:124px;right:12px;top:10px;height:80px;border-radius:20px;background:var(--ottone);color:#fff;padding:0 24px;display:flex;align-items:center;gap:14px;font-size:28px;font-weight:650;opacity:0}
+#booked i{width:14px;height:14px;border-radius:50%;background:var(--oro)}
+#booked small{margin-left:auto;font-size:26px;opacity:.9;font-variant-numeric:tabular-nums}
+#ring{position:absolute;left:110px;right:-2px;top:-6px;height:112px;border-radius:30px;border:4px solid var(--oro);opacity:0}
+
+/* S4 promemoria sul telefono della cliente */
+#ph4{left:310px;top:640px}
+#ph4 .screen{background:linear-gradient(170deg,#2A2218,#121010)}
+#lock-t{position:absolute;left:0;right:0;top:120px;text-align:center;font-family:"InterV",system-ui,sans-serif;font-size:112px;font-weight:300;color:#F6F0E4;letter-spacing:-.02em}
+#lock-d{position:absolute;left:0;right:0;top:250px;text-align:center;font-family:"InterV",system-ui,sans-serif;font-size:28px;color:#CFC4AC}
+#notif{position:absolute;left:22px;right:22px;top:340px;height:150px;border-radius:34px;background:rgba(255,253,248,.94);font-family:"InterV",system-ui,sans-serif;color:var(--nero);
+  display:flex;align-items:center;gap:20px;padding:0 24px;opacity:0}
+#notif .ic{width:72px;height:72px;border-radius:20px;background:var(--nero);display:flex;align-items:center;justify-content:center;flex:none}
+#notif b{display:block;font-size:27px;font-weight:650;white-space:nowrap}
+#notif span{display:block;font-size:24px;color:#4A4234;line-height:1.25;margin-top:4px;white-space:nowrap}
+
+/* titoli */
+.ttl{position:absolute;font-family:"Fraunces",Georgia,serif;font-weight:500;color:var(--nero);letter-spacing:-.015em;line-height:1.03;white-space:nowrap;font-variation-settings:"opsz" 144,"SOFT" 50}
+.ttl .w{display:inline-block}
+.ttl .ch{display:inline-block;opacity:0;will-change:transform,opacity,filter}
+.k{color:var(--ottone)}
+.ttl.dark{color:#F6F0E4}.ttl.dark .k{color:var(--oro)}
+#t1{left:90px;top:300px;font-size:104px}
+#t2{right:90px;top:300px;font-size:104px;text-align:right}
+#t3{left:90px;top:300px;font-size:104px}
+#t4{left:90px;top:300px;font-size:92px;white-space:normal;width:900px}
+
+/* chiusura come negli spot */
+#close{position:absolute;inset:0;visibility:hidden}
+#dot{position:absolute;left:540px;top:960px;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;background:radial-gradient(circle,#FFF6DA 0%,#C9B16C 45%,rgba(201,177,108,0) 72%);opacity:0}
+#flash{position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(255,246,218,.95),rgba(201,177,108,.25) 45%,transparent 75%);opacity:0}
+#halo{position:absolute;left:540px;top:600px;width:1100px;height:1100px;margin:-550px 0 0 -550px;border-radius:50%;background:radial-gradient(circle,rgba(201,177,108,.35),transparent 65%);opacity:0}
+#logoB{position:absolute;left:180px;top:490px;width:720px;transform-origin:50% 50%;opacity:0}
+#lineC{position:absolute;left:340px;top:748px;overflow:visible}
+#btnC{position:absolute;left:280px;top:880px;width:520px;height:144px;border-radius:72px;background:var(--nero);color:#fff;font-family:"InterV",system-ui,sans-serif;font-size:50px;font-weight:600;display:flex;align-items:center;justify-content:center;opacity:0}
+#offer{position:absolute;left:0;right:0;top:1076px;text-align:center;font-family:"InterV",system-ui,sans-serif;font-size:40px;font-weight:500;color:#4A4234;opacity:0}
+#url{position:absolute;left:0;right:0;top:1152px;text-align:center;font-family:"InterV",system-ui,sans-serif;font-size:40px;font-weight:600;color:var(--ottone);opacity:0}
+#filters{position:absolute;width:0;height:0}
+#ui{display:none}
+
+/* v3: causa → effetto */
+.bgg{position:absolute;inset:0;background:radial-gradient(110% 75% at 50% 48%,#FBF1D6 0%,#EED9A4 45%,#D9BC78 100%)}
+.gg{width:1200px;height:1200px;background:radial-gradient(circle,rgba(255,250,232,.9) 0%,rgba(255,244,214,.3) 40%,transparent 68%)}
+#wave{position:absolute;left:0;top:0;width:200px;height:200px;margin:-100px 0 0 -100px;border-radius:50%;
+  background:radial-gradient(circle,#FBF1D6 0%,#EED9A4 55%,#D9BC78 80%,rgba(201,177,108,.0) 100%);opacity:0;pointer-events:none;will-change:transform}
+#core{position:absolute;left:540px;top:1150px;width:260px;height:260px;margin:-130px 0 0 -130px;border-radius:50%;
+  background:radial-gradient(circle,#FFF6DA 0%,#C9B16C 50%,rgba(201,177,108,0) 72%);opacity:0;pointer-events:none}
+#t2{left:90px;top:300px;font-size:104px;text-align:left;right:auto}
+#t2 .k{color:#5E4613}
+#bell{position:absolute;left:0;top:0;width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#E9D6A0,#C9B16C 55%,#9C8340);
+  box-shadow:0 20px 40px -14px rgba(80,55,10,.5),0 0 40px rgba(201,177,108,.6);display:flex;align-items:center;justify-content:center;opacity:0;will-change:transform}
+#thumb{position:absolute;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;background:rgba(17,17,17,.22);border:3px solid rgba(17,17,17,.12);opacity:0}
+#tap4{position:absolute;width:96px;height:96px;margin:-48px 0 0 -48px;border-radius:50%;border:4px solid #C9B16C;opacity:0}
+#notif .ok{margin-left:auto;width:58px;height:58px;border-radius:50%;background:#EFE7D8;display:flex;align-items:center;justify-content:center;flex:none}
+#notif .ok svg path{stroke-dasharray:40;stroke-dashoffset:40}
+#notif .msg2{display:none}
+</style>
+</head>
+<body>
+<svg id="filters"><defs></defs></svg>
+<div id="stage">
+
+  <!-- S1 · il cliente prenota -->
+  <div class="scene" id="S1"><div class="bgc"></div><div class="glow gw" id="g1a"></div><div class="glow gl" id="g1b"></div>
+    <div class="persp"><div class="rig" id="r1">
+      <div class="phone shadow" id="ph1"><div class="screen">
+        <div class="notch"></div>
+        <div class="sh" id="s-name">Studio Aurora</div><div class="sh" id="s-sub">Prenota online</div>
+        <div class="sh" id="s-serv"><b>Taglio e piega</b><span>45 min</span></div>
+        <div class="sh" id="s-day">Oggi</div>
+        <div class="sh" id="chips"><div class="chip">10:00</div><div class="chip">11:30</div><div class="chip">14:00</div>
+          <div class="chip" id="chip15"><span class="fill"></span><em>15:00</em></div><div class="chip">16:30</div><div class="chip">18:00</div></div>
+        <div class="sh" id="btn">Prenota</div><div id="finger"></div><div id="tap"></div>
+      </div></div>
+    </div></div>
+    <div class="pocket"></div>
+    <h1 class="ttl" id="t1">Il cliente prenota</h1>
+  </div>
+
+  <!-- S2 · dentro l'onda d'oro: l'onda diventa la scheda, che vola via a destra -->
+  <div class="scene" id="S2"><div class="bgg"></div><div class="glow gg" id="g2a"></div>
+    <div class="persp"><div class="rig" id="r2">
+      <svg id="wire2" viewBox="0 0 1080 1920"><path id="w2" fill="none" stroke="#9C7A2C" stroke-width="7" stroke-linecap="round"/></svg>
+    </div></div>
+    <div id="core"></div>
+    <h1 class="ttl" id="t2">Tu lo vedi <span class="k">subito</span></h1>
+  </div>
+
+  <!-- S3 · la scheda entra da sinistra e cade nelle 15:00; l'urto fa partire la campanella -->
+  <div class="scene" id="S3"><div class="bgc"></div><div class="glow gw" id="g3a"></div><div class="glow gl" id="g3b"></div>
+    <div class="persp"><div class="rig" id="r3">
+      <svg id="wire3" viewBox="0 0 1080 1920" style="position:absolute;inset:0;width:1080px;height:1920px;overflow:visible"><path id="w3" fill="none" stroke="#C9B16C" stroke-width="6" stroke-linecap="round"/></svg>
+      <div id="ag" class="shadow"><div id="ag-h">Oggi</div><div id="ag-d">sabato</div><div id="rows"></div></div>
+    </div></div>
+    <div class="pocket"></div>
+    <h1 class="ttl" id="t3">Dritto in <span class="k">agenda</span></h1>
+  </div>
+
+  <!-- S4 · la campanella entra nel telefono di Giulia -->
+  <div class="scene" id="S4"><div class="bgc"></div><div class="glow gw" id="g4a"></div><div class="glow gl" id="g4b"></div>
+    <div class="persp"><div class="rig" id="r4">
+      <div class="phone shadow" id="ph4"><div class="screen">
+        <div class="notch"></div><div id="lock-t">13:00</div><div id="lock-d">sabato</div>
+        <div id="notif"><div class="ic"><svg width="40" height="40" viewBox="0 0 40 40"><path d="M20 7c-5.5 0-9 4-9 9.5V23l-3 4h24l-3-4v-6.5C29 11 25.5 7 20 7zM16.5 30a3.5 3.5 0 0 0 7 0" fill="none" stroke="#C9B16C" stroke-width="2.6" stroke-linejoin="round"/></svg></div>
+          <div><b>Studio Aurora</b><span class="msg1">Oggi alle 15:00</span><span class="msg2">Confermato ✓</span></div>
+          <div class="ok"><svg width="34" height="34" viewBox="0 0 34 34"><path d="M8 18l6 6 12-13" fill="none" stroke="#775A18" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+        <div id="thumb"></div><div id="tap4"></div>
+      </div></div>
+    </div></div>
+    <div class="pocket"></div>
+    <h1 class="ttl" id="t4">Il promemoria parte <span class="k">da solo</span></h1>
+  </div>
+
+  <!-- onda del tocco (S1→S2) -->
+  <div id="wave"></div>
+  <!-- scheda condivisa S2→S3 -->
+  <div id="cardL" class="bcard" style="opacity:0"><div class="av">G</div><div><b>Giulia</b><span>Taglio e piega</span></div><div class="tm">15:00</div><div class="sheen"></div></div>
+  <!-- campanella condivisa S3→S4 -->
+  <div id="bell"><svg width="60" height="60" viewBox="0 0 40 40"><path d="M20 7c-5.5 0-9 4-9 9.5V23l-3 4h24l-3-4v-6.5C29 11 25.5 7 20 7zM16.5 30a3.5 3.5 0 0 0 7 0" fill="none" stroke="#111" stroke-width="2.8" stroke-linejoin="round"/></svg></div>
+  <!-- bokeh oro in primo piano -->
+  <div id="bokeh"></div>
+
+  <!-- chiusura come negli spot -->
+  <div id="close"><div class="bgc"></div><div id="halo"></div>
+    <img id="logoB" src="assets/logo.svg" alt="Beaflow">
+    <svg id="lineC" width="400" height="10" viewBox="0 0 400 10"><path id="lc" d="M5 5H395" stroke="#C9B16C" stroke-width="5" stroke-linecap="round" fill="none"/></svg>
+    <div id="btnC">Inizia gratis</div>
+    <div id="offer">Piano Free · 0 € per sempre</div>
+    <div id="url">beaflow.it</div>
+  </div>
+  <div id="dot"></div><div id="flash"></div>
+
+  <svg id="grain" viewBox="0 0 1080 1920" preserveAspectRatio="none"><filter id="gr"><feTurbulence id="turb" type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="1"/><feColorMatrix type="saturate" values="0"/></filter><rect width="1080" height="1920" filter="url(#gr)"/></svg>
+</div>
+<div id="ui"></div>
+
+<script src="assets/gsap.min.js"></script>
+<script>
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const W=1080,H=1920,DURATION=10.0;
+const Q=new URLSearchParams(location.search);
+
+/* ---- agenda ---- */
+const ORE=['9:00','10:00','11:00','12:00','14:00','15:00','16:00','17:00'];
+const PIENE={1:'Marco · Barba',2:'Sara · Manicure',6:'Luca · Colore'};
+ORE.forEach((o,k)=>{const r=document.createElement('div');r.className='row';r.style.top=(130+k*104)+'px';r.dataset.k=k;
+  r.innerHTML=`<div class="h">${o}</div>`+(PIENE[k]?`<div class="appt">${PIENE[k]}</div>`:(k===5?`<div id="ring"></div><div id="slot"></div><div id="booked"><i></i>Giulia · Taglio<small>15:00</small></div>`:`<div class="ln"></div>`));
+  $('#rows').appendChild(r);});
+
+/* ---- bokeh ---- */
+const BOK=[[120,520,150,.5],[930,700,110,.7],[180,1500,190,.35],[880,1380,140,.55],[540,1720,120,.6],[60,980,90,.8],[1010,300,100,.45]];
+BOK.forEach(b=>{const d=document.createElement('div');d.className='bok';d.style.width=d.style.height=b[2]+'px';$('#bokeh').appendChild(d);});
+const bokEls=$$('#bokeh .bok');
+
+/* ---- split + blur direzionale (techniques.md §1) ---- */
+const defs=$('#filters defs');let fc=0;
+function makeBlur(){const NS='http://www.w3.org/2000/svg',id='mb'+(fc++),f=document.createElementNS(NS,'filter');f.id=id;
+  f.setAttribute('x','-70%');f.setAttribute('y','-70%');f.setAttribute('width','240%');f.setAttribute('height','240%');
+  const g=document.createElementNS(NS,'feGaussianBlur');g.setAttribute('stdDeviation','0 0');f.appendChild(g);defs.appendChild(f);return{url:`url(#${id})`,node:g};}
+function blurTween(tl,el,at,from,to,dur,{ease='power3.out',ax=1,ay=.08}={}){const b=makeBlur(),o={v:from};
+  tl.set(el,{filter:b.url},at);tl.to(o,{v:to,duration:dur,ease,onUpdate(){b.node.setAttribute('stdDeviation',`${(o.v*ax).toFixed(2)} ${(o.v*ay).toFixed(2)}`);}},at);
+  tl.set(el,{filter:'none'},at+dur);}
+function split(el){const out=[];const walk=(node)=>{[...node.childNodes].forEach(n=>{
+    if(n.nodeType===3){const frag=document.createDocumentFragment();n.textContent.split(/(\s+)/).forEach(tok=>{if(!tok)return;
+        if(/^\s+$/.test(tok)){const s=document.createElement('span');s.className='ch';s.innerHTML='&nbsp;';frag.appendChild(s);out.push(s);return;}
+        const w=document.createElement('span');w.className='w';for(const c of tok){const s=document.createElement('span');s.className='ch';s.textContent=c;w.appendChild(s);out.push(s);}frag.appendChild(w);});
+      n.replaceWith(frag);} else if(n.nodeType===1){walk(n);} });};walk(el);return out;}
+
+const tl=gsap.timeline({paused:true});
+const VERT={ax:.1,ay:1};
+const inUp=(ch,el,at,{dur=.75,st=.02}={})=>{tl.fromTo(ch,{opacity:0,yPercent:60,scaleY:1.4},{opacity:1,yPercent:0,scaleY:1,duration:dur,ease:'power4.out',stagger:st,immediateRender:false},at);blurTween(tl,el,at,28,0,dur,VERT);};
+const inLeft=(ch,el,at,{dur=.7,st=.02}={})=>{tl.fromTo(ch,{opacity:0,xPercent:-50},{opacity:1,xPercent:0,duration:dur,ease:'power4.out',stagger:st,immediateRender:false},at);blurTween(tl,el,at,48,0,dur,{ease:'power4.out'});};
+const inDepth=(ch,el,at,{dur=.8,st=.016}={})=>{tl.fromTo(ch,{opacity:0,scale:2.3},{opacity:1,scale:1,duration:dur,ease:'expo.out',stagger:{each:st,from:'center'},immediateRender:false},at);blurTween(tl,el,at,22,0,dur,{ease:'expo.out',ax:1,ay:1});};
+const inWords=(el,at,{dur=.55,st=.1}={})=>{tl.set(el.querySelectorAll('.ch'),{opacity:1},at);
+  tl.fromTo(el.querySelectorAll('.w'),{opacity:0,yPercent:45,rotateX:-60},{opacity:1,yPercent:0,rotateX:0,duration:dur,ease:'back.out(1.5)',stagger:st,immediateRender:false},at);};
+const outUp=(ch,el,at,{dur=.3,st=.006}={})=>{tl.to(ch,{opacity:0,yPercent:-70,duration:dur,ease:'power2.in',stagger:st},at);blurTween(tl,el,at,0,40,dur+.1,{ease:'power2.in',...VERT});};
+const outRight=(ch,el,at,{dur=.3,st=.006}={})=>{tl.to(ch,{opacity:0,xPercent:60,duration:dur,ease:'power2.in',stagger:{each:st,from:'end'}},at);blurTween(tl,el,at,0,50,dur+.1,{ease:'power2.in'});};
+
+const sceneOn=(id,from,to)=>{tl.set(id,{visibility:'visible'},from);if(to!=null)tl.set(id,{visibility:'hidden'},to);};
+const c1=split($('#t1')),c2=split($('#t2')),c3=split($('#t3'));split($('#t4'));
+
+/* ================= RUNDOWN v3 · causa → effetto (10 s) =================
+   S1 0,00–2,30  il dito sceglie le 15:00 e tocca «Prenota» → il bottone manda un'onda d'oro che riempie lo schermo
+   S2 2,30–4,30  dentro l'onda: l'onda si concentra e DIVENTA la scheda, che vola via a destra col filo d'oro
+   S3 4,30–6,10  la scheda entra da sinistra e CADE nelle 15:00 → l'urto fa sobbalzare le righe → si stacca la campanella che vola su
+   S4 6,10–7,60  la campanella scende ed ENTRA nel telefono di Giulia → vibra, notifica → il pollice tocca → «Confermato ✓»
+   CH 7,60–10,0  la spunta diventa il punto d'oro che risucchia tutto → zoom in sul logo → filo → Inizia gratis → offerta → sito
+   ======================================================================= */
+const BTN={x:540,y:1426};
+
+/* S1 */
+sceneOn('#S1',0,2.3);
+tl.fromTo('#ph1',{rotationY:-22,rotationX:8,z:-120},{rotationY:-6,rotationX:4,z:0,duration:2.2,ease:'sine.inOut',immediateRender:false},0);
+tl.set('#finger',{left:415-326,top:1127-636},.35);
+tl.fromTo('#finger',{opacity:0,scale:1.4},{opacity:1,scale:1,duration:.18,immediateRender:false},.35);
+tl.to('#finger',{scale:.78,duration:.09,yoyo:true,repeat:1},.52);
+tl.fromTo('#chip15 .fill',{scale:0},{scale:1,duration:.3,ease:'power3.out',immediateRender:false},.56);
+tl.to('#chip15 em',{color:'#fff',duration:.15},.6);
+inUp(c1,$('#t1'),.52);                                     // il titolo entra con la scelta
+tl.to('#finger',{left:540-326,top:1426-636,duration:.45,ease:'power2.inOut'},.8);
+tl.set('#r1',{transformOrigin:'540px 1426px'},.8);
+tl.to('#r1',{scale:1.14,duration:.5,ease:'power2.inOut'},.8);
+// causa: il tocco su «Prenota»
+tl.to('#finger',{scale:.75,duration:.09,yoyo:true,repeat:1},1.3);
+tl.to('#btn',{scale:.93,duration:.1,yoyo:true,repeat:1,transformOrigin:'50% 50%'},1.3);
+tl.to('#btn',{backgroundColor:'#775A18',duration:.15},1.36);
+tl.set('#tap',{left:540-326,top:1426-636},1.3);
+tl.fromTo('#tap',{opacity:.9,scale:.3},{opacity:0,scale:1.6,duration:.45,ease:'power2.out',immediateRender:false},1.3);
+tl.to('#finger',{opacity:0,duration:.15},1.45);
+// effetto: l'onda d'oro parte dal bottone e riempie lo schermo
+tl.set('#wave',{left:BTN.x,top:BTN.y},1.38);
+tl.fromTo('#wave',{opacity:1,scale:.1},{scale:17,duration:.9,ease:'power2.in',immediateRender:false},1.4);
+tl.to('#ph1',{z:-60,duration:.5,ease:'power2.in'},1.6);
+outUp(c1,$('#t1'),1.7);
+tl.set('#wave',{opacity:0},2.3);
+
+/* S2 */
+sceneOn('#S2',2.3,4.3);
+tl.fromTo('#core',{opacity:1,scale:3.4},{scale:.5,duration:.4,ease:'power3.in',immediateRender:false},2.3);   // l'onda si concentra
+tl.to('#core',{opacity:0,duration:.2},2.68);
+const fly={a:0,b:0};
+tl.to(fly,{a:1,duration:.6,ease:'back.out(1.6)'},2.62);                                              // …e diventa la scheda
+tl.fromTo('#cardL .sheen',{opacity:0,xPercent:-60},{opacity:1,xPercent:60,duration:.6,ease:'power2.inOut',immediateRender:false},2.75);
+tl.to('#cardL .sheen',{opacity:0,duration:.2},3.3);
+inLeft(c2,$('#t2'),2.65);                                  // il titolo entra con la nascita della scheda
+tl.to(fly,{b:1,duration:1.4,ease:'power2.in'},2.9);         // vola via a destra, accelerando
+const S2P=[{x:540,y:1150},{x:380,y:880},{x:880,y:760},{x:1420,y:980}];
+const cub=(u,a,b,c,d)=>{const v=1-u;return v*v*v*a+3*v*v*u*b+3*v*u*u*c+u*u*u*d;};
+const pathD=(P,n=80)=>{const p=[];for(let i=0;i<=n;i++){const u=i/n;p.push(`${cub(u,P[0].x,P[1].x,P[2].x,P[3].x).toFixed(1)} ${cub(u,P[0].y,P[1].y,P[2].y,P[3].y).toFixed(1)}`);}return 'M'+p.join(' L');};
+const w2=$('#w2');w2.setAttribute('d',pathD(S2P));const W2L=w2.getTotalLength();w2.style.strokeDasharray=W2L;w2.style.strokeDashoffset=W2L;
+tl.to(w2,{strokeDashoffset:0,duration:1.4,ease:'power2.in'},2.9);
+outRight(c2,$('#t2'),3.95);
+
+/* S3 */
+sceneOn('#S3',4.3,6.1);
+tl.fromTo('#ag',{rotationX:12,rotationY:10,z:-60},{rotationX:6,rotationY:-4,z:0,duration:1.8,ease:'sine.inOut',immediateRender:false},4.3);
+tl.fromTo('#r3',{scale:1.04},{scale:1.1,duration:1.8,ease:'sine.inOut',immediateRender:false},4.3);
+const land={u:0};
+tl.to(land,{u:1,duration:.55,ease:'power2.out'},4.3);       // entra da sinistra, nella stessa direzione in cui era uscita
+const w3=$('#w3');
+// causa: l'urto alle 15:00
+const IMP=4.85;
+tl.set('#booked',{opacity:1},IMP);tl.set('#slot',{opacity:0},IMP);
+tl.fromTo('#booked',{scale:1.14},{scale:1,duration:.4,ease:'back.out(2.2)',immediateRender:false},IMP);
+tl.fromTo('#ring',{opacity:1,scale:.96},{opacity:0,scale:1.14,duration:.6,ease:'power2.out',immediateRender:false},IMP);
+// effetto 1: le altre righe sobbalzano, dalla più vicina alla più lontana
+$$('#rows .row').forEach(r=>{const k=+r.dataset.k;if(k===5)return;const d=Math.abs(k-5);
+  tl.to(r,{y:-16/Math.sqrt(d),duration:.09,yoyo:true,repeat:1,ease:'power2.out'},IMP+.04*d);});
+tl.to('#r3',{y:10,duration:.06,yoyo:true,repeat:1,ease:'power2.out'},IMP);
+inDepth(c3,$('#t3'),IMP+.05);
+// effetto 2: dallo slot si stacca la campanella e vola su
+const bell={p:0,u:0};
+tl.to(bell,{p:1,duration:.35,ease:'back.out(2)'},5.15);
+tl.to(bell,{u:1,duration:.75,ease:'power2.in'},5.35);
+outUp(c3,$('#t3'),5.85);
+
+/* S4 */
+sceneOn('#S4',6.1,7.85);
+tl.fromTo('#ph4',{rotationY:16,rotationX:6,z:-80},{rotationY:4,rotationX:3,z:0,duration:1.6,ease:'sine.inOut',immediateRender:false},6.1);
+const fall={u:0};
+tl.to(fall,{u:1,duration:.4,ease:'power2.in'},6.1);         // la campanella scende ed entra nel telefono
+// effetto: il telefono vibra, arriva la notifica
+const HIT=6.5;
+tl.to('#ph4',{rotationZ:1.6,duration:.05,yoyo:true,repeat:5,ease:'sine.inOut'},HIT);
+tl.fromTo('#notif',{opacity:0,y:-110,scale:.9},{opacity:1,y:0,scale:1,duration:.5,ease:'back.out(1.6)',immediateRender:false},HIT+.02);
+inWords($('#t4'),HIT+.05);
+// il pollice di Giulia tocca la notifica → «Confermato»
+tl.fromTo('#thumb',{opacity:0,left:260,top:760,scale:1.4},{opacity:1,left:330,top:415,scale:1,duration:.4,ease:'power3.out',immediateRender:false},6.65);
+tl.set('#tap4',{left:330,top:415},7.05);tl.fromTo('#tap4',{opacity:.9,scale:.3},{opacity:0,scale:1.6,duration:.45,ease:'power2.out',immediateRender:false},7.05);
+tl.to('#thumb',{scale:.94,duration:.08,yoyo:true,repeat:1},7.05);
+tl.to('#notif',{scale:.97,duration:.08,yoyo:true,repeat:1},7.05);
+tl.set('#notif .msg1',{display:'none'},7.1);tl.set('#notif .msg2',{display:'block'},7.1);
+tl.to('#notif .ok',{backgroundColor:'#C9B16C',duration:.15},7.1);
+tl.to('#notif .ok path',{strokeDashoffset:0,duration:.25,ease:'power2.out'},7.1);
+tl.to('#thumb',{opacity:0,duration:.2},7.2);
+tl.to($$('#t4 .w'),{opacity:0,yPercent:-40,duration:.22,ease:'power2.in',stagger:.025},7.35);
+
+/* chiusura: la spunta diventa il punto d'oro che risucchia tutto → zoom in sul logo */
+const OK={x:679,y:1071}, LOGO={x:540,y:585};
+tl.set('#dot',{left:OK.x,top:OK.y},7.42);
+tl.fromTo('#dot',{opacity:0,scale:.3},{opacity:1,scale:1.6,duration:.18,ease:'power2.out',immediateRender:false},7.42);
+tl.set('#r4',{transformOrigin:`${OK.x}px ${OK.y}px`},7.48);
+tl.to('#r4',{scale:0,rotation:-20,duration:.34,ease:'power3.in'},7.48);
+tl.fromTo('#r4',{filter:'blur(0px)'},{filter:'blur(10px)',duration:.34,ease:'power2.in',immediateRender:false},7.48);
+tl.to('#dot',{left:LOGO.x,top:LOGO.y,scale:2.6,duration:.36,ease:'power2.inOut'},7.5);
+const CL=7.86;
+tl.set('#close',{visibility:'visible'},CL);
+tl.to('#dot',{opacity:0,scale:7,duration:.35,ease:'power2.out'},CL);
+tl.fromTo('#flash',{opacity:0},{opacity:1,duration:.08,immediateRender:false},CL);
+tl.to('#flash',{opacity:0,duration:.55,ease:'power2.out'},CL+.08);
+tl.fromTo('#halo',{opacity:0,scale:.4},{opacity:1,scale:1,duration:1.1,ease:'expo.out',immediateRender:false},CL);
+tl.fromTo('#logoB',{opacity:0,scale:.16,filter:'blur(18px)'},{opacity:1,scale:1,filter:'blur(0px)',duration:.9,ease:'expo.out',immediateRender:false},CL);
+tl.to('#logoB',{scale:1.035,duration:1.3,ease:'sine.inOut'},CL+.9);
+const lc=$('#lc');const LCL=lc.getTotalLength();lc.style.strokeDasharray=LCL;lc.style.strokeDashoffset=LCL;
+tl.to(lc,{strokeDashoffset:0,duration:.5,ease:'power2.inOut'},CL+.5);
+tl.fromTo('#btnC',{opacity:0,y:40,scale:.92},{opacity:1,y:0,scale:1,duration:.5,ease:'back.out(1.6)',immediateRender:false},CL+.75);
+tl.fromTo('#offer',{opacity:0,y:24},{opacity:1,y:0,duration:.4,ease:'power3.out',immediateRender:false},CL+.95);
+tl.fromTo('#url',{opacity:0,y:24},{opacity:1,y:0,duration:.4,ease:'power3.out',immediateRender:false},CL+1.1);
+tl.to({},{duration:.01},DURATION);
+
+/* ---- render: tutto da tl.time() ---- */
+const turb=$('#turb'), cardL=$('#cardL'), bellEl=$('#bell');
+const drift=(el,t,ax,ay,bx,by,s1,s2)=>{el.style.transform=`translate(${(ax+bx*Math.sin(t*s1)).toFixed(1)}px,${(ay+by*Math.cos(t*s2)).toFixed(1)}px)`;};
+const st=()=>$('#stage').getBoundingClientRect();
+function screenOf(el){const r=el.getBoundingClientRect(),s=st(),k=s.width/W;return{x:(r.left+r.width/2-s.left)/k,y:(r.top+r.height/2-s.top)/k,w:r.width/k};}
+function render(t){
+  drift($('#g1a'),t,-260,260,180,120,.45,.38);drift($('#g1b'),t,380,-160,140,110,.33,.41);
+  drift($('#g2a'),t,-60,360,160,140,.5,.42);
+  drift($('#g3a'),t,300,500,160,120,.4,.35);drift($('#g3b'),t,-300,-100,120,120,.37,.44);
+  drift($('#g4a'),t,-200,420,170,110,.42,.36);drift($('#g4b'),t,420,-120,120,100,.35,.4);
+  turb.setAttribute('seed',String(1+Math.floor(t*12)%48));
+  // bokeh: seguono la direzione dell'oggetto che vola (S2 verso destra, S3 da sinistra, S4 verso il basso)
+  const inS2=t>=2.3&&t<4.3, inClose=t>=7.86;
+  bokEls.forEach((d,i)=>{const b=BOK[i];let x=b[0]+30*Math.sin(t*.35+i),y=b[1]+25*Math.cos(t*.3+i);
+    if(inS2){x=((b[0]+(t-2.3)*520*(.6+b[3]))%1300)-110;}
+    else if(t>=4.3&&t<6.1){x=b[0]+(t-4.3)*120*(.6+b[3]);}
+    else if(t>=6.1&&t<7.86){y=((b[1]+(t-6.1)*260*(.6+b[3]))%2100)-90;}
+    d.style.transform=`translate(${(x-b[2]/2).toFixed(1)}px,${(y-b[2]/2).toFixed(1)}px)`;
+    d.style.background=inS2?'rgba(255,248,226,.55)':'rgba(222,200,140,.32)';
+    d.style.opacity=inClose?0:(inS2?.8:.45);});
+  // scheda: S2 nasce dall'onda e vola via a destra · S3 entra da sinistra e cade nelle 15:00
+  let op=0,x=540,y=1150,s=1,rx=0,ry=0,rz=0;
+  if(t>=2.3&&t<4.3){const a=fly.a,u=fly.b;op=Math.min(1,a*1.6);
+    x=cub(u,S2P[0].x,S2P[1].x,S2P[2].x,S2P[3].x);y=cub(u,S2P[0].y,S2P[1].y,S2P[2].y,S2P[3].y);
+    s=(.4+1.0*a)*(1+.1*Math.sin(Math.PI*u));rx=10*Math.sin(Math.PI*u);ry=-20*(1-a)+30*u;rz=-8*Math.sin(Math.PI*u)+6*u;}
+  else if(t>=4.3&&t<IMP){const u=land.u,sl=screenOf($('#slot'));op=1;
+    const P=[{x:-340,y:840},{x:120,y:700},{x:sl.x-60,y:sl.y-260},{x:sl.x,y:sl.y}];
+    x=cub(u,P[0].x,P[1].x,P[2].x,P[3].x);y=cub(u,P[0].y,P[1].y,P[2].y,P[3].y);
+    const sw=sl.w/640;s=1.05+(sw-1.05)*u;ry=24*(1-u);rz=-6*(1-u);rx=8*(1-u);
+    w3.setAttribute('d',pathD(P,40));const L=w3.getTotalLength();w3.style.strokeDasharray=L;w3.style.strokeDashoffset=L*(1-u);w3.style.opacity=1;}
+  if(t>=IMP&&t<6.1)w3.style.opacity=Math.max(0,1-(t-IMP)/.5);
+  if(t<4.3)w3.style.opacity=0;
+  cardL.style.opacity=op;
+  cardL.style.transform=`translate(${x.toFixed(1)}px,${y.toFixed(1)}px) perspective(1600px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) rotateZ(${rz.toFixed(2)}deg) scale(${s.toFixed(3)})`;
+  cardL.style.boxShadow=`0 ${(24*op).toFixed(0)}px ${(60*op).toFixed(0)}px -20px rgba(70,45,5,.45)`;
+  // campanella: nasce dallo slot, vola su a destra (S3), scende nel telefono di Giulia (S4)
+  let bo=0,bx=0,by=0,bs=1,br=0;
+  if(t>=5.15&&t<6.1){const sl=screenOf($('#slot'));bo=Math.min(1,bell.p*1.5);const u=bell.u;
+    bx=sl.x+120+(880-sl.x-120)*u;by=sl.y-40+(-160-(sl.y-40))*u-120*Math.sin(Math.PI*u)*.3;bs=.3+.7*bell.p+.2*u;br=18*Math.sin(t*22)*(1-u*.5);}
+  else if(t>=6.1&&t<6.56){const u=fall.u,ic=screenOf($('#notif .ic'));bo=1-Math.max(0,(u-.85)/.15);
+    bx=880+(ic.x-880)*u;by=-160+(ic.y+20-(-160))*u;bs=1.2-.65*u;br=12*Math.sin(t*26);}
+  bellEl.style.opacity=bo;
+  bellEl.style.transform=`translate(${bx.toFixed(1)}px,${by.toFixed(1)}px) rotate(${br.toFixed(1)}deg) scale(${bs.toFixed(3)})`;
+}
+
+/* ---- colla ---- */
+const stage=$('#stage');
+const fit=()=>{const k=Math.min(innerWidth/W,innerHeight/H);stage.style.transform=`translate(-50%,-50%) scale(${k})`;};
+addEventListener('resize',fit);fit();
+(function frame(){render(tl.time());requestAnimationFrame(frame);})();
+addEventListener('keydown',e=>{if(e.code==='Space'){e.preventDefault();tl.paused()?tl.play():tl.pause();}if(/^[rR]$/.test(e.key))tl.play(0);});
+if(Q.has('debug')){const ui=$('#ui');ui.style.cssText='display:flex;position:fixed;left:50%;bottom:16px;transform:translateX(-50%);gap:10px;background:#111;color:#ddd;padding:10px 14px;border-radius:12px;font:13px system-ui;z-index:9';
+  ui.innerHTML='<input id="sc" type="range" min="0" max="1000" value="0" style="width:320px"><span id="ck">0.00s</span>';
+  $('#sc').oninput=e=>{tl.pause();tl.time(e.target.value/1000*DURATION);};setInterval(()=>{$('#ck').textContent=tl.time().toFixed(2)+'s';},100);}
+tl.eventCallback('onComplete',()=>tl.play(0));
+const seek=t=>{tl.pause();tl.time(t,false);if(gsap.ticker.tick)gsap.ticker.tick();render(t);};
+window.OPENER={tl,DURATION,seek,W,H,ready:false};
+document.fonts.ready.then(()=>{window.OPENER.ready=true;tl.time(0);render(0);if(!Q.has('clean'))tl.play(0);});
+</script>
+</body>
+</html>
